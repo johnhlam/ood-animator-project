@@ -19,9 +19,10 @@ public interface IModel {
    */
   String printAnimations();
 
+
   // TODO: Throw illegal exception for negative ticks
-  void addMotion(String id, int startTick, Point2D startPoint, double startWidth,
-      double startHeight, Color startColor, int endTick, Point2D endPoint, double endWidth,
+  void addMotion(String id, int startTick, double startX, double startY, double startWidth,
+      double startHeight, Color startColor, int endTick, double endX, double endY, double endWidth,
       double endHeight, Color endColor) throws IllegalArgumentException;
 
   /**
@@ -34,10 +35,12 @@ public interface IModel {
    * @param width the width of the shape
    * @param height the height of the shape
    * @param color the color of the shape
-   * @param point the current x,y point that represents the shape's center
+   * @param x the current x coordinate for the shape's center
+   * @param y the current x coordinate for the shape's center
    * @throws IllegalArgumentException if any of the arguments are null, or if the ID already exists
    */
-  void addShape(String id, ShapeType shape, double width, double height, Color color, Point2D point)
+  void addShape(String id, ShapeType shape, double width, double height, Color color, double x,
+                double y)
       throws IllegalArgumentException;
 
   /**

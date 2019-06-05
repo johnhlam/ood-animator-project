@@ -10,15 +10,16 @@ public class IShapeImpl implements IShape {
   private final String id;
   private double width;
   private double height;
-  private Point2D center;
+  private double x;
+  private double y;
   private Color color;
   private List<IMotion> motionList;
   private final ShapeType type;
 
-  public IShapeImpl(String id, ShapeType type, double width, double height, Point2D center,
+  public IShapeImpl(String id, ShapeType type, double width, double height, double x, double y,
                     Color color) {
 
-    if (id == null || type == null || color == null || center == null) {
+    if (id == null || type == null || color == null) {
       throw new IllegalArgumentException("No null args allowed.");
     }
 
@@ -30,7 +31,8 @@ public class IShapeImpl implements IShape {
     this.type = type;
     this.width = width;
     this.height = height;
-    this.center = center;
+    this.x = x;
+    this.y = y;
     this.color = color;
     this.motionList = new ArrayList<>();
   }
@@ -139,7 +141,7 @@ public class IShapeImpl implements IShape {
   }
 
   private boolean areTicksOverlapping(double lower, double upper, double num) {
-    return num >= lower && num <= upper;
+    return num > lower && num < upper;
   }
 
 }

@@ -46,11 +46,11 @@ public class IModelImpl implements IModel {
 
   @Override
   public void addMotion(
-      String id, int startTick, Point2D startPoint, double startWidth,
-      double startHeight, Color startColor, int endTick, Point2D endPoint, double endWidth,
+      String id, int startTick, double startX, double startY, double startWidth,
+      double startHeight, Color startColor, int endTick, double endX, double endY, double endWidth,
       double endHeight, Color endColor) throws IllegalArgumentException {
 
-    if (startPoint == null || startColor == null || endPoint == null || endColor == null) {
+    if (startColor == null || endColor == null) {
       throw new IllegalArgumentException("Arguments for addMotion cannot be null.");
     }
 
@@ -59,8 +59,8 @@ public class IModelImpl implements IModel {
       if (cur.getID().equals(id)) {
         cur.addMotion(
             new IMotionImpl(
-                startTick, startWidth, startHeight, startPoint, startColor,
-                endTick, endWidth, endHeight, endPoint, endColor));
+                startTick, startWidth, startHeight, startX, startY, startColor,
+                endTick, endWidth, endHeight, endX, endY, endColor));
 
         // Does not need to iterate through the rest of the list if a shape with the given id has
         // been found
@@ -71,8 +71,8 @@ public class IModelImpl implements IModel {
 
   @Override
   public void addShape(String id, ShapeType type, double width, double height, Color color,
-      Point2D point) throws IllegalArgumentException {
-    if (id == null || type == null || color == null || point == null) {
+      double x, double y) throws IllegalArgumentException {
+    if (id == null || type == null || color == null) {
       throw new IllegalArgumentException("Arguments for addShape cannot be null.");
     }
     for (IShape shape : this.shapes) {
@@ -81,7 +81,7 @@ public class IModelImpl implements IModel {
       }
     }
 
-    IShape newShape = new IShapeImpl(id, type, width, height, point, color);
+    IShape newShape = new IShapeImpl(id, type, width, height, x, y, color);
 
     this.shapes.add(newShape);
   }
