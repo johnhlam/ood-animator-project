@@ -11,7 +11,11 @@ public class IShapeImplTest {
 
   @Before
   public void setUp() throws Exception {
+    IShape rect1 = new IShapeImpl("R1", ShapeType.RECTANGLE, 10, 10, 0, 0, Color.RED);
+    IShape rect2 = new IShapeImpl("R2", ShapeType.RECTANGLE, 5, 15, 30, 30, Color.BLUE);
 
+    IShape ellipse1 = new IShapeImpl("E1", ShapeType.ELLIPSE, 12, 12, 10, 12, Color.ORANGE);
+    IShape ellupse2 = new IShapeImpl("E2", ShapeType.ELLIPSE, 3, 6, 20, 40, Color.GREEN);
   }
 
   /**
