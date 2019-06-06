@@ -1,15 +1,14 @@
 package Model;
 
 import java.awt.Color;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An implementation of IShape. Stores motions as a list of IMotions. Motions are added to this
+ * An implementation of IModelShape. Stores motions as a list of IMotions. Motions are added to this
  * shape in any order, but its list will invariably be ordered based on start tick.
  */
-public class IShapeImpl implements IShape {
+public class IModelShapeImpl implements IModelShape {
 
   private final String id;
   private final double width;
@@ -21,7 +20,7 @@ public class IShapeImpl implements IShape {
   private final ShapeType type;
 
   /**
-   * Constructor to create an IShapeImpl object. Takes in the ID, shape type, size, position, and
+   * Constructor to create an IModelShapeImpl object. Takes in the ID, shape type, size, position, and
    * color and initializes them. Also initializes an empty list of motions.
    *
    * @param id the ID of this shape
@@ -33,8 +32,8 @@ public class IShapeImpl implements IShape {
    * @param color the color of this shape
    * @throws IllegalArgumentException if arguments are null, or the width or height are negative
    */
-  public IShapeImpl(String id, ShapeType type, double width, double height, double x, double y,
-                    Color color) throws IllegalArgumentException {
+  public IModelShapeImpl(String id, ShapeType type, double width, double height, double x, double y,
+                         Color color) throws IllegalArgumentException {
 
     if (id == null || type == null || color == null) {
       throw new IllegalArgumentException("No null args allowed.");

@@ -31,7 +31,7 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests IModelImpl#printAnimations() with a model that has 1 (rectangle) IShape in it, without
+   * Tests IModelImpl#printAnimations() with a model that has 1 (rectangle) IModelShape in it, without
    * any motions in the shape.
    */
   @Test
@@ -42,7 +42,7 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests IModelImpl#printAnimations() with a model that has 1 (ellipse) IShape in it, without
+   * Tests IModelImpl#printAnimations() with a model that has 1 (ellipse) IModelShape in it, without
    * any motions in the shape.
    */
   @Test

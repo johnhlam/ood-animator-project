@@ -1,7 +1,6 @@
 package Model;
 
 import java.awt.Color;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +11,7 @@ import java.util.List;
 public class IModelImpl implements IModel {
 
   // A list of shapes that the model is currently representing as drawings/animations.
-  private final List<IShape> shapes;
+  private final List<IModelShape> shapes;
 
   /**
    * Constructs an instance of the model. Initializes the shapes to an empty list.
@@ -42,7 +41,7 @@ public class IModelImpl implements IModel {
   public String printAnimations() {
     StringBuilder builder = new StringBuilder();
 
-    for (IShape s : this.shapes) {
+    for (IModelShape s : this.shapes) {
       builder.append(s.printMotions())
               .append("\n");
     }
@@ -77,7 +76,7 @@ public class IModelImpl implements IModel {
     }
 
     for (int i = 0; i < this.shapes.size(); i++) {
-      IShape cur = this.shapes.get(i);
+      IModelShape cur = this.shapes.get(i);
       if (cur.getID().equals(id)) {
         cur.addMotion(
                 new IMotionImpl(
@@ -97,13 +96,13 @@ public class IModelImpl implements IModel {
     if (id == null || type == null || color == null) {
       throw new IllegalArgumentException("Arguments for addShape cannot be null.");
     }
-    for (IShape shape : this.shapes) {
+    for (IModelShape shape : this.shapes) {
       if (shape.getID().equals(id)) {
         throw new IllegalArgumentException("Shape with same id already exists.");
       }
     }
 
-    IShape newShape = new IShapeImpl(id, type, width, height, x, y, color);
+    IModelShape newShape = new IModelShapeImpl(id, type, width, height, x, y, color);
 
     this.shapes.add(newShape);
   }

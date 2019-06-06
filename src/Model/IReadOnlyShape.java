@@ -4,7 +4,7 @@ import java.awt.*;
 
 /**
  * Represents a shape for the model, but only has the functionality to read from its field. An
- * IShape interface will extend from this one with further methods that a complete shape should
+ * IModelShape interface will extend from this one with further methods that a complete shape should
  * be able to complete. This ReadOnly shape will be passed to the controller and view.
  */
 public interface IReadOnlyShape {

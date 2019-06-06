@@ -13,7 +13,6 @@ public enum ShapeType {
    * @param type the type of shape
    * @return the string name for it
    */
-  // TODO: test this
   public static String typeToString(ShapeType type) {
     switch (type) {
       case RECTANGLE:
