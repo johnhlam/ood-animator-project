@@ -5,16 +5,16 @@ import java.awt.geom.Point2D;
 
 /**
  * Represents a shape in an animation. Each shape holds directions for its own animations. Shapes
- * can have animations added to them that affect their fields. Each shape should have a
- * ShapeType, location (x,y), size (width, height), and color. An IShape object represents its
- * ShapeType with attributes given by its own fields.
+ * can have animations added to them that affect their fields. Each shape should have a ShapeType,
+ * location (x,y), size (width, height), and color. An IShape object represents its ShapeType with
+ * attributes given by its own fields.
  */
-public interface IShape {
+public interface IShape extends IReadOnlyShape {
 
   /**
-   * Prints the animations that the shape holds. It should output the type of shape, the ID of
-   * the shape, and whatever animations it needs to perform. Specific implementations should
-   * specify the exact output.
+   * Prints the animations that the shape holds. It should output the type of shape, the ID of the
+   * shape, and whatever animations it needs to perform. Specific implementations should specify the
+   * exact output.
    *
    * @return the string representation of the animation
    */
@@ -28,13 +28,14 @@ public interface IShape {
   String getID();
 
   /**
-   * Updates the shape's fields based on its motions to become what they should be at the given
-   * tick during the animation.
+   * Updates the shape's fields based on its motions to become what they should be at the given tick
+   * during the animation. Specific implementations should specify further details about how the
+   * shape handles its motions for a given tick.
    *
    * @param tick the tick to update the shape to
    * @throws IllegalArgumentException if the tick is negative
    */
-  void updateShape(int tick) throws IllegalArgumentException;
+  IReadOnlyShape getShapeAtTick(int tick) throws IllegalArgumentException;
 
   /**
    * Add an IMotion that the shape can perform. How the motion is represented/stored is up to the
@@ -44,39 +45,4 @@ public interface IShape {
    * @throws IllegalArgumentException if the argument is null
    */
   void addMotion(IMotion motion) throws IllegalArgumentException;
-
-  /**
-   * Returns this shape's width.
-   *
-   * @return the width
-   */
-  double getWidth();
-
-  /**
-   * Returns this shape's height.
-   *
-   * @return the height
-   */
-  double getHeight();
-
-  /**
-   * Returns this shape's x position.
-   *
-   * @return the x coordinate
-   */
-  double getX();
-
-  /**
-   * Returns this shape's y position.
-   *
-   * @return the y coordinate
-   */
-  double getY();
-
-  /**
-   * Returns this shape's color.
-   *
-   * @return the color
-   */
-  Color getColor();
 }

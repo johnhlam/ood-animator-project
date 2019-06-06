@@ -22,17 +22,14 @@ public class IModelImpl implements IModel {
   }
 
   @Override
-  public List<IShape> getShapesAsList() {
-    return new ArrayList<>(this.shapes);
-  }
-
-  @Override
-  public void updateDrawing(int tick) throws IllegalArgumentException {
+  public List<IReadOnlyShape> getShapesAtTick(int tick) throws IllegalArgumentException {
     // this method is left blank as the implementation of it will be decided in future
     // assignments when the tweening function is revealed. Will most likely call a method on
     // shapes to update each shapes in the list, so that stub is written in the shape interface
     // as well.
+    return new ArrayList<>();
   }
+
 
   /**
    * Prints out each shape in this model with its ID followed by the motions it contains. Each

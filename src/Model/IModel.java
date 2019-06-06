@@ -65,21 +65,15 @@ public interface IModel {
       throws IllegalArgumentException;
 
   /**
-   * Returns a copy of the model's shapes as a list. This list represents the current shapes to be
-   * drawn on the screen at a given tick.
+   * Returns a copy of the model's shapes as a list at the given tick. Shapes are newly created
+   * and are read only, meaning the shapes only have getters. A tick represents any given point
+   * in the animation, and the model's list of shapes should represent the instance the shapes
+   * are in at the given tick.
    *
    * @return a copy of the model's list of shapes
+   * @throws IllegalArgumentException for negative ticks
    */
-  List<IShape> getShapesAsList();
+  List<IReadOnlyShape> getShapesAtTick(int tick) throws IllegalArgumentException;
 
-  /**
-   * Updates all the shapes in this animation (model's list of shapes) to the given tick. A tick
-   * represents any given point in the animation, and the model's list of shapes should represent
-   * the instance the shapes are in at the given tick.
-   *
-   * @param tick the current tick of the animation
-   * @throws if the given tick is negative
-   */
-  void updateDrawing(int tick) throws IllegalArgumentException;
 
 }

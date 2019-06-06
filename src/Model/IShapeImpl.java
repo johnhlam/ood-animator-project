@@ -12,12 +12,12 @@ import java.util.List;
 public class IShapeImpl implements IShape {
 
   private final String id;
-  private double width;
-  private double height;
-  private double x;
-  private double y;
-  private Color color;
-  private List<IMotion> motionList;
+  private final double width;
+  private final double height;
+  private final double x;
+  private final double y;
+  private final Color color;
+  private final List<IMotion> motionList;
   private final ShapeType type;
 
   /**
@@ -40,7 +40,7 @@ public class IShapeImpl implements IShape {
       throw new IllegalArgumentException("No null args allowed.");
     }
 
-    if (this.width < 0 || this.height < 0) {
+    if (width < 0 || height < 0) {
       throw new IllegalArgumentException("Given width and/or height are negative for shape");
     }
 
@@ -82,10 +82,14 @@ public class IShapeImpl implements IShape {
 
   }
 
+  /**
+   * Creates the shape at the given tick based on this shape's motions. If no motion is found at
+   * the given tick, the shape remains the same as its previous motion's final state.
+   */
   @Override
-  public void updateShape(int tick) throws IllegalArgumentException {
-    // left blank until we receive tweening function. Will mutate this shape's fields to match
-    // its motions based on the given tick.
+  public IReadOnlyShape getShapeAtTick(int tick) throws IllegalArgumentException {
+    // left blank until we receive tweening function.
+    return null;
   }
 
   /**
