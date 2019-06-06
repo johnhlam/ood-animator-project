@@ -5,6 +5,10 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * An implementation of IShape. Stores motions as a list of IMotions. Motions are added to this
+ * shape in any order, but its list will invariably be ordered based on start tick.
+ */
 public class IShapeImpl implements IShape {
 
   private final String id;
@@ -16,8 +20,21 @@ public class IShapeImpl implements IShape {
   private List<IMotion> motionList;
   private final ShapeType type;
 
+  /**
+   * Constructor to create an IShapeImpl object. Takes in the ID, shape type, size, position, and
+   * color and initializes them. Also initializes an empty list of motions.
+   *
+   * @param id the ID of this shape
+   * @param type the type of shape this is
+   * @param width the width of this shape
+   * @param height the height of this shape
+   * @param x the x position of this shape
+   * @param y the y position of this shape
+   * @param color the color of this shape
+   * @throws IllegalArgumentException if arguments are null, or the width or height are negative
+   */
   public IShapeImpl(String id, ShapeType type, double width, double height, double x, double y,
-                    Color color) {
+                    Color color) throws IllegalArgumentException {
 
     if (id == null || type == null || color == null) {
       throw new IllegalArgumentException("No null args allowed.");
@@ -36,28 +53,6 @@ public class IShapeImpl implements IShape {
     this.color = color;
     this.motionList = new ArrayList<>();
   }
-
-
-  @Override
-  public void setWidth(int width) {
-    this.width = width;
-  }
-
-  @Override
-  public void setHeight(int height) {
-
-  }
-
-  @Override
-  public void setCenter(Point2D point) {
-
-  }
-
-  @Override
-  public String getName() {
-    return null;
-  }
-
 
   /**
    * Along with the specifications in the interface, this method also prints each motion that this
@@ -88,15 +83,17 @@ public class IShapeImpl implements IShape {
   }
 
   @Override
-  public String getID() {
-    return this.id;
+  public void updateShape(int tick) throws IllegalArgumentException {
+    // left blank until we receive tweening function. Will mutate this shape's fields to match
+    // its motions based on the given tick.
   }
 
-  @Override
-  public void setColor(Color color) {
-
-  }
-
+  /**
+   * Adds a motion to this shape's list of motions such that the list of motions remains sorted.
+   * Throws an exception if the given motion has overlapping ticks with the motions in the list.
+   *
+   * @throws IllegalArgumentException if the given motion overlaps with pre-existing motions
+   */
   @Override
   public void addMotion(IMotion motion) throws IllegalArgumentException {
     if (motion == null) {
@@ -111,6 +108,12 @@ public class IShapeImpl implements IShape {
 
   }
 
+  /**
+   * Inserts the given motion into this shape's motions based on start tick time. If the given
+   * motion does not come before an existing motion, it is placed at the end of the list
+   *
+   * @param motion the motion to add
+   */
   private void insertMotion(IMotion motion) {
     for (int i = 0; i < this.motionList.size(); i++) {
       IMotion curMotion = this.motionList.get(i);
@@ -122,16 +125,19 @@ public class IShapeImpl implements IShape {
     }
 
     // If it reaches here, then the given motion's start tick is after all of this.motionList's
-    // endTicks
+    // endTicks, and should thus be the last motion
     this.motionList.add(motion);
   }
 
+  /**
+   * Determines if any motions in this shape's motions overlap with the given motion.
+   *
+   * @param motion the motion to check for overlap
+   * @return true if there is overlap, false otherwise
+   */
   private boolean hasTickOverlap(IMotion motion) {
     for (IMotion curMotion : this.motionList) {
-      if (this.areTicksOverlapping(curMotion.getStartTick(), curMotion.getEndTick(),
-              motion.getStartTick())
-              || this.areTicksOverlapping(curMotion.getStartTick(), curMotion.getEndTick(),
-              motion.getEndTick())) {
+      if (this.areTicksOverlapping(motion, curMotion)) {
         // Returns true to break out of the loop
         return true;
       }
@@ -140,8 +146,51 @@ public class IShapeImpl implements IShape {
     return false;
   }
 
-  private boolean areTicksOverlapping(double lower, double upper, double num) {
-    return num > lower && num < upper;
+  /**
+   * Checks if two motions are overlapping in ticks.
+   *
+   * @param motionToAdd motion being added to the list
+   * @param existingMotion an existing motion already in the list
+   * @return true if there is overlap, false otherwise
+   */
+  private boolean areTicksOverlapping(IMotion motionToAdd, IMotion existingMotion) {
+    int addStartTick = motionToAdd.getStartTick();
+    int addEndTick = motionToAdd.getEndTick();
+    int existingStartTick = existingMotion.getStartTick();
+    int existingEndTick = existingMotion.getEndTick();
+    return (addStartTick > existingStartTick && addStartTick < existingEndTick)
+            || (addEndTick > existingStartTick && addEndTick < existingEndTick);
   }
+
+  @Override
+  public String getID() {
+    return this.id;
+  }
+
+  @Override
+  public double getWidth() {
+    return this.width;
+  }
+
+  @Override
+  public double getHeight() {
+    return this.height;
+  }
+
+  @Override
+  public double getX() {
+    return this.x;
+  }
+
+  @Override
+  public double getY() {
+    return this.y;
+  }
+
+  @Override
+  public Color getColor() {
+    return new Color(this.color.getRGB());
+  }
+
 
 }

@@ -3,9 +3,10 @@ import static org.junit.Assert.*;
 import Model.IShape;
 import Model.IShapeImpl;
 import Model.ShapeType;
-import javafx.scene.paint.Color;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.awt.*;
 
 public class IShapeImplTest {
 
@@ -23,7 +24,7 @@ public class IShapeImplTest {
    */
   @Test(expected = IllegalArgumentException.class)
   public void shapeExceptionNullID() {
-    new IShapeImpl(null, ShapeType.RECTANGLE, 10, 10, 0, 0, Color.ALICEBLUE);
+    new IShapeImpl(null, ShapeType.RECTANGLE, 10, 10, 0, 0, Color.BLUE);
   }
 
   /**
@@ -31,7 +32,7 @@ public class IShapeImplTest {
    */
   @Test(expected = IllegalArgumentException.class)
   public void shapeExceptionNullType() {
-    new IShapeImpl("R1", null, 10, 10, 0, 0, Color.FUCHSIA);
+    new IShapeImpl("R1", null, 10, 10, 0, 0, Color.pink);
   }
 
   /**

@@ -1,11 +1,19 @@
 package Model;
 
 /**
- *
+ * Represents the possible shapes this animator can draw.
  */
 public enum ShapeType {
   RECTANGLE, ELLIPSE;
 
+  /**
+   * Returns the string representing what kind of shape the enum represents. (ie RECTANGLE
+   * equates to "rectangle.")
+   *
+   * @param type the type of shape
+   * @return the string name for it
+   */
+  // TODO: test this
   public static String typeToString(ShapeType type) {
     switch (type) {
       case RECTANGLE:
@@ -13,7 +21,8 @@ public enum ShapeType {
       case ELLIPSE:
         return "ellipse";
       default:
-        throw new IllegalArgumentException("Given ShapeType is invalid");
+        // will never reach this default case
+        return "";
     }
   }
 }

@@ -3,6 +3,11 @@ package Model;
 import java.awt.Color;
 import java.awt.geom.Point2D;
 
+/**
+ * An implementation of the IMotion interface. Holds all the required fields as individual double
+ * fields (with the exception of the color and the ticks, which are Color and ints respectively).
+ * Represents the start and end of a shape's animation.
+ */
 public class IMotionImpl implements IMotion {
   private final int startTick;
   private final double startX;
@@ -17,6 +22,24 @@ public class IMotionImpl implements IMotion {
   private final double endHeight;
   private final Color endColor;
 
+  /**
+   * Constructor for a motion. Throws an exception if any inputs are null, or if tick rate is
+   * negative.
+   *
+   * @param startTick the starting tick
+   * @param startWidth the starting width
+   * @param startHeight the starting height
+   * @param startX the starting x coordinate
+   * @param startY the starting y coordinate
+   * @param startColor the starting color
+   * @param endTick the ending tick
+   * @param endWidth the ending width
+   * @param endHeight the ending height
+   * @param endX the ending x coordinate
+   * @param endY the ending y coordinate
+   * @param endColor the ending color
+   * @throws IllegalArgumentException if any arguments are null, or if ticks are negative
+   */
   public IMotionImpl(
           int startTick, double startWidth, double startHeight, double startX, double startY,
           Color startColor,
@@ -25,6 +48,11 @@ public class IMotionImpl implements IMotion {
     if (startColor == null || endColor == null) {
       throw new IllegalArgumentException("Arguments for IMotionImpl cannot be null.");
     }
+
+    if (startTick < 0 || endTick < 0) {
+      throw new IllegalArgumentException("Ticks cannot be negative.");
+    }
+
     this.startTick = startTick;
     this.endTick = endTick;
     this.startX = startX;
@@ -39,6 +67,15 @@ public class IMotionImpl implements IMotion {
     this.endColor = endColor;
   }
 
+  /**
+   * Prints this motion's fields in the following order: start tick, start x, start y, start
+   * width, start height, start color R value, start color G value, start color B value, end tick,
+   * end x, end y, end width, end height, end color R value, end color G value, end color B
+   * value. Spaces are placed in between each field, and start and end parameters are separated
+   * by a tab.
+   *
+   * @return the motion's parameters in the above specified format
+   */
   @Override
   public String printMotion() {
     StringBuilder builder = new StringBuilder();
@@ -88,4 +125,37 @@ public class IMotionImpl implements IMotion {
   public int getEndTick() {
     return this.endTick;
   }
+
+
+  /**
+   * THE FOLLOWING METHODS WILL BE IMPLEMENTED AFTER THE TWEENING FUNCTION IS GIVEN TO US. RIGHT
+   * NOW THEY ARE STUBS!
+   */
+
+  @Override
+  public double getXAtTick(int tick) {
+    return 0;
+  }
+
+  @Override
+  public double getYAtTick(int tick) {
+    return 0;
+  }
+
+  @Override
+  public double getWidthAtTick(int tick) {
+    return 0;
+  }
+
+  @Override
+  public double getHeightAtTick(int tick) {
+    return 0;
+  }
+
+  @Override
+  public Color getColorAtTick(int tick) {
+    return null;
+  }
+
+
 }
