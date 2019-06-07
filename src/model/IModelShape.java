@@ -25,9 +25,9 @@ public interface IModelShape extends IReadOnlyShape {
   String getID();
 
   /**
-   * Updates the shape's fields based on its motions to become what they should be at the given tick
-   * during the animation. Specific implementations should specify further details about how the
-   * shape handles its motions for a given tick.
+   * Returns a new IReadOnlyShape based on its motions to become what they should be at the given
+   * tick during the animation. Specific implementations should specify further details about how
+   * the shape handles its motions for a given tick.
    *
    * @param tick the tick to update the shape to
    * @throws IllegalArgumentException if the tick is negative
