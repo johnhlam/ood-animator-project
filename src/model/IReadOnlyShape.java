@@ -9,37 +9,44 @@ import java.awt.*;
  */
 public interface IReadOnlyShape {
   /**
-   * Returns this shape's width.
+   * Returns the shape's width.
    *
    * @return the width
    */
   double getWidth();
 
   /**
-   * Returns this shape's height.
+   * Returns the shape's height.
    *
    * @return the height
    */
   double getHeight();
 
   /**
-   * Returns this shape's x position.
+   * Returns the shape's x position.
    *
    * @return the x coordinate
    */
   double getX();
 
   /**
-   * Returns this shape's y position.
+   * Returns the shape's y position.
    *
    * @return the y coordinate
    */
   double getY();
 
   /**
-   * Returns this shape's color.
+   * Returns the shape's color.
    *
    * @return the color
    */
   Color getColor();
+
+  /**
+   * Returns the shape's ShapeType
+   *
+   * @return the shape type enum
+   */
+  ShapeType getType();
 }

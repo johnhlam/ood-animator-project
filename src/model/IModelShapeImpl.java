@@ -20,16 +20,16 @@ public class IModelShapeImpl implements IModelShape {
   private final ShapeType type;
 
   /**
-   * Constructor to create an IModelShapeImpl object. Takes in the ID, shape type, size, position, and
-   * color and initializes them. Also initializes an empty list of motions.
+   * Constructor to create an IModelShapeImpl object. Takes in the ID, shape type, size, position,
+   * and color and initializes them. Also initializes an empty list of motions.
    *
-   * @param id the ID of this shape
-   * @param type the type of shape this is
-   * @param width the width of this shape
+   * @param id     the ID of this shape
+   * @param type   the type of shape this is
+   * @param width  the width of this shape
    * @param height the height of this shape
-   * @param x the x position of this shape
-   * @param y the y position of this shape
-   * @param color the color of this shape
+   * @param x      the x position of this shape
+   * @param y      the y position of this shape
+   * @param color  the color of this shape
    * @throws IllegalArgumentException if arguments are null, or the width or height are negative
    */
   public IModelShapeImpl(String id, ShapeType type, double width, double height, double x, double y,
@@ -82,8 +82,8 @@ public class IModelShapeImpl implements IModelShape {
   }
 
   /**
-   * Creates the shape at the given tick based on this shape's motions. If no motion is found at
-   * the given tick, the shape remains the same as its previous motion's final state.
+   * Creates the shape at the given tick based on this shape's motions. If no motion is found at the
+   * given tick, the shape remains the same as its previous motion's final state.
    */
   @Override
   public IReadOnlyShape getShapeAtTick(int tick) throws IllegalArgumentException {
@@ -124,27 +124,41 @@ public class IModelShapeImpl implements IModelShape {
     for (int i = 0; i < this.motionList.size(); i++) {
       IMotion curMotion = this.motionList.get(i);
       if (motion.getStartTick() < curMotion.getStartTick()) {
-       if (i == 0 || this.sameStateIfAdjacent(motion, motionList.get(i - 1))) {
-         this.motionList.add(i, motion);
-         // Returns because you don't have to iterate through the rest of the list
-         return;
-       }
-       else {
-         throw new IllegalArgumentException("Adjacent motions cannot disagree with end and start " +
-                 "states.");
-       }
+        this.handleInsertion(motion, i);
+        // Returns because you don't have to iterate through the rest of the list
+        return;
       }
     }
     // If it reaches here, then the given motion's start tick is after all of this.motionList's
     // endTicks, and should thus be the last motion
-    this.motionList.add(motion);
+    this.handleInsertion(motion, this.motionList.size());
+  }
+
+  /**
+   * Adds the given motion if the motion at the given index in the existing motion list has the same
+   * end state as this motion's start state. If they do not have overlapping ticks, then it is
+   * added. Additionally, if the index is 0, it is added as well.
+   *
+   * @throws IllegalArgumentException if the motion is adjacent to another and does not have
+   * matching states
+   */
+  private void handleInsertion(IMotion motion, int i) throws IllegalArgumentException {
+    if (i == 0 || this.sameStateIfAdjacent(motion, motionList.get(i - 1))) {
+      this.motionList.add(i, motion);
+    } else if (i == this.motionList.size() && this.sameStateIfAdjacent(motion,
+            motionList.get(i - 1))) {
+      this.motionList.add(motion);
+    } else {
+      throw new IllegalArgumentException("Adjacent motions cannot disagree with end and start " +
+              "states.");
+    }
   }
 
   /**
    * Determines if two given motions are adjacent (overlapping end and start ticks), and if they
    * are, check if they have the same state. If they aren't, return true.
    *
-   * @param motion the motion whose start tick is in question
+   * @param motion     the motion whose start tick is in question
    * @param prevMotion the motion whose end tick is in question
    * @return true if they two motions are adjacent and have the same state or if they aren't
    * adjacent, and false otherwise
@@ -156,8 +170,7 @@ public class IModelShapeImpl implements IModelShape {
               && motion.getStartWidth() == prevMotion.getEndWidth()
               && motion.getStartHeight() == prevMotion.getEndHeight()
               && motion.getStartColor().equals(prevMotion.getEndColor());
-    }
-    else {
+    } else {
       return true;
     }
   }
@@ -180,9 +193,10 @@ public class IModelShapeImpl implements IModelShape {
   }
 
   /**
-   * Checks if two motions are overlapping in ticks.
+   * Checks if two motions are overlapping in ticks. Note - kept in Shape class since the logic for
+   * overlapping motions should be kept in the shape, not in the motion.
    *
-   * @param motionToAdd motion being added to the list
+   * @param motionToAdd    motion being added to the list
    * @param existingMotion an existing motion already in the list
    * @return true if there is overlap, false otherwise
    */
@@ -225,10 +239,10 @@ public class IModelShapeImpl implements IModelShape {
     return new Color(this.color.getRGB());
   }
 
+  @Override
+  public ShapeType getType() {
+    return this.type;
+  }
+
 
 }
-/*
-  Make sure to write down assumption that no overlapping ticks are allowed.
-  Make sure to write down assumption that motions will always be sorted.
-
- */
