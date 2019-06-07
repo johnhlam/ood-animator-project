@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -71,8 +71,13 @@ public class IModelImpl implements IModel {
       throw new IllegalArgumentException("Arguments for addMotion cannot be null.");
     }
 
-    if (startTick < 0 || endTick < 0) {
-      throw new IllegalArgumentException("Ticks cannot be negative.");
+    if (startTick < 0 || endTick < 0 || startWidth < 0 || startHeight < 0
+    || endWidth < 0 || endHeight < 0) {
+      throw new IllegalArgumentException("Ticks and sizes cannot be negative.");
+    }
+
+    if (endTick <= startTick) {
+      throw new IllegalArgumentException("End tick must come after start tick");
     }
 
     for (int i = 0; i < this.shapes.size(); i++) {
@@ -88,6 +93,8 @@ public class IModelImpl implements IModel {
         return;
       }
     }
+    // throw an exception if it reaches here, meaning the ID was not in the list
+    throw new IllegalArgumentException("ID could not be found");
   }
 
   @Override
@@ -105,5 +112,10 @@ public class IModelImpl implements IModel {
     IModelShape newShape = new IModelShapeImpl(id, type, width, height, x, y, color);
 
     this.shapes.add(newShape);
+  }
+
+  @Override
+  public void removeShape(String id) throws IllegalArgumentException {
+
   }
 }

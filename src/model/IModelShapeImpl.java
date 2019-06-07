@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -113,7 +113,10 @@ public class IModelShapeImpl implements IModelShape {
 
   /**
    * Inserts the given motion into this shape's motions based on start tick time. If the given
-   * motion does not come before an existing motion, it is placed at the end of the list
+   * motion does not come before an existing motion, it is placed at the end of the list.
+   *
+   * INVARIANT: Adjacent motions (two motions with same end tick and start tick) will always have
+   * the according states.
    *
    * @param motion the motion to add
    */
@@ -121,15 +124,42 @@ public class IModelShapeImpl implements IModelShape {
     for (int i = 0; i < this.motionList.size(); i++) {
       IMotion curMotion = this.motionList.get(i);
       if (motion.getStartTick() < curMotion.getStartTick()) {
-        this.motionList.add(i, motion);
-        // Returns because you don't have to iterate through the rest of the list
-        return;
+       if (i == 0 || this.sameStateIfAdjacent(motion, motionList.get(i - 1))) {
+         this.motionList.add(i, motion);
+         // Returns because you don't have to iterate through the rest of the list
+         return;
+       }
+       else {
+         throw new IllegalArgumentException("Adjacent motions cannot disagree with end and start " +
+                 "states.");
+       }
       }
     }
-
     // If it reaches here, then the given motion's start tick is after all of this.motionList's
     // endTicks, and should thus be the last motion
     this.motionList.add(motion);
+  }
+
+  /**
+   * Determines if two given motions are adjacent (overlapping end and start ticks), and if they
+   * are, check if they have the same state. If they aren't, return true.
+   *
+   * @param motion the motion whose start tick is in question
+   * @param prevMotion the motion whose end tick is in question
+   * @return true if they two motions are adjacent and have the same state or if they aren't
+   * adjacent, and false otherwise
+   */
+  private boolean sameStateIfAdjacent(IMotion motion, IMotion prevMotion) {
+    if (motion.getStartTick() == prevMotion.getEndTick()) {
+      return motion.getStartX() == prevMotion.getEndX()
+              && motion.getStartY() == prevMotion.getEndY()
+              && motion.getStartWidth() == prevMotion.getEndWidth()
+              && motion.getStartHeight() == prevMotion.getEndHeight()
+              && motion.getStartColor().equals(prevMotion.getEndColor());
+    }
+    else {
+      return true;
+    }
   }
 
   /**

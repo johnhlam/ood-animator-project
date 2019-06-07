@@ -1,7 +1,4 @@
-package Model;
-
-import java.awt.Color;
-import java.awt.geom.Point2D;
+package model;
 
 /**
  * Represents a shape in an animation. Each shape holds directions for its own animations. Shapes

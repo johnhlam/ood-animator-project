@@ -1,8 +1,8 @@
 import static org.junit.Assert.*;
 
-import Model.IModelShape;
-import Model.IModelShapeImpl;
-import Model.ShapeType;
+import model.IModelShape;
+import model.IModelShapeImpl;
+import model.ShapeType;
 import org.junit.Before;
 import org.junit.Test;
 

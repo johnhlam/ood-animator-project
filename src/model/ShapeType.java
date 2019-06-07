@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 /**
  * Represents the possible shapes this animator can draw.

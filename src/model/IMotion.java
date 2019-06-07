@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import java.awt.*;
 
@@ -31,6 +31,76 @@ public interface IMotion {
    * @return the end tick
    */
   int getEndTick();
+
+  /**
+   * Return the starting x coordinate.
+   *
+   * @return the x coordinate
+   */
+  double getStartX();
+
+  /**
+   * Return the starting y coordinate.
+   *
+   * @return the y coordinate
+   */
+  double getStartY();
+
+  /**
+   * Return the starting width.
+   *
+   * @return the width
+   */
+  double getStartWidth();
+
+  /**
+   * Return the starting height.
+   *
+   * @return the height
+   */
+  double getStartHeight();
+
+  /**
+   * Return the starting color.
+   *
+   * @return the color
+   */
+  Color getStartColor();
+
+  /**
+   * Return the ending x coordinate.
+   *
+   * @return the x coordinate
+   */
+  double getEndX();
+
+  /**
+   * Return the ending y coordinate.
+   *
+   * @return the y coordinate
+   */
+  double getEndY();
+
+  /**
+   * Return the ending width.
+   *
+   * @return the width
+   */
+  double getEndWidth();
+
+  /**
+   * Return the ending height.
+   *
+   * @return the height
+   */
+  double getEndHeight();
+
+  /**
+   * Return the ending color.
+   *
+   * @return the color
+   */
+  Color getEndColor();
 
   /**
    * Returns the x position in the animation at the given tick based on start and end positions.

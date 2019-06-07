@@ -1,7 +1,6 @@
-package Model;
+package model;
 
 import java.awt.Color;
-import java.awt.geom.Point2D;
 
 /**
  * An implementation of the IMotion interface. Holds all the required fields as individual double
@@ -49,8 +48,13 @@ public class IMotionImpl implements IMotion {
       throw new IllegalArgumentException("Arguments for IMotionImpl cannot be null.");
     }
 
-    if (startTick < 0 || endTick < 0) {
-      throw new IllegalArgumentException("Ticks cannot be negative.");
+    if (startTick < 0 || endTick < 0 || startWidth < 0 || startHeight < 0
+            || endWidth < 0 || endHeight < 0) {
+      throw new IllegalArgumentException("Ticks and sizes cannot be negative.");
+    }
+
+    if (endTick <= startTick) {
+      throw new IllegalArgumentException("End tick must come after start tick");
     }
 
     this.startTick = startTick;
@@ -124,6 +128,56 @@ public class IMotionImpl implements IMotion {
   @Override
   public int getEndTick() {
     return this.endTick;
+  }
+
+  @Override
+  public double getStartX() {
+    return this.startX;
+  }
+
+  @Override
+  public double getStartY() {
+    return this.startY;
+  }
+
+  @Override
+  public double getStartWidth() {
+    return this.startWidth;
+  }
+
+  @Override
+  public double getStartHeight() {
+    return this.startHeight;
+  }
+
+  @Override
+  public Color getStartColor() {
+    return this.startColor;
+  }
+
+  @Override
+  public double getEndX() {
+    return this.endX;
+  }
+
+  @Override
+  public double getEndY() {
+    return this.endY;
+  }
+
+  @Override
+  public double getEndWidth() {
+    return this.endWidth;
+  }
+
+  @Override
+  public double getEndHeight() {
+    return this.endHeight;
+  }
+
+  @Override
+  public Color getEndColor() {
+    return this.endColor;
   }
 
 
