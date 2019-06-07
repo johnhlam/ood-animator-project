@@ -8,6 +8,9 @@ import org.junit.Test;
 
 import java.awt.*;
 
+/**
+ * Tests the methods of IModelShapeImpl (as well as the methods of ShapeType).
+ */
 public class IModelShapeImplTest {
 
   @Before
@@ -20,7 +23,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests for an exception when you try to create an IModelShapeImpl with a {@code null} id
+   * Tests for an exception when you try to create an IModelShapeImpl with a {@code null} id.
    */
   @Test(expected = IllegalArgumentException.class)
   public void shapeExceptionNullID() {
@@ -28,7 +31,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests for an exception when you try to create an IModelShapeImpl with a {@code null} ShapeType
+   * Tests for an exception when you try to create an IModelShapeImpl with a {@code null} ShapeType.
    */
   @Test(expected = IllegalArgumentException.class)
   public void shapeExceptionNullType() {
@@ -36,7 +39,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests for an exception when you try to create an IModelShapeImpl with a {@code null} Color
+   * Tests for an exception when you try to create an IModelShapeImpl with a {@code null} Color.
    */
   @Test(expected = IllegalArgumentException.class)
   public void shapeExceptionNullColor() {
@@ -45,18 +48,24 @@ public class IModelShapeImplTest {
 
   /**
    * Tests for an exception when you try to create an IModelShapeImpl with a {@code null} id,
-   * ShapeType, and Color
+   * ShapeType, and Color.
    */
   @Test(expected = IllegalArgumentException.class)
   public void shapeExceptionNullAll() {
     new IModelShapeImpl(null, null, 10, 10, 0, 0, null);
   }
 
+  /**
+   * Tests to make sure that calling typeToString on an RECTANGLE returns "rectangle".
+   */
   @Test
   public void testTypeToStringRect() {
     assertEquals("rectangle", ShapeType.typeToString(ShapeType.RECTANGLE));
   }
 
+  /**
+   * Tests to make sure that calling typeToString on an ELLIPSE returns "ellipse".
+   */
   @Test
   public void testTypeToStringEllipse() {
     assertEquals("ellipse", ShapeType.typeToString(ShapeType.ELLIPSE));

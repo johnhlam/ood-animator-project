@@ -62,9 +62,8 @@ public interface IModel {
    * @param y      the current x coordinate for the shape's center
    * @throws IllegalArgumentException if any of the arguments are null, or if the ID already exists
    */
-  void addShape(String id, ShapeType shape, double width, double height, Color color, double x,
-                double y)
-          throws IllegalArgumentException;
+  void addShape(String id, ShapeType shape, double width, double height, double x, double y,
+      Color color) throws IllegalArgumentException;
 
   /**
    * Removes the shape and its associated motions with the given ID in the list. Throws an exception

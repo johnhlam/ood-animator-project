@@ -46,6 +46,11 @@ public class IModelImpl implements IModel {
               .append("\n");
     }
 
+    // Removes the last \n in the builder
+    if(!builder.toString().equals("")) {
+      builder.delete(builder.length() - 1, builder.length());
+    }
+
     return builder.toString();
   }
 
@@ -98,8 +103,8 @@ public class IModelImpl implements IModel {
   }
 
   @Override
-  public void addShape(String id, ShapeType type, double width, double height, Color color,
-                       double x, double y) throws IllegalArgumentException {
+  public void addShape(String id, ShapeType type, double width, double height, double x, double y,
+      Color color) throws IllegalArgumentException {
     if (id == null || type == null || color == null) {
       throw new IllegalArgumentException("Arguments for addShape cannot be null.");
     }
@@ -116,6 +121,23 @@ public class IModelImpl implements IModel {
 
   @Override
   public void removeShape(String id) throws IllegalArgumentException {
+    if (id == null) {
+      throw new IllegalArgumentException("Given id, " + id + ", to removeShape is null");
+    }
 
+    for(int i = 0; i < this.shapes.size(); i++) {
+      IModelShape cur = this.shapes.get(i);
+
+      // If you find the shape with the given id, you can remove it and return to break out of
+      // the loop.
+      if (cur.getID().equals(id)) {
+        this.shapes.remove(i);
+        return;
+      }
+    }
+
+    // If you finish going through the list, and none of the shape's ids match up, then the shape
+    // with the given id could not be found.
+    throw new IllegalArgumentException("Shape with the given id, " + id + ", cannot be found.");
   }
 }

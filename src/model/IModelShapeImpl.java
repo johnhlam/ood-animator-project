@@ -76,7 +76,7 @@ public class IModelShapeImpl implements IModelShape {
     }
 
     // Removes the last \n in the builder
-    // builder.delete(builder.length() - 2, builder.length() - 1);
+    builder.delete(builder.length() - 1, builder.length());
     return builder.toString();
 
   }
@@ -227,3 +227,8 @@ public class IModelShapeImpl implements IModelShape {
 
 
 }
+/*
+  Make sure to write down assumption that no overlapping ticks are allowed.
+  Make sure to write down assumption that motions will always be sorted.
+
+ */
