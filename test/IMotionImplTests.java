@@ -1,6 +1,6 @@
 import org.junit.Test;
 
-import java.awt.*;
+import java.awt.Color;
 
 import model.IMotion;
 import model.IMotionImpl;
@@ -89,7 +89,7 @@ public class IMotionImplTests {
   }
 
   /**
-   * Tests the Motion implementation's constructor
+   * Tests the Motion implementation's constructor.
    */
   @Test
   public void motionConstructorTest() {
@@ -98,17 +98,17 @@ public class IMotionImplTests {
   }
 
   /**
-   * Tests the Motion implementation's constructor
+   * Tests the Motion implementation's constructor.
    */
   @Test
   public void motionConstructorTest2() {
-    assertEquals("20 -20.2 100.5 5.5 3.7 0 0 255\t50 100.1 " +
-            "-5.1 20.7 30.3 0 255 0",
+    assertEquals("20 -20.2 100.5 5.5 3.7 0 0 255\t50 100.1 "
+            + "-5.1 20.7 30.3 0 255 0",
         this.motion2.printMotion());
   }
 
   /**
-   * Tests printMotion
+   * Tests printMotion.
    */
   @Test
   public void testPrintMotion() {
@@ -117,130 +117,202 @@ public class IMotionImplTests {
   }
 
   /**
-   * Tests printMotion
+   * Tests printMotion.
    */
   @Test
   public void testPrintMotion2() {
-    assertEquals("20 -20.2 100.5 5.5 3.7 0 0 255\t50 100.1 " +
-            "-5.1 20.7 30.3 0 255 0",
+    assertEquals("20 -20.2 100.5 5.5 3.7 0 0 255\t50 100.1 "
+            + "-5.1 20.7 30.3 0 255 0",
         this.motion2.printMotion());
   }
 
+  /**
+   * Tests getStartTick.
+   */
   @Test
   public void testGetStartTick1() {
     assertEquals(1, this.motion1.getStartTick());
   }
 
+  /**
+   * Tests getStartTick.
+   */
   @Test
   public void testGetStartTick2() {
     assertEquals(20, this.motion2.getStartTick());
   }
 
+  /**
+   * Tests getStartWidth.
+   */
   @Test
   public void testGetStartWidth() {
     assertEquals(20.0, this.motion1.getStartWidth());
   }
 
+  /**
+   * Tests getStartWidth.
+   */
   @Test
   public void testGetStartWidth2() {
     assertEquals(5.5, this.motion2.getStartWidth());
   }
 
+  /**
+   * Tests getStartHeight.
+   */
   @Test
   public void testGetStartHeight1() {
     assertEquals(30.0, this.motion1.getStartHeight());
   }
 
+  /**
+   * Tests getStartHeight.
+   */
   @Test
   public void testGetStartHeight2() {
     assertEquals(3.7, this.motion2.getStartHeight());
   }
 
+  /**
+   * Tests getStartX.
+   */
   @Test
   public void testGetStartX1() {
     assertEquals(15.0, this.motion1.getStartX());
   }
 
+  /**
+   * Tests getStartX.
+   */
   @Test
   public void testGetStartX2() {
     assertEquals(-20.2, this.motion2.getStartX());
   }
 
+  /**
+   * Tests getStartY.
+   */
   @Test
   public void testGetStartY1() {
     assertEquals(15.0, this.motion1.getStartY());
   }
 
+  /**
+   * Tests getStartY.
+   */
   @Test
   public void testGetStartY2() {
     assertEquals(100.5, this.motion2.getStartY());
   }
 
+  /**
+   * Tests getStartColor.
+   */
   @Test
   public void testGetStartColor1() {
     assertEquals(Color.BLACK, this.motion1.getStartColor());
   }
 
+  /**
+   * Tests getStartColor.
+   */
   @Test
   public void testGetStartColor2() {
     assertEquals(Color.BLUE, this.motion2.getStartColor());
   }
 
+  /**
+   * Tests getEndTick.
+   */
   @Test
   public void testGetEndTick() {
     assertEquals(10, this.motion1.getEndTick());
   }
 
+  /**
+   * Tests getEndTick.
+   */
   @Test
   public void testGetEndTick2() {
     assertEquals(50, this.motion2.getEndTick());
   }
 
+  /**
+   * Tests getEndWidth.
+   */
   @Test
   public void testGetEndWidth() {
     assertEquals(20.0, this.motion1.getEndWidth());
   }
 
+  /**
+   * Tests getEndWidth.
+   */
   @Test
   public void testGetEndWidth2() {
     assertEquals(20.7, this.motion2.getEndWidth());
   }
 
+  /**
+   * Tests getEndHeight.
+   */
   @Test
   public void testGetEndHeight1() {
     assertEquals(30.0, this.motion1.getEndHeight());
   }
 
+  /**
+   * Tests getEndHeight.
+   */
   @Test
   public void testGetEndHeight2() {
     assertEquals(30.3, this.motion2.getEndHeight());
   }
 
+  /**
+   * Tests getEndX.
+   */
   @Test
   public void testGetEndX1() {
     assertEquals(15.0, this.motion1.getEndX());
   }
 
+  /**
+   * Tests getEndX.
+   */
   @Test
   public void testGetEndX2() {
     assertEquals(100.1, this.motion2.getEndX());
   }
 
+  /**
+   * Tests getEndY.
+   */
   @Test
   public void testGetEndY1() {
     assertEquals(15.0, this.motion1.getEndY());
   }
 
+  /**
+   * Tests getEndY.
+   */
   @Test
   public void testGetEndY2() {
     assertEquals(-5.1, this.motion2.getEndY());
   }
 
+  /**
+   * Tests getEndColor.
+   */
   @Test
   public void testGetEndColor1() {
     assertEquals(Color.RED, this.motion1.getEndColor());
   }
 
+  /**
+   * Tests getEndColor.
+   */
   @Test
   public void testGetEndColor2() {
     assertEquals(Color.GREEN, this.motion2.getEndColor());

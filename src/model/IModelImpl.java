@@ -59,7 +59,6 @@ public class IModelImpl implements IModel {
    * and the shape will insert them in such a way that motions are sorted based on start ticks.
    * Throws an exception if the given motion's start or end ticks overlap with pre-existing
    * motions.
-   *
    * INVARIANT: All existing motions in the shapes will be chronologically ordered, with no overlap
    * in ticks.
    *

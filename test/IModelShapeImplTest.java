@@ -1,5 +1,3 @@
-import static org.junit.Assert.*;
-
 import model.IModelShape;
 import model.IModelShapeImpl;
 import model.IMotion;
@@ -9,8 +7,9 @@ import model.ShapeType;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
-import sun.security.provider.SHA;
+import static org.junit.Assert.assertEquals;
+
+import java.awt.Color;
 
 /**
  * Tests the methods of IModelShapeImpl (as well as the methods of ShapeType).
@@ -101,15 +100,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests that constructing a shape with a width and height of 0 does not throw any exceptions.
-   */
-  @Test
-  public void shapeWidthHeight0() {
-    new IModelShapeImpl("ID", ShapeType.ELLIPSE, 0, 0, 3, 3, Color.ORANGE);
-  }
-
-  /**
-   * Tests the shape's constructor
+   * Tests the shape's constructor.
    */
   @Test
   public void testShapeConstructor() {
@@ -117,7 +108,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests the shape's constructor
+   * Tests the shape's constructor.
    */
   @Test
   public void testShapeConstructor2() {
@@ -125,7 +116,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests an exception is thrown if null motion is being added
+   * Tests an exception is thrown if null motion is being added.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testAddNullMotion() {
@@ -133,7 +124,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests an exception is thrown if overlapping motions are being added
+   * Tests an exception is thrown if overlapping motions are being added.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testAddOverlappingMotion() {
@@ -144,7 +135,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests an exception is thrown if disagreeing adjacent motions are being added (end of list)
+   * Tests an exception is thrown if disagreeing adjacent motions are being added (end of list).
    */
   @Test(expected = IllegalArgumentException.class)
   public void testBadAdjacentMotions() {
@@ -156,7 +147,7 @@ public class IModelShapeImplTest {
 
   /**
    * Tests an exception is thrown if disagreeing adjacent motions are being added (middle of the
-   * list)
+   * list).
    */
   @Test(expected = IllegalArgumentException.class)
   public void testBadAdjacentMotions2() {
@@ -169,7 +160,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests adding a motion
+   * Tests adding a motion.
    */
   @Test
   public void testAddMotion1() {
@@ -180,7 +171,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests adding an adjacent motion at the end of a list
+   * Tests adding an adjacent motion at the end of a list.
    */
   @Test
   public void testAddAdjMotion() {
@@ -195,7 +186,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests adding an adjacent motion in the middle of a list
+   * Tests adding an adjacent motion in the middle of a list.
    */
   @Test
   public void testAddAdjMotion2() {
@@ -217,7 +208,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests adding multiple motions in order (adding to end of the list)
+   * Tests adding multiple motions in order (adding to end of the list).
    */
   @Test
   public void testAddMotion2() {
@@ -237,7 +228,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests adding multiple motions out of order will result in a sorted list
+   * Tests adding multiple motions out of order will result in a sorted list.
    */
   @Test
   public void testAddMotionsOutOfOrder() {

@@ -211,6 +211,4 @@ public class IMotionImpl implements IMotion {
   public Color getColorAtTick(int tick) {
     return null;
   }
-
-
 }

@@ -1,9 +1,7 @@
-import model.IModelShape;
-import model.IModelShapeImpl;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
+import java.awt.Color;
 
 import model.IModel;
 import model.IModelImpl;
@@ -81,8 +79,8 @@ public class IModelImplTests {
 
     assertEquals(
         "shape R rectangle\n\n"
-            + "shape C ellipse"
-        , this.model1.printAnimations());
+            + "shape C ellipse",
+        this.model1.printAnimations());
   }
 
   /**
@@ -100,8 +98,8 @@ public class IModelImplTests {
     assertEquals(
         "shape R rectangle\n\n"
             + "shape C ellipse\n\n"
-            + "shape S rectangle"
-        , this.model1.printAnimations());
+            + "shape S rectangle",
+        this.model1.printAnimations());
   }
 
   /**
@@ -706,7 +704,7 @@ public class IModelImplTests {
   // int, double, double, double, double, Color)
 
   /**
-   * Tests that attempting to add a motion with a null id throws an error.
+   * Tests that attempting to add a motion with a {@code null} id throws an error.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionNullID() {
@@ -715,7 +713,7 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that attempting to add a motion with a null starting color throws an error.
+   * Tests that attempting to add a motion with a {@code null} starting color throws an error.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionSColor() {
@@ -724,7 +722,7 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that attempting to add a motion with a null ending color throws an error.
+   * Tests that attempting to add a motion with a {@code null} ending color throws an error.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionEColor() {
@@ -733,8 +731,8 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that attempting to add a motion with a null id and null starting and ending colors
-   * throws an error.
+   * Tests that attempting to add a motion with a {@code null} id and {@code null} starting and
+   * ending colors throws an error.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionAll() {
@@ -2109,7 +2107,7 @@ public class IModelImplTests {
   // Tests for IModelImpl#addShape(String, ShapeType, double, double, double, double, Color)
 
   /**
-   * Tests that attempting to add a shape with a null id throws an error.
+   * Tests that attempting to add a shape with a {@code null} id throws an error.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testAddShapeNullID() {
@@ -2117,7 +2115,7 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that attempting to add a shape with a null ShapeType throws an error.
+   * Tests that attempting to add a shape with a {@code null} ShapeType throws an error.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testAddShapeNullType() {
@@ -2125,7 +2123,7 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that attempting to add a shape with a null Color throws an error.
+   * Tests that attempting to add a shape with a {@code null} Color throws an error.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testAddShapeNullColor() {
@@ -2133,7 +2131,8 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that attempting to add a shape with a null id, ShapeType, and Color throws an error.
+   * Tests that attempting to add a shape with a {@code null} id, ShapeType, and Color throws an
+   * error.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testAddShapeNullAll() {
@@ -2230,8 +2229,8 @@ public class IModelImplTests {
 
     assertEquals(
         "shape R rectangle\n\n"
-            + "shape C ellipse"
-        , this.model1.printAnimations());
+            + "shape C ellipse",
+        this.model1.printAnimations());
   }
 
   /**
@@ -2250,8 +2249,8 @@ public class IModelImplTests {
     assertEquals(
         "shape R rectangle\n\n"
             + "shape C ellipse\n\n"
-            + "shape S rectangle"
-        , this.model1.printAnimations());
+            + "shape S rectangle",
+        this.model1.printAnimations());
   }
 
   /**
@@ -2272,8 +2271,8 @@ public class IModelImplTests {
         "shape R rectangle\n\n"
             + "shape C ellipse\n\n"
             + "shape S rectangle\n\n"
-            + "shape r rectangle"
-        , this.model1.printAnimations());
+            + "shape r rectangle",
+        this.model1.printAnimations());
   }
 
   /**
@@ -2294,8 +2293,8 @@ public class IModelImplTests {
         "shape R rectangle\n\n"
             + "shape C ellipse\n\n"
             + "shape S rectangle\n\n"
-            + "shape c ellipse"
-        , this.model1.printAnimations());
+            + "shape c ellipse",
+        this.model1.printAnimations());
   }
 
   /**
@@ -2316,8 +2315,8 @@ public class IModelImplTests {
         "shape R rectangle\n\n"
             + "shape C ellipse\n\n"
             + "shape S rectangle\n\n"
-            + "shape s rectangle"
-        , this.model1.printAnimations());
+            + "shape s rectangle",
+        this.model1.printAnimations());
   }
 
   /**
@@ -2338,8 +2337,8 @@ public class IModelImplTests {
         "shape r rectangle\n\n"
             + "shape c ellipse\n\n"
             + "shape s rectangle\n\n"
-            + "shape R rectangle"
-        , this.model1.printAnimations());
+            + "shape R rectangle",
+        this.model1.printAnimations());
   }
 
   /**
@@ -2360,8 +2359,8 @@ public class IModelImplTests {
         "shape r rectangle\n\n"
             + "shape c ellipse\n\n"
             + "shape s rectangle\n\n"
-            + "shape C ellipse"
-        , this.model1.printAnimations());
+            + "shape C ellipse",
+        this.model1.printAnimations());
   }
 
   /**
@@ -2382,8 +2381,8 @@ public class IModelImplTests {
         "shape r rectangle\n\n"
             + "shape c ellipse\n\n"
             + "shape s rectangle\n\n"
-            + "shape S rectangle"
-        , this.model1.printAnimations());
+            + "shape S rectangle",
+         this.model1.printAnimations());
   }
 
   /**
@@ -2439,7 +2438,7 @@ public class IModelImplTests {
   // Tests for IModelImpl#removeShape(String)
 
   /**
-   * Tests that attempting to remove a shape from a model with a null id throws an error.
+   * Tests that attempting to remove a shape from a model with a {@code null} id throws an error.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testRemoveNull() {
@@ -2538,7 +2537,7 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests for removing the first shape in a model's list of shapes (without any motions added)
+   * Tests for removing the first shape in a model's list of shapes (without any motions added).
    */
   @Test
   public void testRemoveFirstNoMot() {
@@ -2557,7 +2556,7 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests for removing the second shape in a model's list of shapes (without any motions added)
+   * Tests for removing the second shape in a model's list of shapes (without any motions added).
    */
   @Test
   public void testRemoveSecondNoMot() {
@@ -2576,7 +2575,7 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests for removing the third shape in a model's list of shapes (without any motions added)
+   * Tests for removing the third shape in a model's list of shapes (without any motions added).
    */
   @Test
   public void testRemoveThirdNoMot() {
@@ -2595,7 +2594,7 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests for removing the first shape in a model's list of shapes (with motions added)
+   * Tests for removing the first shape in a model's list of shapes (with motions added).
    */
   @Test
   public void testRemoveFirstWithMot() {
@@ -2663,7 +2662,7 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests for removing the second shape in a model's list of shapes (with motions added)
+   * Tests for removing the second shape in a model's list of shapes (with motions added).
    */
   @Test
   public void testRemoveSecondWithMot() {
@@ -2731,7 +2730,7 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests for removing the third shape in a model's list of shapes (with motions added)
+   * Tests for removing the third shape in a model's list of shapes (with motions added).
    */
   @Test
   public void testRemoveThirdWithMot() {

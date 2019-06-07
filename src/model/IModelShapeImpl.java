@@ -114,7 +114,6 @@ public class IModelShapeImpl implements IModelShape {
   /**
    * Inserts the given motion into this shape's motions based on start tick time. If the given
    * motion does not come before an existing motion, it is placed at the end of the list.
-   *
    * INVARIANT: Adjacent motions (two motions with same end tick and start tick) will always have
    * the according states.
    *
@@ -244,6 +243,4 @@ public class IModelShapeImpl implements IModelShape {
   public ShapeType getType() {
     return this.type;
   }
-
-
 }

@@ -67,7 +67,7 @@ public interface IModel {
 
   /**
    * Removes the shape and its associated motions with the given ID in the list. Throws an exception
-   * if the string is null or if the ID cannot be found
+   * if the string is null or if the ID cannot be found.
    *
    * @param id the id of the shape to remove
    * @throws IllegalArgumentException if null argument, or ID cannot be found in the list

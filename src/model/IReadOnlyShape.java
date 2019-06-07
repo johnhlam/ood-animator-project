@@ -1,6 +1,6 @@
 package model;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * Represents a shape for the model, but only has the functionality to read from its field. An
@@ -44,7 +44,7 @@ public interface IReadOnlyShape {
   Color getColor();
 
   /**
-   * Returns the shape's ShapeType
+   * Returns the shape's ShapeType.
    *
    * @return the shape type enum
    */

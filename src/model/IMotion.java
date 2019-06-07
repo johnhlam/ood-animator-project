@@ -1,6 +1,6 @@
 package model;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * Represents a motion that a shape can undergo. Each motion must have start and end ticks, start
