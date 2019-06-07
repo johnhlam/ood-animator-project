@@ -110,6 +110,10 @@ public class IModelImpl implements IModel {
       throw new IllegalArgumentException("Arguments for addShape cannot be null.");
     }
 
+    if (width < 0 || height < 0) {
+      throw new IllegalArgumentException("Given width and/or height are negative for addShape");
+    }
+
     for (IModelShape shape : this.shapes) {
       if (shape.getID().equals(id)) {
         throw new IllegalArgumentException("Shape with same id already exists.");

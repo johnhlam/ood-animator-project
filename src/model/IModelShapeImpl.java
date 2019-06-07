@@ -33,7 +33,7 @@ public class IModelShapeImpl implements IModelShape {
    * @throws IllegalArgumentException if arguments are null, or the width or height are negative
    */
   public IModelShapeImpl(String id, ShapeType type, double width, double height, double x, double y,
-                         Color color) throws IllegalArgumentException {
+      Color color) throws IllegalArgumentException {
 
     if (id == null || type == null || color == null) {
       throw new IllegalArgumentException("No null args allowed.");
@@ -65,14 +65,14 @@ public class IModelShapeImpl implements IModelShape {
     StringBuilder builder = new StringBuilder();
 
     builder.append("shape ").append(this.id).append(" ").append(ShapeType.typeToString(this.type))
-            .append("\n");
+        .append("\n");
 
     for (IMotion curMotion : this.motionList) {
       builder.append("motion ")
-              .append(this.id)
-              .append(" ")
-              .append(curMotion.printMotion())
-              .append("\n");
+          .append(this.id)
+          .append(" ")
+          .append(curMotion.printMotion())
+          .append("\n");
     }
 
     // Removes the last \n in the builder
@@ -140,17 +140,17 @@ public class IModelShapeImpl implements IModelShape {
    * added. Additionally, if the index is 0, it is added as well.
    *
    * @throws IllegalArgumentException if the motion is adjacent to another and does not have
-   * matching states
+   *                                  matching states
    */
   private void handleInsertion(IMotion motion, int i) throws IllegalArgumentException {
     if (i == 0 || this.sameStateIfAdjacent(motion, motionList.get(i - 1))) {
       this.motionList.add(i, motion);
     } else if (i == this.motionList.size() && this.sameStateIfAdjacent(motion,
-            motionList.get(i - 1))) {
+        motionList.get(i - 1))) {
       this.motionList.add(motion);
     } else {
       throw new IllegalArgumentException("Adjacent motions cannot disagree with end and start " +
-              "states.");
+          "states.");
     }
   }
 
@@ -161,15 +161,15 @@ public class IModelShapeImpl implements IModelShape {
    * @param motion     the motion whose start tick is in question
    * @param prevMotion the motion whose end tick is in question
    * @return true if they two motions are adjacent and have the same state or if they aren't
-   * adjacent, and false otherwise
+   *     adjacent, and false otherwise
    */
   private boolean sameStateIfAdjacent(IMotion motion, IMotion prevMotion) {
     if (motion.getStartTick() == prevMotion.getEndTick()) {
       return motion.getStartX() == prevMotion.getEndX()
-              && motion.getStartY() == prevMotion.getEndY()
-              && motion.getStartWidth() == prevMotion.getEndWidth()
-              && motion.getStartHeight() == prevMotion.getEndHeight()
-              && motion.getStartColor().equals(prevMotion.getEndColor());
+          && motion.getStartY() == prevMotion.getEndY()
+          && motion.getStartWidth() == prevMotion.getEndWidth()
+          && motion.getStartHeight() == prevMotion.getEndHeight()
+          && motion.getStartColor().equals(prevMotion.getEndColor());
     } else {
       return true;
     }
@@ -183,7 +183,8 @@ public class IModelShapeImpl implements IModelShape {
    */
   private boolean hasTickOverlap(IMotion motion) {
     for (IMotion curMotion : this.motionList) {
-      if (this.areTicksOverlapping(motion, curMotion)) {
+      if (this.areTicksOverlapping(motion, curMotion) || this.areTicksOverlapping(curMotion,
+          motion)) {
         // Returns true to break out of the loop
         return true;
       }
@@ -206,7 +207,7 @@ public class IModelShapeImpl implements IModelShape {
     int existingStartTick = existingMotion.getStartTick();
     int existingEndTick = existingMotion.getEndTick();
     return (addStartTick > existingStartTick && addStartTick < existingEndTick)
-            || (addEndTick > existingStartTick && addEndTick < existingEndTick);
+        || (addEndTick > existingStartTick && addEndTick < existingEndTick);
   }
 
   @Override

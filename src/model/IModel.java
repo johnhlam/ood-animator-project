@@ -45,8 +45,8 @@ public interface IModel {
    *                                  start tick
    */
   void addMotion(String id, int startTick, double startX, double startY, double startWidth,
-                 double startHeight, Color startColor, int endTick, double endX, double endY, double endWidth,
-                 double endHeight, Color endColor) throws IllegalArgumentException;
+      double startHeight, Color startColor, int endTick, double endX, double endY, double endWidth,
+      double endHeight, Color endColor) throws IllegalArgumentException;
 
   /**
    * Adds a shape to this model to be represented in an animation. Each shape is specified by an

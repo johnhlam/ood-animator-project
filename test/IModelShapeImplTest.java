@@ -10,11 +10,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
+import sun.security.provider.SHA;
 
 /**
  * Tests the methods of IModelShapeImpl (as well as the methods of ShapeType).
  */
 public class IModelShapeImplTest {
+
   IModelShape rect1;
   IModelShape rect2;
   IModelShape ellipse1;
@@ -24,19 +26,19 @@ public class IModelShapeImplTest {
   IMotion motion3 = new IMotionImpl(10, 15, 15, 0, 0, Color.RED, 20, 15, 15, 0, 0, Color.RED);
   IMotion motion4 = new IMotionImpl(30, 15, 15, 0, 0, Color.RED, 40, 15, 15, 0, 0, Color.RED);
   IMotion motion5 = new IMotionImpl(50, 15.3, 15.6, 58.4, 34.2, Color.ORANGE, 100, 18.34, 30.2,
-          100.2, 200, Color.RED);
+      100.2, 200, Color.RED);
   IMotion motionBadOverlap = new IMotionImpl(10, 10, 30, -2, 3, Color.GREEN, 40, 15, 15, 0, 0,
-          Color.RED);
+      Color.RED);
 
   @Before
   public void setUp() {
     rect1 = new IModelShapeImpl("R1", ShapeType.RECTANGLE, 10, 10, 0, 0, Color.RED);
     rect2 = new IModelShapeImpl("R2", ShapeType.RECTANGLE, 5.3, 15.5, -30.2, 30.5,
-            Color.BLUE);
+        Color.BLUE);
 
     ellipse1 = new IModelShapeImpl("E1", ShapeType.ELLIPSE, 12, 12, 10, 12, Color.WHITE);
     ellipse2 = new IModelShapeImpl("E2", ShapeType.ELLIPSE, 3.5, 6.6, 20.2, -40.5,
-            Color.GREEN);
+        Color.GREEN);
   }
 
   /**
@@ -96,6 +98,14 @@ public class IModelShapeImplTest {
   @Test(expected = IllegalArgumentException.class)
   public void shapeNegativeWidthHeight() {
     new IModelShapeImpl("ID", ShapeType.RECTANGLE, -22, -2, 3, 3, Color.BLACK);
+  }
+
+  /**
+   * Tests that constructing a shape with a width and height of 0 does not throw any exceptions.
+   */
+  @Test
+  public void shapeWidthHeight0() {
+    new IModelShapeImpl("ID", ShapeType.ELLIPSE, 0, 0, 3, 3, Color.ORANGE);
   }
 
   /**
@@ -166,7 +176,7 @@ public class IModelShapeImplTest {
     assertEquals("shape R1 rectangle", this.rect1.printMotions());
     this.rect1.addMotion(this.motion1);
     assertEquals("shape R1 rectangle\nmotion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-            "15.0 15.0 255 0 0", this.rect1.printMotions());
+        "15.0 15.0 255 0 0", this.rect1.printMotions());
   }
 
   /**
@@ -177,11 +187,11 @@ public class IModelShapeImplTest {
     assertEquals("shape R1 rectangle", this.rect1.printMotions());
     this.rect1.addMotion(this.motion1);
     assertEquals("shape R1 rectangle\nmotion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-            "15.0 15.0 255 0 0", this.rect1.printMotions());
+        "15.0 15.0 255 0 0", this.rect1.printMotions());
     this.rect1.addMotion(this.motion3);
     assertEquals("shape R1 rectangle\nmotion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-            "15.0 15.0 255 0 0\nmotion R1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 " +
-            "15.0 255 0 0", this.rect1.printMotions());
+        "15.0 15.0 255 0 0\nmotion R1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 " +
+        "15.0 255 0 0", this.rect1.printMotions());
   }
 
   /**
@@ -192,18 +202,18 @@ public class IModelShapeImplTest {
     assertEquals("shape R1 rectangle", this.rect1.printMotions());
     this.rect1.addMotion(this.motion1);
     assertEquals("shape R1 rectangle\nmotion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-            "15.0 15.0 255 0 0", this.rect1.printMotions());
+        "15.0 15.0 255 0 0", this.rect1.printMotions());
     this.rect1.addMotion(this.motion5);
     assertEquals("shape R1 rectangle\n" +
             "motion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 15.0 15.0 255 0 0\n" +
             "motion R1 50 58.4 34.2 15.3 15.6 255 200 0\t100 100.2 200.0 18.34 30.2 255 0 0",
-            this.rect1.printMotions());
+        this.rect1.printMotions());
     this.rect1.addMotion(this.motion3);
     assertEquals("shape R1 rectangle\n" +
             "motion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 15.0 15.0 255 0 0\n" +
             "motion R1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 15.0 255 0 0\n" +
             "motion R1 50 58.4 34.2 15.3 15.6 255 200 0\t100 100.2 200.0 18.34 30.2 255 0 0",
-            this.rect1.printMotions());
+        this.rect1.printMotions());
   }
 
   /**
@@ -214,16 +224,16 @@ public class IModelShapeImplTest {
     assertEquals("shape R1 rectangle", this.rect1.printMotions());
     this.rect1.addMotion(this.motion1);
     assertEquals("shape R1 rectangle\nmotion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-            "15.0 15.0 255 0 0", this.rect1.printMotions());
+        "15.0 15.0 255 0 0", this.rect1.printMotions());
     this.rect1.addMotion(this.motion3);
     assertEquals("shape R1 rectangle\nmotion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-            "15.0 15.0 255 0 0\nmotion R1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 " +
-            "15.0 255 0 0", this.rect1.printMotions());
+        "15.0 15.0 255 0 0\nmotion R1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 " +
+        "15.0 255 0 0", this.rect1.printMotions());
     this.rect1.addMotion(this.motion4);
     assertEquals("shape R1 rectangle\nmotion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
             "15.0 15.0 255 0 0\nmotion R1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 " +
             "15.0 255 0 0\nmotion R1 30 0.0 0.0 15.0 15.0 255 0 0\t40 0.0 0.0 15.0 15.0 255 0 0",
-            this.rect1.printMotions());
+        this.rect1.printMotions());
   }
 
   /**
@@ -235,25 +245,25 @@ public class IModelShapeImplTest {
     this.rect1.addMotion(this.motion5);
     assertEquals("shape R1 rectangle\n" +
             "motion R1 50 58.4 34.2 15.3 15.6 255 200 0\t100 100.2 200.0 18.34 30.2 255 0 0",
-            this.rect1.printMotions());
+        this.rect1.printMotions());
     this.rect1.addMotion(this.motion1);
     assertEquals("shape R1 rectangle\n" +
             "motion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 15.0 15.0 255 0 0\n" +
             "motion R1 50 58.4 34.2 15.3 15.6 255 200 0\t100 100.2 200.0 18.34 30.2 255 0 0",
-            this.rect1.printMotions());
+        this.rect1.printMotions());
     this.rect1.addMotion(this.motion3);
     assertEquals("shape R1 rectangle\n" +
             "motion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 15.0 15.0 255 0 0\n" +
             "motion R1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 15.0 255 0 0\n" +
             "motion R1 50 58.4 34.2 15.3 15.6 255 200 0\t100 100.2 200.0 18.34 30.2 255 0 0",
-            this.rect1.printMotions());
+        this.rect1.printMotions());
     this.rect1.addMotion(this.motion4);
     assertEquals("shape R1 rectangle\n" +
             "motion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 15.0 15.0 255 0 0\n" +
             "motion R1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 15.0 255 0 0\n" +
             "motion R1 30 0.0 0.0 15.0 15.0 255 0 0\t40 0.0 0.0 15.0 15.0 255 0 0\n" +
             "motion R1 50 58.4 34.2 15.3 15.6 255 200 0\t100 100.2 200.0 18.34 30.2 255 0 0",
-            this.rect1.printMotions());
+        this.rect1.printMotions());
   }
 
   @Test
@@ -266,7 +276,7 @@ public class IModelShapeImplTest {
     assertEquals("shape E1 ellipse", this.ellipse1.printMotions());
     this.ellipse1.addMotion(this.motion1);
     assertEquals("shape E1 ellipse\nmotion E1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-            "15.0 15.0 255 0 0", this.ellipse1.printMotions());
+        "15.0 15.0 255 0 0", this.ellipse1.printMotions());
   }
 
   @Test
@@ -274,17 +284,17 @@ public class IModelShapeImplTest {
     assertEquals("shape E1 ellipse", this.ellipse1.printMotions());
     this.ellipse1.addMotion(this.motion1);
     assertEquals("shape E1 ellipse\nmotion E1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-            "15.0 15.0 255 0 0", this.ellipse1.printMotions());
+        "15.0 15.0 255 0 0", this.ellipse1.printMotions());
     this.ellipse1.addMotion(this.motion3);
     assertEquals("shape E1 ellipse\nmotion E1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-            "15.0 15.0 255 0 0\nmotion E1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 " +
-            "15.0 255 0 0", this.ellipse1.printMotions());
+        "15.0 15.0 255 0 0\nmotion E1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 " +
+        "15.0 255 0 0", this.ellipse1.printMotions());
     this.ellipse1.addMotion(this.motion4);
     assertEquals("shape E1 ellipse\nmotion E1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-                    "15.0 15.0 255 0 0\nmotion E1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 " +
-                    "15.0 255 0 0\nmotion E1 30 0.0 0.0 15.0 15.0 255 0 0\t40 0.0 0.0 15.0 15.0 " +
-                    "255 0 0",
-            this.ellipse1.printMotions());
+            "15.0 15.0 255 0 0\nmotion E1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 " +
+            "15.0 255 0 0\nmotion E1 30 0.0 0.0 15.0 15.0 255 0 0\t40 0.0 0.0 15.0 15.0 " +
+            "255 0 0",
+        this.ellipse1.printMotions());
   }
 
   @Test

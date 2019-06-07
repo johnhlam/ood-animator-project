@@ -8,6 +8,7 @@ import java.awt.Color;
  * Represents the start and end of a shape's animation.
  */
 public class IMotionImpl implements IMotion {
+
   private final int startTick;
   private final double startX;
   private final double startY;
@@ -25,31 +26,31 @@ public class IMotionImpl implements IMotion {
    * Constructor for a motion. Throws an exception if any inputs are null, or if tick rate is
    * negative.
    *
-   * @param startTick the starting tick
-   * @param startWidth the starting width
+   * @param startTick   the starting tick
+   * @param startWidth  the starting width
    * @param startHeight the starting height
-   * @param startX the starting x coordinate
-   * @param startY the starting y coordinate
-   * @param startColor the starting color
-   * @param endTick the ending tick
-   * @param endWidth the ending width
-   * @param endHeight the ending height
-   * @param endX the ending x coordinate
-   * @param endY the ending y coordinate
-   * @param endColor the ending color
+   * @param startX      the starting x coordinate
+   * @param startY      the starting y coordinate
+   * @param startColor  the starting color
+   * @param endTick     the ending tick
+   * @param endWidth    the ending width
+   * @param endHeight   the ending height
+   * @param endX        the ending x coordinate
+   * @param endY        the ending y coordinate
+   * @param endColor    the ending color
    * @throws IllegalArgumentException if any arguments are null, or if ticks are negative
    */
   public IMotionImpl(
-          int startTick, double startWidth, double startHeight, double startX, double startY,
-          Color startColor,
-          int endTick, double endWidth, double endHeight, double endX, double endY, Color endColor)
-          throws IllegalArgumentException {
+      int startTick, double startWidth, double startHeight, double startX, double startY,
+      Color startColor,
+      int endTick, double endWidth, double endHeight, double endX, double endY, Color endColor)
+      throws IllegalArgumentException {
     if (startColor == null || endColor == null) {
       throw new IllegalArgumentException("Arguments for IMotionImpl cannot be null.");
     }
 
     if (startTick < 0 || endTick < 0 || startWidth < 0 || startHeight < 0
-            || endWidth < 0 || endHeight < 0) {
+        || endWidth < 0 || endHeight < 0) {
       throw new IllegalArgumentException("Ticks and sizes cannot be negative.");
     }
 
@@ -85,37 +86,37 @@ public class IMotionImpl implements IMotion {
     StringBuilder builder = new StringBuilder();
 
     builder.append(this.startTick)
-            .append(" ")
-            .append(this.startX)
-            .append(" ")
-            .append(this.startY)
-            .append(" ")
-            .append(this.startWidth)
-            .append(" ")
-            .append(this.startHeight)
-            .append(" ")
-            .append(this.startColor.getRed())
-            .append(" ")
-            .append(this.startColor.getGreen())
-            .append(" ")
-            .append(this.startColor.getBlue())
-            .append("\t")
+        .append(" ")
+        .append(this.startX)
+        .append(" ")
+        .append(this.startY)
+        .append(" ")
+        .append(this.startWidth)
+        .append(" ")
+        .append(this.startHeight)
+        .append(" ")
+        .append(this.startColor.getRed())
+        .append(" ")
+        .append(this.startColor.getGreen())
+        .append(" ")
+        .append(this.startColor.getBlue())
+        .append("\t")
 
-            .append(this.endTick)
-            .append(" ")
-            .append(this.endX)
-            .append(" ")
-            .append(this.endY)
-            .append(" ")
-            .append(this.endWidth)
-            .append(" ")
-            .append(this.endHeight)
-            .append(" ")
-            .append(this.endColor.getRed())
-            .append(" ")
-            .append(this.endColor.getGreen())
-            .append(" ")
-            .append(this.endColor.getBlue());
+        .append(this.endTick)
+        .append(" ")
+        .append(this.endX)
+        .append(" ")
+        .append(this.endY)
+        .append(" ")
+        .append(this.endWidth)
+        .append(" ")
+        .append(this.endHeight)
+        .append(" ")
+        .append(this.endColor.getRed())
+        .append(" ")
+        .append(this.endColor.getGreen())
+        .append(" ")
+        .append(this.endColor.getBlue());
 
     return builder.toString();
   }

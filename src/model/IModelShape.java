@@ -3,7 +3,8 @@ package model;
 /**
  * Represents a shape in an animation. Each shape holds directions for its own animations. Shapes
  * can have animations added to them that affect their fields. Each shape should have a ShapeType,
- * location (x,y), size (width, height), and color. An IModelShape object represents its ShapeType with
+ * location (x,y), size (width, height), and color. An IModelShape object represents its ShapeType
+ * with
  * attributes given by its own fields.
  */
 public interface IModelShape extends IReadOnlyShape {
