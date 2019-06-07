@@ -26,7 +26,7 @@ public class IModelImpl implements IModel {
     // assignments when the tweening function is revealed. Will most likely call a method on
     // shapes to update each shapes in the list, so that stub is written in the shape interface
     // as well.
-    return new ArrayList<>();
+    return null;
   }
 
 
@@ -43,12 +43,12 @@ public class IModelImpl implements IModel {
 
     for (IModelShape s : this.shapes) {
       builder.append(s.printMotions())
-              .append("\n");
+          .append("\n\n");
     }
 
     // Removes the last \n in the builder
-    if(!builder.toString().equals("")) {
-      builder.delete(builder.length() - 1, builder.length());
+    if (!builder.toString().equals("")) {
+      builder.delete(builder.length() - 2, builder.length());
     }
 
     return builder.toString();
@@ -67,17 +67,18 @@ public class IModelImpl implements IModel {
    *                                  pre-existing motions.
    */
   @Override
-  public void addMotion(
-          String id, int startTick, double startX, double startY, double startWidth,
-          double startHeight, Color startColor, int endTick, double endX, double endY, double endWidth,
-          double endHeight, Color endColor) throws IllegalArgumentException {
+  public void addMotion(String id,
+      int startTick, double startX, double startY, double startWidth, double startHeight,
+      Color startColor,
+      int endTick, double endX, double endY, double endWidth, double endHeight, Color endColor)
+      throws IllegalArgumentException {
 
     if (startColor == null || endColor == null) {
       throw new IllegalArgumentException("Arguments for addMotion cannot be null.");
     }
 
     if (startTick < 0 || endTick < 0 || startWidth < 0 || startHeight < 0
-    || endWidth < 0 || endHeight < 0) {
+        || endWidth < 0 || endHeight < 0) {
       throw new IllegalArgumentException("Ticks and sizes cannot be negative.");
     }
 
@@ -89,9 +90,9 @@ public class IModelImpl implements IModel {
       IModelShape cur = this.shapes.get(i);
       if (cur.getID().equals(id)) {
         cur.addMotion(
-                new IMotionImpl(
-                        startTick, startWidth, startHeight, startX, startY, startColor,
-                        endTick, endWidth, endHeight, endX, endY, endColor));
+            new IMotionImpl(
+                startTick, startWidth, startHeight, startX, startY, startColor,
+                endTick, endWidth, endHeight, endX, endY, endColor));
 
         // Does not need to iterate through the rest of the list if a shape with the given id has
         // been found
@@ -108,6 +109,7 @@ public class IModelImpl implements IModel {
     if (id == null || type == null || color == null) {
       throw new IllegalArgumentException("Arguments for addShape cannot be null.");
     }
+
     for (IModelShape shape : this.shapes) {
       if (shape.getID().equals(id)) {
         throw new IllegalArgumentException("Shape with same id already exists.");
@@ -125,7 +127,7 @@ public class IModelImpl implements IModel {
       throw new IllegalArgumentException("Given id, " + id + ", to removeShape is null");
     }
 
-    for(int i = 0; i < this.shapes.size(); i++) {
+    for (int i = 0; i < this.shapes.size(); i++) {
       IModelShape cur = this.shapes.get(i);
 
       // If you find the shape with the given id, you can remove it and return to break out of
