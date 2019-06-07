@@ -20,4 +20,13 @@ The IReadOnlyShape interface represents a shape for the model, but only provides
 #### IModelShape
 The IModelShape interface also represents a shape for the model. It extends the IReadOnlyShape interface, meaning that it will provide all the functionalities required to read from a shape, but in addition to those, also provides methods that print a String representation of the shape, gets the shape's id, gets the state of the shape at a given tick, and adds motions to this shape. The model itself will interact with IModelShapes, and be able to receive more specific output and add motions in, while the controller and view will only be able to read from the same shapes as IReadOnlyShapes. 
 
-#### IModelShapeImpl
+#### IModelShapeImpl and ShapeType
+The IModelShapeImpl class implements the IModelShape interface above, and its purpose is to store data about the shape (and its characteristics). It implements all methods that IModelShape requires, except for getting this shape at a given tick (because we are waiting for details on the tweening function). All of its fields are final, and cannot be mutated (as in cannot be set to different values/references). 
+This class has a field of type ShapeType, which is an enum that represents what type of shape this instance of the class represents. At the moment, there are only two choices: Rectangle and Ellipse, but more types of shapes can easily be added to ShapeType. The ShapeType in a given shape will determine how that shape will be depicted on in the view.
+This class also has contains a list of motions, which represent the states of this shape at any two given "start" and "end" ticks. It assumes the invariant that this list will always be sorted by tick (i.e. in chronological order). It also assumes that there are no overlapping intervals between any two motions in this list, and that any two adjacent motions (in the list) will have the same ending and starting states, with respect to their positions in the list. If there are gaps (the previous motion's end tick is not the same as the following motion's start tick) in the list, it is assumed that no changes/motions/animations occur between those two ticks. 
+
+#### IMotion
+The IMotion interface provides various getter methods that retrieve information from this motion, and also provides a method that returns a string representation of this motion. An implementation of this interface represents the start state and end state of an animation at an arbitrary start and end tick (although the end tick cannot be before the start tick).
+
+#### IMotionImpl
+The IMotionImpl class implements the IMotion interface above, and implements most of its methods. Currently, it does not implement the methods related to the animation itself (as in methods that return values at a given tick), as we need more details about the tweening function before doing so. All of the fields in the IMotionImpl class are final, and this cannot be mutated. 
