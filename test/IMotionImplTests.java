@@ -2,8 +2,8 @@ import org.junit.Test;
 
 import java.awt.Color;
 
-import model.IMotion;
-import model.IMotionImpl;
+import cs3500.animator.model.IMotion;
+import cs3500.animator.model.IMotionImpl;
 
 import static junit.framework.TestCase.assertEquals;
 

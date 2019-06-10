@@ -1,8 +1,8 @@
-import model.IModelShape;
-import model.IModelShapeImpl;
-import model.IMotion;
-import model.IMotionImpl;
-import model.ShapeType;
+import cs3500.animator.model.IModelShape;
+import cs3500.animator.model.IModelShapeImpl;
+import cs3500.animator.model.IMotion;
+import cs3500.animator.model.IMotionImpl;
+import cs3500.animator.model.ShapeType;
 
 import org.junit.Before;
 import org.junit.Test;

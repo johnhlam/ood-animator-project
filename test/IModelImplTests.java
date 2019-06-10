@@ -3,9 +3,9 @@ import org.junit.Test;
 
 import java.awt.Color;
 
-import model.IModel;
-import model.IModelImpl;
-import model.ShapeType;
+import cs3500.animator.model.IModel;
+import cs3500.animator.model.IModelImpl;
+import cs3500.animator.model.ShapeType;
 
 import static org.junit.Assert.assertEquals;
 
