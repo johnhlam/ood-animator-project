@@ -10,22 +10,6 @@ package cs3500.animator.model;
 public interface IModelShape extends IReadOnlyShape {
 
   /**
-   * Prints the animations that the shape holds. It should output the type of shape, the ID of the
-   * shape, and whatever animations it needs to perform. Specific implementations should specify the
-   * exact output.
-   *
-   * @return the string representation of the animation
-   */
-  String printMotions();
-
-  /**
-   * Returns the string ID of the shape.
-   *
-   * @return the string ID
-   */
-  String getID();
-
-  /**
    * Returns a new IReadOnlyShape based on its motions to become what they should be at the given
    * tick during the animation. Specific implementations should specify further details about how
    * the shape handles its motions for a given tick.

@@ -84,4 +84,9 @@ public interface IModel {
    * @throws IllegalArgumentException for negative ticks
    */
   List<IReadOnlyShape> getShapesAtTick(int tick) throws IllegalArgumentException;
+
+  int getX();
+  int getY();
+  int getWidth();
+  int getHeight();
 }

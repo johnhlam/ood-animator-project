@@ -8,6 +8,14 @@ import java.awt.Color;
  * be able to complete. This ReadOnly shape will be passed to the controller and view.
  */
 public interface IReadOnlyShape {
+
+  /**
+   * Returns the string ID of the shape.
+   *
+   * @return the string ID
+   */
+  String getID();
+
   /**
    * Returns the shape's width.
    *
@@ -49,4 +57,13 @@ public interface IReadOnlyShape {
    * @return the shape type enum
    */
   ShapeType getType();
+
+  /**
+   * Prints the animations that the shape holds. It should output the type of shape, the ID of the
+   * shape, and whatever animations it needs to perform. Specific implementations should specify the
+   * exact output.
+   *
+   * @return the string representation of the animation
+   */
+  String printMotions();
 }

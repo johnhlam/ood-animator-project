@@ -1,5 +1,6 @@
 package cs3500.animator.model;
 
+import cs3500.animator.util.AnimationBuilder;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +14,25 @@ public class IModelImpl implements IModel {
   // A list of shapes that the model is currently representing as drawings/animations.
   private final List<IModelShape> shapes;
 
+  //
+  private final int topX;
+  private final int topY;
+  private final int width;
+  private final int height;
+
   /**
    * Constructs an instance of the model. Initializes the shapes to an empty list.
    */
-  public IModelImpl() {
-    this.shapes = new ArrayList<>();
+//  public IModelImpl() {
+//    this.shapes = new ArrayList<>();
+//  }
+
+  public IModelImpl(int topX, int topY, int width, int height, List<IModelShape> shapes) {
+    this.topX = topX;
+    this.topY = topY;
+    this.width = width;
+    this.height = height;
+    this.shapes = shapes;
   }
 
   @Override
@@ -27,6 +42,26 @@ public class IModelImpl implements IModel {
     // shapes to update each shapes in the list, so that stub is written in the shape interface
     // as well.
     return null;
+  }
+
+  @Override
+  public int getX() {
+    return this.topX;
+  }
+
+  @Override
+  public int getY() {
+    return this.topY;
+  }
+
+  @Override
+  public int getWidth() {
+    return this.width;
+  }
+
+  @Override
+  public int getHeight() {
+    return this.height;
   }
 
 
@@ -85,8 +120,7 @@ public class IModelImpl implements IModel {
       throw new IllegalArgumentException("End tick must come after start tick");
     }
 
-    for (int i = 0; i < this.shapes.size(); i++) {
-      IModelShape cur = this.shapes.get(i);
+    for (IModelShape cur : this.shapes) {
       if (cur.getID().equals(id)) {
         cur.addMotion(
             new IMotionImpl(
@@ -144,5 +178,88 @@ public class IModelImpl implements IModel {
     // If you finish going through the list, and none of the shape's ids match up, then the shape
     // with the given id could not be found.
     throw new IllegalArgumentException("Shape with the given id, " + id + ", cannot be found.");
+  }
+
+  public final static class Builder implements AnimationBuilder<IModelImpl> {
+
+    private List<IModelShape> shapes;
+
+    private int topX;
+    private int topY;
+    private int width;
+    private int height;
+
+    public Builder()  {
+      // Initializes topX and topY to 0 as default values, and width and height to 200 as default
+      // values
+      this.topX = 0;
+      this.topY = 0;
+      this.width = 200;
+      this.height = 200;
+      this.shapes = new ArrayList<>();
+
+    }
+
+    @Override
+    public IModelImpl build() {
+
+      return new IModelImpl(this.topX, this.topY, this.width, this.height, this.shapes);
+    }
+
+    @Override
+    public AnimationBuilder<IModelImpl> setBounds(int x, int y, int width, int height) {
+      this.topX = x;
+      this.topY = y;
+      this.width = width;
+      this.height = height;
+
+      return this;
+    }
+
+    @Override
+    public AnimationBuilder<IModelImpl> declareShape(String name, String type) {
+
+      if(name == null || type == null) {
+        throw new IllegalArgumentException("Arguments for declareShape cannot be null");
+      }
+
+      ShapeType sType = ShapeType.stringToType(type);
+      // Sets width, height, x, and y to 0 as default values, and the default color to black
+      IModelShape shapeToAdd = new IModelShapeImpl(name, sType, 0, 0, 0, 0, Color.BLACK);
+
+      this.shapes.add(shapeToAdd);
+      return this;
+    }
+
+    @Override
+    public AnimationBuilder<IModelImpl> addMotion(String name, int t1, int x1, int y1, int w1,
+        int h1, int r1, int g1, int b1, int t2, int x2, int y2, int w2, int h2, int r2, int g2,
+        int b2) {
+      if(name == null) {
+        throw new IllegalArgumentException("Arguments for addMotion cannot be null");
+      }
+
+      for (IModelShape cur : this.shapes) {
+        if (cur.getID().equals(name)) {
+          cur.addMotion(
+              new IMotionImpl(
+                  t1, w1, h1, x1, y1, new Color(r1, g1, b1),
+                  t2, w2, h2, x2, y2, new Color(r2, g2, b2)));
+
+          // Does not need to iterate through the rest of the list if a shape with the given id has
+          // been found
+          return this;
+        }
+      }
+
+      // throw an exception if it reaches here, meaning the ID was not in the list
+      throw new IllegalArgumentException("Given ID could not be found");
+    }
+
+    @Override
+    public AnimationBuilder<IModelImpl> addKeyframe(String name, int t, int x, int y, int w, int h,
+        int r, int g, int b) {
+      return null;
+    }
   }
 }

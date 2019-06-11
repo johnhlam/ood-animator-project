@@ -24,4 +24,16 @@ public enum ShapeType {
         return "";
     }
   }
+
+  public static ShapeType stringToType(String name) {
+    switch (name) {
+      case "rectangle":
+        return ShapeType.RECTANGLE;
+      case "ellipse":
+        return ShapeType.ELLIPSE;
+      default:
+        throw new IllegalArgumentException("Given name for shape type, " + name + ", is not "
+            + "supported.");
+    }
+  }
 }
