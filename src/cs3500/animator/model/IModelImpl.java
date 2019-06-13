@@ -67,6 +67,16 @@ public class IModelImpl implements IModel {
     return this.height;
   }
 
+  @Override
+  public int getMaxX() {
+    return (int)this.maxX;
+  }
+
+  @Override
+  public int getMaxY() {
+    return (int)this.maxY;
+  }
+
 
   /**
    * Prints out each shape in this model with its ID followed by the motions it contains. Each
@@ -190,6 +200,10 @@ public class IModelImpl implements IModel {
     throw new IllegalArgumentException("Shape with the given id, " + id + ", cannot be found.");
   }
 
+  public static Builder builder() {
+    return new Builder();
+  }
+
   public final static class Builder implements AnimationBuilder<IModelImpl> {
 
     private List<IModelShape> shapes;
@@ -269,7 +283,7 @@ public class IModelImpl implements IModel {
     @Override
     public AnimationBuilder<IModelImpl> addKeyframe(String name, int t, int x, int y, int w, int h,
         int r, int g, int b) {
-      return null;
+      return this;
     }
   }
 }

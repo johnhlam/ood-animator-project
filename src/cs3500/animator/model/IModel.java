@@ -89,4 +89,6 @@ public interface IModel {
   int getY();
   int getWidth();
   int getHeight();
+  int getMaxX();
+  int getMaxY();
 }

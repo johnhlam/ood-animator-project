@@ -5,11 +5,15 @@ import java.awt.geom.Point2D;
 
 public interface IController {
 
-  void setTickRate();
+  void setTickRate(int tickRate);
 
-  void go();
+  void run();
 
   Dimension getCanvasSize();
 
   Point2D getTopXY();
+
+  Point2D getMaxXY();
+
+  void setAppendable(Appendable ap);
 }
