@@ -25,7 +25,7 @@ public class AnimationPanel extends JPanel implements IAnimationPanel {
                   (int)shape.getHeight());
             break;
           default:
-
+            // Does nothing, since you should never get here.
         }
       }
     }
@@ -34,7 +34,7 @@ public class AnimationPanel extends JPanel implements IAnimationPanel {
 
   @Override
   public void draw(List<IReadOnlyShape> toDraw) {
-    shapes = toDraw;
-    repaint();
+    this.shapes = toDraw;
+    super.repaint();
   }
 }

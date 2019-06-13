@@ -1,7 +1,6 @@
 package cs3500.animator.view;
 
-import oracle.jvm.hotspot.jfr.JFR;
-
+import cs3500.animator.util.AnimationBuilder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,14 +12,25 @@ import cs3500.animator.model.IReadOnlyShape;
 public class VisualView extends JFrame implements IView {
   List<IReadOnlyShape> shapes;
 
+  AnimationPanel panel;
+  JScrollPane scrollPane;
+
   public VisualView(int canvasWidth, int canvasHeight, int maxX, int maxY) {
     this.shapes = new ArrayList<>();
 
-    setSize(canvasWidth, canvasHeight);
-    setPreferredSize(new Dimension(maxX, maxY));
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setLocation(canvasWidth / 2, canvasHeight / 2);
-    setVisible(true);
+    this.panel = new AnimationPanel();
+    this.panel.setMinimumSize(new Dimension(canvasWidth, canvasHeight));
+    this.panel.setPreferredSize(new Dimension(maxX, maxY));
+
+    this.scrollPane = new JScrollPane(this.panel);
+
+    super.setSize(canvasWidth, canvasHeight);
+    super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    super.setLocation(canvasWidth / 2, canvasHeight / 2);
+
+    super.add(scrollPane);
+
+    super.setVisible(true);
   }
 
   @Override
@@ -35,6 +45,8 @@ public class VisualView extends JFrame implements IView {
 
   @Override
   public void render() {
-
+    if (this.panel != null) {
+      this.panel.draw(this.shapes);
+    }
   }
 }
