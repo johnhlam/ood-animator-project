@@ -243,4 +243,11 @@ public class IModelShapeImpl implements IModelShape {
   public ShapeType getType() {
     return this.type;
   }
+
+
+  //TODO: tests for this
+  @Override
+  public List<IMotion> getMotions() {
+    return new ArrayList<>(this.motionList);
+  }
 }

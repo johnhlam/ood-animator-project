@@ -2,6 +2,7 @@ package cs3500.animator.model;
 
 import cs3500.animator.util.AnimationBuilder;
 import java.awt.Color;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,13 +20,10 @@ public class IModelImpl implements IModel {
   private final int topY;
   private final int width;
   private final int height;
+  private double maxX;
+  private double maxY;
 
-  /**
-   * Constructs an instance of the model. Initializes the shapes to an empty list.
-   */
-//  public IModelImpl() {
-//    this.shapes = new ArrayList<>();
-//  }
+  // TODO: Allow for no gaps by having motions come in order
 
   public IModelImpl(int topX, int topY, int width, int height, List<IModelShape> shapes) {
     this.topX = topX;
@@ -35,13 +33,18 @@ public class IModelImpl implements IModel {
     this.shapes = shapes;
   }
 
+  public IModelImpl() {
+    this(0, 0, 0, 0, new ArrayList<>());
+  }
+
   @Override
   public List<IReadOnlyShape> getShapesAtTick(int tick) throws IllegalArgumentException {
     // this method is left blank as the implementation of it will be decided in future
     // assignments when the tweening function is revealed. Will most likely call a method on
     // shapes to update each shapes in the list, so that stub is written in the shape interface
     // as well.
-    return null;
+    ArrayList<IReadOnlyShape> list = new ArrayList<>(this.shapes);
+    return list;
   }
 
   @Override
@@ -93,7 +96,8 @@ public class IModelImpl implements IModel {
    * Adds a motion to the shape corresponding with the given ID. Motions can be given in any order,
    * and the shape will insert them in such a way that motions are sorted based on start ticks.
    * Throws an exception if the given motion's start or end ticks overlap with pre-existing
-   * motions.
+   * motions. The model will also update the largest x and y values seen based on the start and
+   * end of the motion.
    * INVARIANT: All existing motions in the shapes will be chronologically ordered, with no overlap
    * in ticks.
    *
@@ -119,6 +123,12 @@ public class IModelImpl implements IModel {
     if (endTick <= startTick) {
       throw new IllegalArgumentException("End tick must come after start tick");
     }
+
+    // update largest x and y values
+    maxX = Math.max(maxX, startX + startWidth);
+    maxX = Math.max(maxX, endX + endWidth);
+    maxY = Math.max(maxY, startY + startHeight);
+    maxY = Math.max(maxY, endY + endHeight);
 
     for (IModelShape cur : this.shapes) {
       if (cur.getID().equals(id)) {

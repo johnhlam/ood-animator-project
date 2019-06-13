@@ -7,5 +7,8 @@ public interface IView {
 
   void setShapes(List<IReadOnlyShape> shapes);
 
-  Appendable toOutput(int x, int y, int width, int height) throws IllegalStateException;
+  void toOutput(int x, int y, int width, int height)
+          throws IllegalStateException, UnsupportedOperationException;
+
+  void render() throws UnsupportedOperationException;
 }

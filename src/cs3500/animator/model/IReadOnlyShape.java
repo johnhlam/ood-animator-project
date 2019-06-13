@@ -1,6 +1,7 @@
 package cs3500.animator.model;
 
 import java.awt.Color;
+import java.util.List;
 
 /**
  * Represents a shape for the model, but only has the functionality to read from its field. An
@@ -57,6 +58,13 @@ public interface IReadOnlyShape {
    * @return the shape type enum
    */
   ShapeType getType();
+
+  /**
+   * Return the shape's motions.
+   *
+   * @return the motions
+   */
+  List<IMotion> getMotions();
 
   /**
    * Prints the animations that the shape holds. It should output the type of shape, the ID of the
