@@ -1,6 +1,5 @@
 package cs3500.animator.view;
 
-import cs3500.animator.util.AnimationBuilder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +9,7 @@ import javax.swing.*;
 import cs3500.animator.model.IReadOnlyShape;
 
 public class VisualView extends JFrame implements IView {
+
   List<IReadOnlyShape> shapes;
 
   AnimationPanel panel;
@@ -34,19 +34,25 @@ public class VisualView extends JFrame implements IView {
   }
 
   @Override
-  public void setShapes(List<IReadOnlyShape> shapes) {
+  public void setShapes(List<IReadOnlyShape> shapes) throws IllegalArgumentException {
+    if (shapes == null) {
+      throw new IllegalArgumentException("Given shapes to setShapes is null");
+    }
+
     this.shapes = shapes;
+
   }
 
   @Override
-  public void toOutput(int x, int y, int width, int height) throws IllegalStateException, UnsupportedOperationException {
+  public void toOutput(int x, int y, int width, int height) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Visual view cannot display text.");
   }
 
   @Override
-  public void render() {
-    if (this.panel != null) {
-      this.panel.draw(this.shapes);
+  public void render() throws RuntimeException {
+    if (this.panel == null) {
+      throw new RuntimeException("Attempted to render a null panel");
     }
+    this.panel.draw(this.shapes);
   }
 }

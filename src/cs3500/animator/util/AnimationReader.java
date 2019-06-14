@@ -24,7 +24,6 @@ public class AnimationReader {
    * and the red, green and blue color values at the start of the motion; followed by 
    * eight numbers for the end of the motion.  See {@link AnimationBuilder#addMotion}</li>
    * </ul>
-   * </p>
    *
    * @param readable The source of data for the animation
    * @param builder  A builder for helping to construct a new animation

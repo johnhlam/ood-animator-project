@@ -1,25 +1,52 @@
 package cs3500.animator.view;
 
-import java.util.List;
-
 import cs3500.animator.model.IMotion;
 import cs3500.animator.model.IReadOnlyShape;
 import cs3500.animator.model.ShapeType;
 
 
-//TODO: Comment about no loopback - add null check for shapetype methods
+//TODO: Comment about no loopback - see class javadoc to check
+// TODO: add null check for shapetype methods
+
+/**
+ * SVGView is a class that extends the abstract class ATextualView. It provides a way to convert
+ * a list of shapes into a textual representation, formatted based on the popular SVG file format
+ * (See <a>href="https://www.w3.org/TR/SVG11/"</a> for details).
+ * SVGView stores an integer tickRate along with the fields in ATextualView for reference when
+ * converting ticks to milliseconds (as the SVG format requires).
+ *
+ * The SVGView class currently does not support loopback, and animations will freeze on their end
+ * states upon completion.
+ */
 public class SVGView extends ATextualView {
   private int tickRate;
 
-  public SVGView(Appendable ap, int tickRate) {
+  /**
+   * Constructs an instance of SVGView with the given Appendable and tickRate.
+   *
+   * @param ap is the Appendable that the text output will be appended to.
+   * @param tickRate is the tickRate that the animation runs at
+   * @throws IllegalArgumentException if the given Appendable is null
+   */
+  public SVGView(Appendable ap, int tickRate) throws IllegalArgumentException {
     super(ap);
     this.tickRate = tickRate;
   }
 
-
+  /**
+   * Turns this view into a textual representation and appends the textual output to this.ap.
+   * The textual representation is formatted based on the SVG file format documentation.
+   *
+   * @param x      is the leftmost x-value (i.e. smallest x-value) of the view.
+   * @param y      is the topmost y-value (i.e. the smallest y-value) of the view.
+   * @param width  is the width of the bounding box of the view.
+   * @param height is the height of the bounding box of the view.
+   *
+   * @throws IllegalStateException if this.ap is unable to be appended to, or is unable to
+   * transmit output.
+   */
   @Override
-  public void toOutput(int x, int y, int width, int height) throws IllegalStateException,
-          UnsupportedOperationException {
+  public void toOutput(int x, int y, int width, int height) throws IllegalStateException {
     String xCoordinate = null;
     String yCoordinate = null;
     String widthAttribute = null;
@@ -29,6 +56,9 @@ public class SVGView extends ATextualView {
             + "\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n");
 
     for (IReadOnlyShape shape : this.shapes) {
+
+      // Checks what shape's ShapeType is and sets the attribute names (as String variables) to
+      // their appropriate values.
       switch (shape.getType()) {
         case RECTANGLE:
           xCoordinate = "x";
@@ -43,10 +73,9 @@ public class SVGView extends ATextualView {
           heightAttribute = "ry";
           break;
         default:
-
       }
 
-
+      // Converts shape into a String formatted by SVG
       String shapeName = this.convertTypeToSVG(shape.getType());
       StringBuilder shapeHeading = new StringBuilder();
       shapeHeading.append("<").append(shapeName).append(" id=\"").append(shape.getID()).append("\" ")
@@ -59,6 +88,7 @@ public class SVGView extends ATextualView {
               "=\"visible\" >\n");
       this.attemptAppend(shapeHeading.toString());
 
+      // Converts shape's motions into 'animate' elements
       this.printShapeMotionsSVG(shape, xCoordinate, yCoordinate, widthAttribute, heightAttribute);
       this.attemptAppend("</" + shapeName + ">\n\n");
     }
@@ -66,13 +96,24 @@ public class SVGView extends ATextualView {
     this.attemptAppend("</svg>");
   }
 
-  private void printShapeMotionsSVG(IReadOnlyShape shape, String xCoordinate, String yCoordinate, String width,
-                                    String height) {
+  /**
+   * Convert's the given shape's motions into 'animate' elements and appends them on to this.ap.
+   *
+   * @param shape is the shape whose motions are to be turned into 'animate' elements
+   * @param xCoordinate is the attribute name of the x value of the shape
+   * @param yCoordinate is the attribute name of the y value of the shape
+   * @param width is the attribute name of the width of the shape
+   * @param height is the attribute name of the height of the shape
+   */
+  private void printShapeMotionsSVG(IReadOnlyShape shape, String xCoordinate, String yCoordinate,
+      String width, String height) {
 
     for (IMotion motion : shape.getMotions()) {
       String startTime = Integer.toString(this.tickToMS(motion.getStartTick()));
       String duration =
               Integer.toString(this.tickToMS(motion.getEndTick() - motion.getStartTick()));
+
+      // Adds the 'animate' element for each attribute of the shape
       this.svgAnimationText(xCoordinate, startTime,
               duration, Double.toString(motion.getStartX()), Double.toString(motion.getEndX()));
       this.svgAnimationText(yCoordinate, startTime,
@@ -81,21 +122,37 @@ public class SVGView extends ATextualView {
               duration, Double.toString(motion.getStartWidth()), Double.toString(motion.getEndWidth()));
       this.svgAnimationText(height, startTime,
               duration, Double.toString(motion.getStartHeight()), Double.toString(motion.getEndHeight()));
+
       StringBuilder colorStart = new StringBuilder();
-      colorStart.append("rgb(").append(Integer.toString(motion.getStartColor().getRed())).append(
-              ",").append(Integer.toString(motion.getStartColor().getGreen())).append(
-              ",").append(Integer.toString(motion.getStartColor().getBlue())).append(")");
+      colorStart.append("rgb(").append(motion.getStartColor().getRed()).append(
+              ",").append(motion.getStartColor().getGreen()).append(
+              ",").append(motion.getStartColor().getBlue()).append(")");
+
       StringBuilder colorEnd = new StringBuilder();
-      colorEnd.append("rgb(").append(Integer.toString(motion.getEndColor().getRed())).append(
-              ",").append(Integer.toString(motion.getEndColor().getGreen())).append(
-              ",").append(Integer.toString(motion.getEndColor().getBlue())).append(")");
+      colorEnd.append("rgb(").append(motion.getEndColor().getRed()).append(
+              ",").append(motion.getEndColor().getGreen()).append(
+              ",").append(motion.getEndColor().getBlue()).append(")");
+
       this.svgAnimationText("fill", startTime,
               duration, colorStart.toString(), colorEnd.toString());
       this.attemptAppend("\n");
     }
   }
 
-
+  /**
+   * Converts a series of Strings into an SVG animate element. It is formatted as the following:
+   * <br>
+   * &lt;animate attributeType="xml" begin="{@code startTime}" dur="{@code duration}" from="
+   * {@code fromVal}" to="{@code toVal}" fill="freeze" /&gt;
+   *
+   * @param attributeName is the attribute name of the animation.
+   * @param startTime is the start time (in milliseconds) of the animation.
+   * @param duration is the duration (in milliseconds) of the animation.
+   * @param fromVal is the initial value of the attributeName to be animated (as in the value of
+   *                the attribute at startTime).
+   * @param toVal is the final value of the attributeName to be animated (as in the value of
+   *                the attribute at the end of the animation).
+   */
   private void svgAnimationText(String attributeName, String startTime, String duration,
                                 String fromVal, String toVal) {
     StringBuilder animationText = new StringBuilder();
@@ -107,10 +164,22 @@ public class SVGView extends ATextualView {
     this.attemptAppend(animationText.toString());
   }
 
+  /**
+   * Converts an integer tick value in to milliseconds using this.tickRate.
+   *
+   * @param tick is the tick value to be converted into milliseconds.
+   * @return is the given tick value in milliseconds.
+   */
   private int tickToMS(int tick) {
-    return (int) (((double) tick / tickRate) * 1000);
+    return (int) (((double) tick / this.tickRate) * 1000);
   }
 
+  /**
+   * Converts a given ShapeType to its equivalent form in SVG (as a String).
+   *
+   * @param type is the ShapeType to be converted into a String.
+   * @return the String containing the SVG equivalent of the given ShapeType.
+   */
   private String convertTypeToSVG(ShapeType type) {
     switch (type) {
       case RECTANGLE:
@@ -122,6 +191,4 @@ public class SVGView extends ATextualView {
         return "";
     }
   }
-
-
 }

@@ -31,18 +31,24 @@ public class ControllerImpl implements IController, ActionListener {
     if (tickRate <= 0) {
       throw new IllegalArgumentException("Tick rate cannot be 0");
     }
+
     this.tickRate = tickRate;
     AnimationBuilder<IModelImpl> builder = IModelImpl.builder();
-    IModel model = AnimationReader.parseFile(readable, builder);
+    this.model = AnimationReader.parseFile(readable, builder);
     switch (viewType) {
       case "text":
         view = new TextView(ap);
+        break;
       case "svg":
         view = new SVGView(ap, tickRate);
+        break;
       case "visual":
       default:
-        throw new RuntimeException("View type supplied is not supported.")
+        throw new RuntimeException("View type supplied is not supported.");
     }
+
+    // FIXME: is this line necessary? as in do we need to store this String once we create the view?
+    this.viewType = viewType;
   }
 
   @Override
@@ -58,7 +64,7 @@ public class ControllerImpl implements IController, ActionListener {
       case "svg":
       case "visual":
       default:
-        throw new RuntimeException("View type supplied is not supported.")
+        throw new RuntimeException("View type supplied is not supported.");
     }
   }
 

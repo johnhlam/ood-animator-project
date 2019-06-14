@@ -34,6 +34,10 @@ public class AnimationPanel extends JPanel implements IAnimationPanel {
 
   @Override
   public void draw(List<IReadOnlyShape> toDraw) {
+    if(toDraw == null) {
+      throw new IllegalArgumentException("Given list of shapes for toDraw is null");
+    }
+
     this.shapes = toDraw;
     super.repaint();
   }

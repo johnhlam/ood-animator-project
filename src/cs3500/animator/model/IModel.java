@@ -80,6 +80,7 @@ public interface IModel {
    * animation, and the model's list of shapes should represent the instance the shapes are in at
    * the given tick.
    *
+   * @param tick is the tick value for which each shape's state (at that tick) will be returned
    * @return a copy of the model's list of shapes
    * @throws IllegalArgumentException for negative ticks
    */
