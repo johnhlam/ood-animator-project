@@ -12,10 +12,14 @@ import cs3500.animator.view.SVGView;
 import cs3500.animator.view.TextView;
 import cs3500.animator.view.VisualView;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.StringReader;
 
 public class Excellence {
@@ -23,13 +27,13 @@ public class Excellence {
 
   public static void main(String[] args) {
 
-//    Readable in = null; // TODO: Delete this later
-//    String view = null; // TODO: Delete this later
-//    // Default output is System.out
-//    Appendable out = System.out;
-//    // Default speed is 1 tick/s
-//    int speed = 1;
-//
+    Readable in = null; // TODO: Delete this later
+    String view = null; // TODO: Delete this later
+    // Default output is System.out
+    Appendable out = System.out;
+    // Default speed is 1 tick/s
+    int speed = 1;
+
 //    for (int i = 0; i < args.length; i++) {
 //      try {
 //        switch (args[i]) {
@@ -95,16 +99,41 @@ public class Excellence {
       AnimationBuilder<IModelImpl> builder =  IModelImpl.builder();
       model = AnimationReader.parseFile(new BufferedReader(new FileReader(
           "D:\\Documents\\COLLEGE\\Summer 1 2019\\CS 3500 - Object Oriented "
-              + "Design\\ood-animator-project\\src\\cs3500\\big-bang-big-crunch.txt")), builder);
+              + "Design\\ood-animator-project\\src\\cs3500\\toh-3.txt")), builder);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
 
-    IView newView = new VisualView(model.getWidth(), model.getHeight(), model.getMaxX(), model.getMaxY());
-    IController controller = new TimerControllerImpl(newView, model, 20);
+    IView newView = null;
+    Appendable w = null;
+    try {
+
+       w = new PrintWriter(new BufferedWriter(new FileWriter("temp1.svg")));
+      newView = new SVGView(w
+          //System.out, 20);
+          , 20);
+
+    } catch (Exception e) {e.printStackTrace();}
+
+//    IView newView = null;
+//    try {
+//      newView = new VisualView(model.getWidth(), model.getHeight(), model.getMaxX(),
+//          model.getMaxY());
+//
+//    } catch (Exception e) {e.printStackTrace();}
+//
+    IController controller = new TextControllerImpl(newView, model, 100);
     controller.run();
+//    try {
+//      w.close();
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//    }
 
 //D:/Documents/COLLEGE/Summer 1 2019/CS 3500 - Object Oriented "
 //              + "Design/ood-animator-project/src/cs3500/
   }
 }
+/*
+  Assume that motions come in order
+ */

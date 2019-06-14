@@ -1,22 +1,15 @@
 package cs3500.animator.controller;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Point2D;
 
 import java.util.List;
 
 import javax.swing.*;
 
 import cs3500.animator.model.IModel;
-import cs3500.animator.model.IModelImpl;
 import cs3500.animator.model.IReadOnlyShape;
-import cs3500.animator.util.AnimationBuilder;
-import cs3500.animator.util.AnimationReader;
 import cs3500.animator.view.IView;
-import cs3500.animator.view.SVGView;
-import cs3500.animator.view.TextView;
 
 public class TimerControllerImpl implements IController, ActionListener {
   private final IView view;
