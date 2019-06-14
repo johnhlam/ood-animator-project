@@ -74,6 +74,6 @@ public class ControllerImpl implements IController, ActionListener {
   public void actionPerformed(ActionEvent e) {
     List<IReadOnlyShape> toRender = this.model.getShapesAtTick(tick++);
     this.view.setShapes(toRender);
-    this.view.render(); //TODO: Change to play later
+    this.view.play(); //TODO: Change to play later
   }
 }

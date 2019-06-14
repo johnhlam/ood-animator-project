@@ -40,18 +40,23 @@ public class IModelImpl implements IModel {
   @Override
   public List<IReadOnlyShape> getShapesAtTick(int tick) throws IllegalArgumentException {
     this.ensureNoGaps();
-    // this method is left blank as the implementation of it will be decided in future
-    // assignments when the tweening function is revealed. Will most likely call a method on
-    // shapes to update each shapes in the list, so that stub is written in the shape interface
-    // as well.
-    ArrayList<IReadOnlyShape> list = new ArrayList<>(this.shapes);
-
     ArrayList<IReadOnlyShape> shapesAtTick = new ArrayList<>();
+
     for (IModelShape shape : this.shapes) {
       shapesAtTick.add(shape.getShapeAtTick(tick));
     }
 
-    return list;
+    return shapesAtTick;
+  }
+
+  @Override
+  public void removeMotionAtStartTick(int tick) throws IllegalArgumentException {
+    //TODO: Fill in
+  }
+
+  @Override
+  public List<IMotion> getMotionsAtTick(int tick) throws IllegalArgumentException {
+    return null; // TODO: Fill in
   }
 
   @Override
@@ -82,6 +87,11 @@ public class IModelImpl implements IModel {
   @Override
   public int getMaxY() {
     return (int)this.maxY;
+  }
+
+  @Override
+  public List<IReadOnlyShape> getShapes() {
+    return new ArrayList<IReadOnlyShape>(this.shapes);
   }
 
 
