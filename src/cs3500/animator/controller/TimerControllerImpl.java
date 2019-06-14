@@ -60,11 +60,6 @@ public class TimerControllerImpl implements IController, ActionListener {
   @Override
   public void actionPerformed(ActionEvent e) {
     List<IReadOnlyShape> toRender = this.model.getShapesAtTick(tick++);
-    this.view.setShapes(toRender);
-<<<<<<< HEAD:src/cs3500/animator/controller/TimerControllerImpl.java
-    this.view.play();
-=======
-    this.view.play(); //TODO: Change to play later
->>>>>>> 2007c3dc2b28c70cbc1ee26be536639957f96275:src/cs3500/animator/controller/ControllerImpl.java
+    this.view.play(toRender);
   }
 }

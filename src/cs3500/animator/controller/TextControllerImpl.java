@@ -36,7 +36,6 @@ public class TextControllerImpl implements IController {
 
   @Override
   public void run() {
-
-    this.view.play();
+    this.view.play(this.model.getShapes());
   }
 }
