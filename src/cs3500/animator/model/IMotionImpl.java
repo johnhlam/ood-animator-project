@@ -54,7 +54,7 @@ public class IMotionImpl implements IMotion {
       throw new IllegalArgumentException("Ticks and sizes cannot be negative.");
     }
 
-    if (endTick <= startTick) {
+    if (endTick < startTick) {
       throw new IllegalArgumentException("End tick must come after start tick");
     }
 

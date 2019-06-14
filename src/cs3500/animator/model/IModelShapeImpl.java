@@ -114,28 +114,20 @@ public class IModelShapeImpl implements IModelShape {
       int startTick = lastMotion.getStartTick();
       int lastTick = lastMotion.getEndTick();
 
-      xAtTick = this.calculateParamAtTick(lastMotion.getStartX(), lastMotion.getEndX(),
-          tick, startTick, lastTick);
-      yAtTick = this.calculateParamAtTick(lastMotion.getStartY(), lastMotion.getEndY(),
-          tick, startTick, lastTick);
-      widthAtTick = this.calculateParamAtTick(lastMotion.getStartWidth(), lastMotion.getEndWidth(),
-          tick, startTick, lastTick);
-      heightAtTick = this
-          .calculateParamAtTick(lastMotion.getStartHeight(), lastMotion.getEndHeight(),
-              tick, startTick, lastTick);
-      redAtTick = this.calculateParamAtTick(lastMotion.getStartColor().getRed(),
-          lastMotion.getEndColor().getRed(), tick, startTick, lastTick);
-      greenAtTick = this.calculateParamAtTick(lastMotion.getStartColor().getGreen(),
-          lastMotion.getEndColor().getGreen(), tick, startTick, lastTick);
-      blueAtTick = this.calculateParamAtTick(lastMotion.getStartColor().getBlue(),
-          lastMotion.getEndColor().getBlue(), tick, startTick, lastTick);
+      xAtTick = lastMotion.getEndX();
+      yAtTick = lastMotion.getEndY();
+      widthAtTick = lastMotion.getEndWidth();
+      heightAtTick = lastMotion.getEndHeight();
+      redAtTick = lastMotion.getEndColor().getRed();
+      greenAtTick =  lastMotion.getEndColor().getGreen();
+      blueAtTick = lastMotion.getEndColor().getBlue();
 
       shapeToReturn = new IModelShapeImpl(this.id,
           this.type,
-          xAtTick,
-          yAtTick,
           widthAtTick,
           heightAtTick,
+          xAtTick,
+          yAtTick,
           new Color((int) redAtTick, (int) greenAtTick, (int) blueAtTick));
     } else {
 
@@ -144,30 +136,30 @@ public class IModelShapeImpl implements IModelShape {
       for (IMotion curMotion : this.motionList) {
         if (tick >= curMotion.getStartTick() && tick <= curMotion.getEndTick()) {
           int startTick = curMotion.getStartTick();
-          int lastTick = curMotion.getEndTick();
+          int endTick = curMotion.getEndTick();
 
           xAtTick = this.calculateParamAtTick(curMotion.getStartX(), curMotion.getEndX(),
-              tick, startTick, lastTick);
+              tick, startTick, endTick);
           yAtTick = this.calculateParamAtTick(curMotion.getStartY(), curMotion.getEndY(),
-              tick, startTick, lastTick);
+              tick, startTick, endTick);
           widthAtTick = this
               .calculateParamAtTick(curMotion.getStartWidth(), curMotion.getEndWidth(),
-                  tick, startTick, lastTick);
+                  tick, startTick, endTick);
           heightAtTick = this
               .calculateParamAtTick(curMotion.getStartHeight(), curMotion.getEndHeight(),
-                  tick, startTick, lastTick);
+                  tick, startTick, endTick);
           redAtTick = this.calculateParamAtTick(curMotion.getStartColor().getRed(),
-              curMotion.getEndColor().getRed(), tick, startTick, lastTick);
+              curMotion.getEndColor().getRed(), tick, startTick, endTick);
           greenAtTick = this.calculateParamAtTick(curMotion.getStartColor().getGreen(),
-              curMotion.getEndColor().getGreen(), tick, startTick, lastTick);
+              curMotion.getEndColor().getGreen(), tick, startTick, endTick);
           blueAtTick = this.calculateParamAtTick(curMotion.getStartColor().getBlue(),
-              curMotion.getEndColor().getBlue(), tick, startTick, lastTick);
+              curMotion.getEndColor().getBlue(), tick, startTick, endTick);
           shapeToReturn = new IModelShapeImpl(this.id,
               this.type,
-              xAtTick,
-              yAtTick,
               widthAtTick,
               heightAtTick,
+              xAtTick,
+              yAtTick,
               new Color((int) redAtTick, (int) greenAtTick, (int) blueAtTick));
           // Returns here to exit the loop
           return shapeToReturn;
@@ -181,7 +173,7 @@ public class IModelShapeImpl implements IModelShape {
   private double calculateParamAtTick(double startParam, double endParam, int tick, int startTick,
       int endTick) {
     double frac1 = ((double) (endTick - tick)) / (endTick - startTick);
-    double frac2 = ((double) (tick - endTick)) / (endTick - startTick);
+    double frac2 = ((double) (tick - startTick)) / (endTick - startTick);
 
     double newParam = (int) (startParam * frac1 + endParam * frac2);
 
