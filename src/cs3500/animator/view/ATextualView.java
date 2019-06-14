@@ -15,6 +15,10 @@ import cs3500.animator.model.IReadOnlyShape;
  */
 public abstract class ATextualView implements IView {
 
+  protected int x;
+  protected int y;
+  protected int width;
+  protected int height;
   protected List<IReadOnlyShape> shapes;
   protected final Appendable ap;
 
@@ -48,20 +52,18 @@ public abstract class ATextualView implements IView {
    * Turns this view into a textual representation. Subclasses implementing this method should
    * append the textual output to this.ap.
    *
-   * @param x      is the leftmost x-value (i.e. smallest x-value) of the view.
-   * @param y      is the topmost y-value (i.e. the smallest y-value) of the view.
-   * @param width  is the width of the bounding box of the view.
-   * @param height is the height of the bounding box of the view.
-   *
    * @throws IllegalStateException if this.ap is unable to be appended to, or is unable to
    * transmit output.
    */
   @Override
-  public abstract void toOutput(int x, int y, int width, int height) throws IllegalStateException;
+  public abstract void play() throws RuntimeException;
 
   @Override
-  public void render() {
-    throw new UnsupportedOperationException("Text views cannot render images.");
+  public void setCanvas(int x, int y, int width, int height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
   }
 
   /**
@@ -78,5 +80,11 @@ public abstract class ATextualView implements IView {
       throw new IllegalStateException("Could not append String to Appendable.");
     }
   }
+
+  @Override
+  public void setMaxWindowSize(int width, int height) throws UnsupportedOperationException {
+    throw new UnsupportedOperationException("Textual views do not have max window sizes.");
+  }
+
 
 }

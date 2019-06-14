@@ -10,12 +10,15 @@ import cs3500.animator.model.IReadOnlyShape;
 
 public class VisualView extends JFrame implements IView {
 
-  List<IReadOnlyShape> shapes;
+  private int canvasWidth;
+  private int canvasHeight;
+  private int maxX;
+  private int maxY;
+  private List<IReadOnlyShape> shapes;
+  private AnimationPanel panel;
+  private JScrollPane scrollPane;
 
-  AnimationPanel panel;
-  JScrollPane scrollPane;
-
-  public VisualView(int canvasWidth, int canvasHeight, int maxX, int maxY) {
+  public VisualView() {
     this.shapes = new ArrayList<>();
 
     this.panel = new AnimationPanel();
@@ -44,15 +47,24 @@ public class VisualView extends JFrame implements IView {
   }
 
   @Override
-  public void toOutput(int x, int y, int width, int height) throws UnsupportedOperationException {
-    throw new UnsupportedOperationException("Visual view cannot display text.");
+  public void setCanvas(int x, int y, int width, int height) {
+    this.canvasWidth = width;
+    this.canvasHeight = height;
   }
 
   @Override
-  public void render() throws RuntimeException {
+  public void play() throws RuntimeException {
     if (this.panel == null) {
       throw new RuntimeException("Attempted to render a null panel");
     }
     this.panel.draw(this.shapes);
+
   }
+
+  @Override
+  public void setMaxWindowSize(int width, int height) {
+    this.maxX = width;
+    this.maxY = height;
+  }
+
 }

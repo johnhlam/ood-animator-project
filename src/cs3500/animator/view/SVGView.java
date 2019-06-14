@@ -37,16 +37,11 @@ public class SVGView extends ATextualView {
    * Turns this view into a textual representation and appends the textual output to this.ap.
    * The textual representation is formatted based on the SVG file format documentation.
    *
-   * @param x      is the leftmost x-value (i.e. smallest x-value) of the view.
-   * @param y      is the topmost y-value (i.e. the smallest y-value) of the view.
-   * @param width  is the width of the bounding box of the view.
-   * @param height is the height of the bounding box of the view.
-   *
    * @throws IllegalStateException if this.ap is unable to be appended to, or is unable to
    * transmit output.
    */
   @Override
-  public void toOutput(int x, int y, int width, int height) throws IllegalStateException {
+  public void play() throws IllegalStateException {
     String xCoordinate = null;
     String yCoordinate = null;
     String widthAttribute = null;
@@ -76,7 +71,7 @@ public class SVGView extends ATextualView {
       }
 
       // Converts shape into a String formatted by SVG
-      String shapeName = this.convertTypeToSVG(shape.getType());
+      String shapeName = this.convertTypeToSVGName(shape.getType());
       StringBuilder shapeHeading = new StringBuilder();
       shapeHeading.append("<").append(shapeName).append(" id=\"").append(shape.getID()).append("\" ")
               .append(xCoordinate).append("=\"").append(shape.getX()).append("\" ")
@@ -180,7 +175,7 @@ public class SVGView extends ATextualView {
    * @param type is the ShapeType to be converted into a String.
    * @return the String containing the SVG equivalent of the given ShapeType.
    */
-  private String convertTypeToSVG(ShapeType type) {
+  private String convertTypeToSVGName(ShapeType type) {
     switch (type) {
       case RECTANGLE:
         return "rect";
@@ -191,4 +186,5 @@ public class SVGView extends ATextualView {
         return "";
     }
   }
+
 }

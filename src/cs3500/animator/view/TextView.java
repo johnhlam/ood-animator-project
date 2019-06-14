@@ -5,9 +5,11 @@ import cs3500.animator.model.IReadOnlyShape;
 /**
  * TextView is a class that extends ATextualView. It provides a way to convert
  * a list of shapes into a textual representation. Details on how exactly it is formatted is
- * described in the {@link TextView#toOutput} method.
+ * described in the {@link TextView#play} method.
  */
 public class TextView extends ATextualView {
+  private int x;
+  private int y;
 
   /**
    * Constructs an instance of TextView with the given Appendable.
@@ -31,17 +33,11 @@ public class TextView extends ATextualView {
    * ... <i>other motions</i>... <br>
    * ... <i>other shapes</i>...
    *
-   * @param x      is the leftmost x-value (i.e. smallest x-value) of the view.
-   * @param y      is the topmost y-value (i.e. the smallest y-value) of the view.
-   * @param width  is the width of the bounding box of the view.
-   * @param height is the height of the bounding box of the view.
-   *
    * @throws IllegalStateException if this.ap is unable to be appended to, or is unable to
    * transmit output.
    */
   @Override
-  public void toOutput(int x, int y, int width, int height) throws IllegalStateException {
-
+  public void play() throws RuntimeException {
     this.attemptAppend("canvas ");
     this.attemptAppend(Integer.toString(x));
     this.attemptAppend(" ");
@@ -53,9 +49,9 @@ public class TextView extends ATextualView {
     this.attemptAppend("\n");
 
     for(IReadOnlyShape s : this.shapes) {
-        this.attemptAppend(s.printMotions());
-        this.attemptAppend("\n");
+      this.attemptAppend(s.printMotions());
+      this.attemptAppend("\n");
     }
   }
-  
+
 }
