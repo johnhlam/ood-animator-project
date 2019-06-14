@@ -85,6 +85,10 @@ public interface IModel {
    */
   List<IReadOnlyShape> getShapesAtTick(int tick) throws IllegalArgumentException;
 
+  void removeMotionAtStartTick(int tick) throws IllegalArgumentException;
+
+  List<IMotion> getMotionsAtTick(int tick) throws IllegalArgumentException;
+
   int getX();
   int getY();
   int getWidth();

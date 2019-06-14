@@ -39,6 +39,7 @@ public class IModelImpl implements IModel {
 
   @Override
   public List<IReadOnlyShape> getShapesAtTick(int tick) throws IllegalArgumentException {
+    this.ensureNoGaps();
     // this method is left blank as the implementation of it will be decided in future
     // assignments when the tweening function is revealed. Will most likely call a method on
     // shapes to update each shapes in the list, so that stub is written in the shape interface

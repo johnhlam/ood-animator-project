@@ -11,4 +11,8 @@ public interface IView {
           throws IllegalStateException, UnsupportedOperationException;
 
   void render() throws UnsupportedOperationException;
+
+  void setCanvas(int x, int y, int width, int height);
+
+  void play();
 }
