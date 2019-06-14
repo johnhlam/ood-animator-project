@@ -5,14 +5,8 @@ import java.awt.geom.Point2D;
 
 public interface IController {
 
-  void setTickRate(int tickRate);
+  void setTickRate(int tickRate) throws UnsupportedOperationException;
 
   void run();
-
-  Dimension getCanvasSize();
-
-  Point2D getTopXY();
-
-  Point2D getMaxXY();
 
 }

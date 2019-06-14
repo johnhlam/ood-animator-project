@@ -18,7 +18,7 @@ import cs3500.animator.view.IView;
 import cs3500.animator.view.SVGView;
 import cs3500.animator.view.TextView;
 
-public class ControllerImpl implements IController, ActionListener {
+public class TimerControllerImpl implements IController, ActionListener {
   private final IView view;
   private final IModel model;
   private Timer timer;
@@ -26,7 +26,7 @@ public class ControllerImpl implements IController, ActionListener {
   private int tick;
 
 
-  public ControllerImpl(IView view, IModel model, int tickRate) throws IllegalArgumentException {
+  public TimerControllerImpl(IView view, IModel model, int tickRate) throws IllegalArgumentException {
     if(view == null || model == null) {
       throw new IllegalArgumentException("Given view and/or model cannot be null");
     }
@@ -41,6 +41,8 @@ public class ControllerImpl implements IController, ActionListener {
 
     this.tick = 0; // Starts the tick count at 0
     this.timer = new Timer(1000 / this.tickRate, this);
+    this.view.setCanvas(model.getX(), model.getY(), model.getWidth(), model.getHeight());
+    this.view.setMaxWindowSize(model.getMaxX(), model.getMaxY());
   }
 
   @Override
@@ -52,28 +54,13 @@ public class ControllerImpl implements IController, ActionListener {
 
   @Override
   public void run() {
-
-  }
-
-  @Override
-  public Dimension getCanvasSize() {
-    return new Dimension(this.model.getWidth(), this.model.getHeight());
-  }
-
-  @Override
-  public Point2D getTopXY() {
-    return new Point(this.model.getX(), this.model.getY());
-  }
-
-  @Override
-  public Point2D getMaxXY() {
-    return new Point(this.model.getMaxX(), this.model.getMaxY());
+    this.timer.start();
   }
 
   @Override
   public void actionPerformed(ActionEvent e) {
     List<IReadOnlyShape> toRender = this.model.getShapesAtTick(tick++);
     this.view.setShapes(toRender);
-    this.view.render(); //TODO: Change to play later
+    this.view.play();
   }
 }
