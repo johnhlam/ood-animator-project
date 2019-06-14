@@ -138,6 +138,8 @@ public class IModelShapeImpl implements IModelShape {
    * end state as this motion's start state. If they do not have overlapping ticks, then it is
    * added. Additionally, if the index is 0, it is added as well.
    *
+   * @param motion is the motion to be inserted into this.motionList
+   * @param i is the index where the given motion is to be added
    * @throws IllegalArgumentException if the motion is adjacent to another and does not have
    *                                  matching states
    */

@@ -15,6 +15,7 @@ public interface IModelShape extends IReadOnlyShape {
    * the shape handles its motions for a given tick.
    *
    * @param tick the tick to update the shape to
+   * @return an IReadOnlyShape that contains this shape's state at the given tick
    * @throws IllegalArgumentException if the tick is negative
    */
   IReadOnlyShape getShapeAtTick(int tick) throws IllegalArgumentException;
