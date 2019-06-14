@@ -11,14 +11,6 @@ import java.util.List;
 public interface IView {
 
   /**
-   * Sets this IView's list of shapes to the given list.
-   *
-   * @param shapes is the List of IReadOnlyShapes that this IView will store.
-   * @throws IllegalArgumentException if the given List is null.
-   */
-  void setShapes(List<IReadOnlyShape> shapes) throws IllegalArgumentException;
-
-  /**
    * Sets the view's canvas size and starting x and y position. These values represent the window
    * in which an animation can be depicted (whether textual or visual).
    *
@@ -33,8 +25,11 @@ public interface IView {
    * Outputs however this view represents an animation. It could be textual in the form of SVG or
    * plain text, or visual in the form of drawn images. Details of how it is shown is left to be
    * defined by the implementing classes.
+   *
+   * @param shapes is the List of IReadOnlyShapes that this IView will display.
+   * @throws IllegalArgumentException if the given List is null.
    */
-  void play() throws RuntimeException;
+  void play(List<IReadOnlyShape> shapes) throws RuntimeException;
 
 
   void setMaxWindowSize(int width, int height) throws UnsupportedOperationException;

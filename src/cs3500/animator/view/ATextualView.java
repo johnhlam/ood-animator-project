@@ -19,7 +19,6 @@ public abstract class ATextualView implements IView {
   protected int y;
   protected int width;
   protected int height;
-  protected List<IReadOnlyShape> shapes;
   protected final Appendable ap;
 
   /**
@@ -35,28 +34,19 @@ public abstract class ATextualView implements IView {
       throw new IllegalArgumentException("Cannot pass in a null appendable for ATextualView");
     }
 
-    this.shapes = new ArrayList<>();
     this.ap = ap;
-  }
-
-  @Override
-  public void setShapes(List<IReadOnlyShape> shapes) throws IllegalArgumentException {
-    if (shapes == null) {
-      throw new IllegalArgumentException(
-          "Given list of read-only shapes for setShapes cannot be null");
-    }
-    this.shapes = shapes;
   }
 
   /**
    * Turns this view into a textual representation. Subclasses implementing this method should
    * append the textual output to this.ap.
    *
+   * @param shapes is the List of IReadOnlyShapes that this IView will display.
    * @throws IllegalStateException if this.ap is unable to be appended to, or is unable to
    * transmit output.
    */
   @Override
-  public abstract void play() throws RuntimeException;
+  public abstract void play(List<IReadOnlyShape> shapes) throws RuntimeException;
 
   @Override
   public void setCanvas(int x, int y, int width, int height) {

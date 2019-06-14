@@ -1,5 +1,7 @@
 package cs3500.animator.view;
 
+import java.util.List;
+
 import cs3500.animator.model.IMotion;
 import cs3500.animator.model.IReadOnlyShape;
 import cs3500.animator.model.ShapeType;
@@ -37,11 +39,12 @@ public class SVGView extends ATextualView {
    * Turns this view into a textual representation and appends the textual output to this.ap.
    * The textual representation is formatted based on the SVG file format documentation.
    *
+   * @param shapes is the List of IReadOnlyShapes that this IView will display.
    * @throws IllegalStateException if this.ap is unable to be appended to, or is unable to
    * transmit output.
    */
   @Override
-  public void play() throws IllegalStateException {
+  public void play(List<IReadOnlyShape> shapes) throws IllegalStateException {
     String xCoordinate = null;
     String yCoordinate = null;
     String widthAttribute = null;
@@ -50,7 +53,7 @@ public class SVGView extends ATextualView {
     this.attemptAppend("<svg width=\"" + width + "\" height=\"" + height
             + "\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n");
 
-    for (IReadOnlyShape shape : this.shapes) {
+    for (IReadOnlyShape shape : shapes) {
 
       // Checks what shape's ShapeType is and sets the attribute names (as String variables) to
       // their appropriate values.

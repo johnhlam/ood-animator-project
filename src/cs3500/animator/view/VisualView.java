@@ -14,12 +14,10 @@ public class VisualView extends JFrame implements IView {
   private int canvasHeight;
   private int maxX;
   private int maxY;
-  private List<IReadOnlyShape> shapes;
   private AnimationPanel panel;
   private JScrollPane scrollPane;
 
   public VisualView() {
-    this.shapes = new ArrayList<>();
 
     this.panel = new AnimationPanel();
     this.panel.setMinimumSize(new Dimension(canvasWidth, canvasHeight));
@@ -37,27 +35,21 @@ public class VisualView extends JFrame implements IView {
   }
 
   @Override
-  public void setShapes(List<IReadOnlyShape> shapes) throws IllegalArgumentException {
-    if (shapes == null) {
-      throw new IllegalArgumentException("Given shapes to setShapes is null");
-    }
-
-    this.shapes = shapes;
-
-  }
-
-  @Override
   public void setCanvas(int x, int y, int width, int height) {
     this.canvasWidth = width;
     this.canvasHeight = height;
   }
 
   @Override
-  public void play() throws RuntimeException {
+  public void play(List<IReadOnlyShape> shapes) throws RuntimeException {
+    if (shapes == null) {
+      throw new IllegalArgumentException("Given shapes to setShapes is null");
+    }
+
     if (this.panel == null) {
       throw new RuntimeException("Attempted to render a null panel");
     }
-    this.panel.draw(this.shapes);
+    this.panel.draw(shapes);
 
   }
 

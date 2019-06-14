@@ -1,5 +1,7 @@
 package cs3500.animator.view;
 
+import java.util.List;
+
 import cs3500.animator.model.IReadOnlyShape;
 
 /**
@@ -33,11 +35,16 @@ public class TextView extends ATextualView {
    * ... <i>other motions</i>... <br>
    * ... <i>other shapes</i>...
    *
+   * @param shapes is the List of IReadOnlyShapes that this IView will display.
    * @throws IllegalStateException if this.ap is unable to be appended to, or is unable to
    * transmit output.
    */
   @Override
-  public void play() throws RuntimeException {
+  public void play(List<IReadOnlyShape> shapes) throws RuntimeException {
+    if (shapes == null) {
+      throw new IllegalArgumentException(
+              "Given list of read-only shapes for setShapes cannot be null");
+    }
     this.attemptAppend("canvas ");
     this.attemptAppend(Integer.toString(x));
     this.attemptAppend(" ");
@@ -48,7 +55,7 @@ public class TextView extends ATextualView {
     this.attemptAppend(Integer.toString(height));
     this.attemptAppend("\n");
 
-    for(IReadOnlyShape s : this.shapes) {
+    for(IReadOnlyShape s : shapes) {
       this.attemptAppend(s.printMotions());
       this.attemptAppend("\n");
     }

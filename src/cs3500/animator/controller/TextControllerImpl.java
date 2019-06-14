@@ -36,7 +36,7 @@ public class TextControllerImpl implements IController {
 
   @Override
   public void run() {
-    
+
     this.view.play();
   }
 }
