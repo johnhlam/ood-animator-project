@@ -15,5 +15,4 @@ public interface IController {
 
   Point2D getMaxXY();
 
-  void setAppendable(Appendable ap);
 }

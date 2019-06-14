@@ -84,11 +84,34 @@ public class IModelShapeImpl implements IModelShape {
   /**
    * Creates the shape at the given tick based on this shape's motions. If no motion is found at the
    * given tick, the shape remains the same as its previous motion's final state.
+   * @return
+   * @throws IllegalArgumentException if the given tick is negative
    */
   @Override
   public IReadOnlyShape getShapeAtTick(int tick) throws IllegalArgumentException {
-    // left blank until we receive tweening function.
-    return null;
+    if(tick < 0) {
+      throw new IllegalArgumentException("Given tick to getShapeAtTick is negative");
+    }
+
+
+
+    IMotion motionAtTick = null;
+
+    for(IMotion curMotion : this.motionList) {
+
+    }
+
+    int xAtTick;
+    int yAtTick;
+    int widthAtTick;
+    int heightAtTick;
+    int redAtTick;
+    int greenAtTick;
+    int blueAtTick;
+    int colorAtTick = new Color(redAtTick, greenAtTick, blueAtTick);
+
+    return new IModelShapeImpl(this.id, this.type,
+        xAtTick, yAtTick, widthAtTick, heightAtTick, colorAtTick);
   }
 
   /**

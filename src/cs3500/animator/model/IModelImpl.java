@@ -45,6 +45,12 @@ public class IModelImpl implements IModel {
     // shapes to update each shapes in the list, so that stub is written in the shape interface
     // as well.
     ArrayList<IReadOnlyShape> list = new ArrayList<>(this.shapes);
+
+    ArrayList<IReadOnlyShape> shapesAtTick = new ArrayList<>();
+    for (IModelShape shape : this.shapes) {
+      shapesAtTick.add(shape.getShapeAtTick(tick));
+    }
+
     return list;
   }
 
