@@ -96,4 +96,6 @@ public interface IModel {
   int getHeight();
   int getMaxX();
   int getMaxY();
+
+  List<IReadOnlyShape> getShapes();
 }

@@ -93,21 +93,48 @@ public class IModelShapeImpl implements IModelShape {
       throw new IllegalArgumentException("Given tick to getShapeAtTick is negative");
     }
 
-
-
-    IMotion motionAtTick = null;
-
-    for(IMotion curMotion : this.motionList) {
-
+    // If the given tick is before any animations, then returns the initial state of the shape
+    if(tick < this.motionList.get(0).getStartTick()) {
+      return this;  
     }
 
-    int xAtTick;
-    int yAtTick;
-    int widthAtTick;
-    int heightAtTick;
-    int redAtTick;
-    int greenAtTick;
-    int blueAtTick;
+
+    double xAtTick;
+    double yAtTick;
+    double widthAtTick;
+    double heightAtTick;
+    Color colorAtTick;
+
+    IMotion lastMotion = this.motionList.get(this.motionList.size() - 1);
+    int lastTick = lastMotion.getEndTick();
+    // If the given tick is after all of the animations, then returns the last state of the shape
+    // (based on the last motion in the list)
+    if(tick > lastTick) {
+      xAtTick = lastMotion.getXAtTick(lastTick);
+      yAtTick = lastMotion.getYAtTick(lastTick);
+      widthAtTick = lastMotion.getWidthAtTick(lastTick);
+      heightAtTick = lastMotion.getHeightAtTick(lastTick);
+      colorAtTick = lastMotion.getColorAtTick(lastTick);
+      return new IModelShapeImpl(this.id, this.type,
+          xAtTick, yAtTick, widthAtTick, heightAtTick, colorAtTick);
+    }
+
+
+    // If the given tick is not before all of the animations, and isn't after all of the
+    // animations, then it must be during the animations
+    for(IMotion curMotion : this.motionList) {
+      if (tick >= curMotion.getStartTick() && tick <= curMotion.getEndTick()) {
+        xAtTick = curMotion.getXAtTick(tick);
+        yAtTick = curMotion.getYAtTick(tick);
+        widthAtTick = curMotion.getWidthAtTick(tick);
+        heightAtTick = curMotion.getHeightAtTick(tick);
+        colorAtTick = curMotion.getColorAtTick(tick);
+        return new IModelShapeImpl(this.id, this.type,
+            xAtTick, yAtTick, widthAtTick, heightAtTick, colorAtTick);
+      }
+    }
+
+   
     int colorAtTick = new Color(redAtTick, greenAtTick, blueAtTick);
 
     return new IModelShapeImpl(this.id, this.type,
