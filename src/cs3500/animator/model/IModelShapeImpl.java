@@ -84,61 +84,108 @@ public class IModelShapeImpl implements IModelShape {
   /**
    * Creates the shape at the given tick based on this shape's motions. If no motion is found at the
    * given tick, the shape remains the same as its previous motion's final state.
-   * @return
+   *
    * @throws IllegalArgumentException if the given tick is negative
    */
   @Override
   public IReadOnlyShape getShapeAtTick(int tick) throws IllegalArgumentException {
-    if(tick < 0) {
+    if (tick < 0) {
       throw new IllegalArgumentException("Given tick to getShapeAtTick is negative");
     }
-
-    // If the given tick is before any animations, then returns the initial state of the shape
-    if(tick < this.motionList.get(0).getStartTick()) {
-      return this;  
-    }
-
 
     double xAtTick;
     double yAtTick;
     double widthAtTick;
     double heightAtTick;
-    Color colorAtTick;
+    double redAtTick;
+    double greenAtTick;
+    double blueAtTick;
+    IModelShape shapeToReturn = null;
 
-    IMotion lastMotion = this.motionList.get(this.motionList.size() - 1);
-    int lastTick = lastMotion.getEndTick();
-    // If the given tick is after all of the animations, then returns the last state of the shape
-    // (based on the last motion in the list)
-    if(tick > lastTick) {
-      xAtTick = lastMotion.getXAtTick(lastTick);
-      yAtTick = lastMotion.getYAtTick(lastTick);
-      widthAtTick = lastMotion.getWidthAtTick(lastTick);
-      heightAtTick = lastMotion.getHeightAtTick(lastTick);
-      colorAtTick = lastMotion.getColorAtTick(lastTick);
-      return new IModelShapeImpl(this.id, this.type,
-          xAtTick, yAtTick, widthAtTick, heightAtTick, colorAtTick);
-    }
+    // If the given tick is before any animations, or if there are no motions in the list,
+    // then returns the initial state of the shape.
+    if (this.motionList.isEmpty() || tick < this.motionList.get(0).getStartTick()) {
+      return this;
+    } else if (tick > this.motionList.get(this.motionList.size() - 1).getEndTick()) {
+      // If the given tick is after all of the animations, then returns the last state of the shape
+      // (based on the last motion in the list)
 
+      IMotion lastMotion = this.motionList.get(this.motionList.size() - 1);
+      int startTick = lastMotion.getStartTick();
+      int lastTick = lastMotion.getEndTick();
 
-    // If the given tick is not before all of the animations, and isn't after all of the
-    // animations, then it must be during the animations
-    for(IMotion curMotion : this.motionList) {
-      if (tick >= curMotion.getStartTick() && tick <= curMotion.getEndTick()) {
-        xAtTick = curMotion.getXAtTick(tick);
-        yAtTick = curMotion.getYAtTick(tick);
-        widthAtTick = curMotion.getWidthAtTick(tick);
-        heightAtTick = curMotion.getHeightAtTick(tick);
-        colorAtTick = curMotion.getColorAtTick(tick);
-        return new IModelShapeImpl(this.id, this.type,
-            xAtTick, yAtTick, widthAtTick, heightAtTick, colorAtTick);
+      xAtTick = this.calculateParamAtTick(lastMotion.getStartX(), lastMotion.getEndX(),
+          tick, startTick, lastTick);
+      yAtTick = this.calculateParamAtTick(lastMotion.getStartY(), lastMotion.getEndY(),
+          tick, startTick, lastTick);
+      widthAtTick = this.calculateParamAtTick(lastMotion.getStartWidth(), lastMotion.getEndWidth(),
+          tick, startTick, lastTick);
+      heightAtTick = this
+          .calculateParamAtTick(lastMotion.getStartHeight(), lastMotion.getEndHeight(),
+              tick, startTick, lastTick);
+      redAtTick = this.calculateParamAtTick(lastMotion.getStartColor().getRed(),
+          lastMotion.getEndColor().getRed(), tick, startTick, lastTick);
+      greenAtTick = this.calculateParamAtTick(lastMotion.getStartColor().getGreen(),
+          lastMotion.getEndColor().getGreen(), tick, startTick, lastTick);
+      blueAtTick = this.calculateParamAtTick(lastMotion.getStartColor().getBlue(),
+          lastMotion.getEndColor().getBlue(), tick, startTick, lastTick);
+
+      shapeToReturn = new IModelShapeImpl(this.id,
+          this.type,
+          xAtTick,
+          yAtTick,
+          widthAtTick,
+          heightAtTick,
+          new Color((int) redAtTick, (int) greenAtTick, (int) blueAtTick));
+    } else {
+
+      // If the given tick is not before all of the animations, and isn't after all of the
+      // animations, then it must be during the animations
+      for (IMotion curMotion : this.motionList) {
+        if (tick >= curMotion.getStartTick() && tick <= curMotion.getEndTick()) {
+          int startTick = curMotion.getStartTick();
+          int lastTick = curMotion.getEndTick();
+
+          xAtTick = this.calculateParamAtTick(curMotion.getStartX(), curMotion.getEndX(),
+              tick, startTick, lastTick);
+          yAtTick = this.calculateParamAtTick(curMotion.getStartY(), curMotion.getEndY(),
+              tick, startTick, lastTick);
+          widthAtTick = this
+              .calculateParamAtTick(curMotion.getStartWidth(), curMotion.getEndWidth(),
+                  tick, startTick, lastTick);
+          heightAtTick = this
+              .calculateParamAtTick(curMotion.getStartHeight(), curMotion.getEndHeight(),
+                  tick, startTick, lastTick);
+          redAtTick = this.calculateParamAtTick(curMotion.getStartColor().getRed(),
+              curMotion.getEndColor().getRed(), tick, startTick, lastTick);
+          greenAtTick = this.calculateParamAtTick(curMotion.getStartColor().getGreen(),
+              curMotion.getEndColor().getGreen(), tick, startTick, lastTick);
+          blueAtTick = this.calculateParamAtTick(curMotion.getStartColor().getBlue(),
+              curMotion.getEndColor().getBlue(), tick, startTick, lastTick);
+          shapeToReturn = new IModelShapeImpl(this.id,
+              this.type,
+              xAtTick,
+              yAtTick,
+              widthAtTick,
+              heightAtTick,
+              new Color((int) redAtTick, (int) greenAtTick, (int) blueAtTick));
+          // Returns here to exit the loop
+          return shapeToReturn;
+        }
       }
     }
 
-   
-    int colorAtTick = new Color(redAtTick, greenAtTick, blueAtTick);
+    return shapeToReturn;
+  }
 
-    return new IModelShapeImpl(this.id, this.type,
-        xAtTick, yAtTick, widthAtTick, heightAtTick, colorAtTick);
+  private double calculateParamAtTick(double startParam, double endParam, int tick, int startTick,
+      int endTick) {
+    double frac1 = ((double) (endTick - tick)) / (endTick - startTick);
+    double frac2 = ((double) (tick - endTick)) / (endTick - startTick);
+
+    double newParam = (int) (startParam * frac1 + endParam * frac2);
+
+    return newParam;
   }
 
   /**
@@ -189,7 +236,7 @@ public class IModelShapeImpl implements IModelShape {
    * added. Additionally, if the index is 0, it is added as well.
    *
    * @param motion is the motion to be inserted into this.motionList
-   * @param i is the index where the given motion is to be added
+   * @param i      is the index where the given motion is to be added
    * @throws IllegalArgumentException if the motion is adjacent to another and does not have
    *                                  matching states
    */

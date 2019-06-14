@@ -181,34 +181,4 @@ public class IMotionImpl implements IMotion {
     return this.endColor;
   }
 
-
-  /**
-   * THE FOLLOWING METHODS WILL BE IMPLEMENTED AFTER THE TWEENING FUNCTION IS GIVEN TO US. RIGHT
-   * NOW THEY ARE STUBS!
-   */
-
-  @Override
-  public double getXAtTick(int tick) {
-    return 0;
-  }
-
-  @Override
-  public double getYAtTick(int tick) {
-    return 0;
-  }
-
-  @Override
-  public double getWidthAtTick(int tick) {
-    return 0;
-  }
-
-  @Override
-  public double getHeightAtTick(int tick) {
-    return 0;
-  }
-
-  @Override
-  public Color getColorAtTick(int tick) {
-    return null;
-  }
 }

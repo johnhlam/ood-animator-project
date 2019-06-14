@@ -98,4 +98,5 @@ public interface IModel {
   int getMaxY();
 
   List<IReadOnlyShape> getShapes();
+
 }

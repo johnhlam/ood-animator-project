@@ -101,45 +101,4 @@ public interface IMotion {
    * @return the color
    */
   Color getEndColor();
-
-  /**
-   * Returns the x position in the animation at the given tick based on start and end positions.
-   *
-   * @param tick the query tick
-   * @return the appropriate x coordinate
-   */
-  double getXAtTick(int tick);
-
-  /**
-   * Returns the y position in the animation at the given tick based on start and end positions.
-   *
-   * @param tick the query tick
-   * @return the appropriate y coordinate
-   */
-  double getYAtTick(int tick);
-
-  /**
-   * Returns the width in the animation at the given tick based on start and end sizes.
-   *
-   * @param tick the query tick
-   * @return the appropriate width value
-   */
-  double getWidthAtTick(int tick);
-
-  /**
-   * Returns the height in the animation at the given tick based on start and end sizes.
-   *
-   * @param tick the query tick
-   * @return the appropriate height value
-   */
-  double getHeightAtTick(int tick);
-
-  /**
-   * Returns the color in the animation at the given tick based on start and end colors.
-   *
-   * @param tick the query tick
-   * @return the appropriate color object
-   */
-  Color getColorAtTick(int tick);
-
 }

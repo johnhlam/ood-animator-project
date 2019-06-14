@@ -49,6 +49,10 @@ public class IModelImpl implements IModel {
     return shapesAtTick;
   }
 
+  private void ensureNoGaps() {
+    // TODO: Fill me in
+  }
+
   @Override
   public void removeMotionAtStartTick(int tick) throws IllegalArgumentException {
     //TODO: Fill in
