@@ -118,9 +118,7 @@ public class IModelShapeImpl implements IModelShape {
       yAtTick = lastMotion.getEndY();
       widthAtTick = lastMotion.getEndWidth();
       heightAtTick = lastMotion.getEndHeight();
-      redAtTick = lastMotion.getEndColor().getRed();
-      greenAtTick =  lastMotion.getEndColor().getGreen();
-      blueAtTick = lastMotion.getEndColor().getBlue();
+      Color lastColor = lastMotion.getEndColor();
 
       shapeToReturn = new IModelShapeImpl(this.id,
           this.type,
@@ -128,7 +126,7 @@ public class IModelShapeImpl implements IModelShape {
           heightAtTick,
           xAtTick,
           yAtTick,
-          new Color((int) redAtTick, (int) greenAtTick, (int) blueAtTick));
+          lastColor);
     } else {
 
       // If the given tick is not before all of the animations, and isn't after all of the
@@ -175,7 +173,7 @@ public class IModelShapeImpl implements IModelShape {
     double frac1 = ((double) (endTick - tick)) / (endTick - startTick);
     double frac2 = ((double) (tick - startTick)) / (endTick - startTick);
 
-    double newParam = (int) (startParam * frac1 + endParam * frac2);
+    double newParam = startParam * frac1 + endParam * frac2;
 
     return newParam;
   }

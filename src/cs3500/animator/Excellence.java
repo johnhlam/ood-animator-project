@@ -95,13 +95,13 @@ public class Excellence {
       AnimationBuilder<IModelImpl> builder =  IModelImpl.builder();
       model = AnimationReader.parseFile(new BufferedReader(new FileReader(
           "D:\\Documents\\COLLEGE\\Summer 1 2019\\CS 3500 - Object Oriented "
-              + "Design\\ood-animator-project\\src\\cs3500\\smalldemo.txt")), builder);
+              + "Design\\ood-animator-project\\src\\cs3500\\big-bang-big-crunch.txt")), builder);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
 
     IView newView = new VisualView(model.getWidth(), model.getHeight(), model.getMaxX(), model.getMaxY());
-    IController controller = new TimerControllerImpl(newView, model, 1);
+    IController controller = new TimerControllerImpl(newView, model, 20);
     controller.run();
 
 //D:/Documents/COLLEGE/Summer 1 2019/CS 3500 - Object Oriented "
