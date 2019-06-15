@@ -19,8 +19,9 @@ public interface IView {
    * @param y      the lowest y value for the animation
    * @param width  the width of the animation canvas
    * @param height the width of the animation canvas
+   * @throws IllegalArgumentException if the given width and/or height are negative
    */
-  void setCanvas(int x, int y, int width, int height);
+  void setCanvas(int x, int y, int width, int height) throws IllegalArgumentException;
 
   /**
    * Outputs however this view represents an animation. It could be textual in the form of SVG or

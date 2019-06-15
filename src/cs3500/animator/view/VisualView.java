@@ -101,6 +101,11 @@ public class VisualView extends JFrame implements IView {
 
   @Override
   public void setMaxWindowSize(int width, int height) {
+    if (width <= 0 || height <= 0) {
+      throw new IllegalArgumentException("Given width and height for VisualView#setWindowSize(int, "
+          + "int) cannot be non-positive");
+    }
+
     this.maxX = width;
     this.maxY = height;
   }
