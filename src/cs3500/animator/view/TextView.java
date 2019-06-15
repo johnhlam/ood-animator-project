@@ -10,6 +10,8 @@ import cs3500.animator.model.IReadOnlyShape;
  * described in the {@link TextView#play} method.
  */
 public class TextView extends ATextualView {
+
+  // x and y represent the lowest x and y values respectively.
   private int x;
   private int y;
 
@@ -17,6 +19,8 @@ public class TextView extends ATextualView {
    * Constructs an instance of TextView with the given Appendable.
    *
    * @param ap is the Appendable that the text output will be appended to.
+   * @param x is the lowest x value
+   * @param y is the lowest y value
    * @throws IllegalArgumentException if the given Appendable is null.
    */
   public TextView(Appendable ap, int x, int y) throws IllegalArgumentException {
@@ -39,13 +43,13 @@ public class TextView extends ATextualView {
    *
    * @param shapes is the List of IReadOnlyShapes that this IView will display.
    * @throws IllegalStateException if this.ap is unable to be appended to, or is unable to
-   * transmit output.
+   *                               transmit output.
    */
   @Override
   public void play(List<IReadOnlyShape> shapes) throws RuntimeException {
     if (shapes == null) {
       throw new IllegalArgumentException(
-              "Given list of read-only shapes for setShapes cannot be null");
+          "Given list of read-only shapes for setShapes cannot be null");
     }
     this.attemptAppend("canvas ");
     this.attemptAppend(Integer.toString(x));
@@ -57,7 +61,7 @@ public class TextView extends ATextualView {
     this.attemptAppend(Integer.toString(height));
     this.attemptAppend("\n");
 
-    for(IReadOnlyShape s : shapes) {
+    for (IReadOnlyShape s : shapes) {
       this.attemptAppend(s.printMotions());
       this.attemptAppend("\n");
     }

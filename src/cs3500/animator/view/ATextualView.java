@@ -15,16 +15,21 @@ import cs3500.animator.model.IReadOnlyShape;
  */
 public abstract class ATextualView implements IView {
 
+  // x is the lowest x value of the canvas
   protected int x;
+  // y is the lowest y value of the canvas
   protected int y;
+  // width is the width of the canvas
   protected int width;
+  // height is the height of the canvas
   protected int height;
   protected final Appendable ap;
 
   /**
    * Constructs an instance of ATextualView with the given Appendable, and an empty
-   * ArrayList of IReadOnlyShapes. Concrete classes calling this super constructor may choose to
-   * keep track of other information within themselves.
+   * ArrayList of IReadOnlyShapes. Once the Appendable is initialized, it cannot be changed.
+   * Concrete classes calling this super constructor may choose to keep track of other
+   * information within themselves.
    *
    * @param ap is the Appendable that text will be added to
    * @throws IllegalArgumentException if the given Appendable is null

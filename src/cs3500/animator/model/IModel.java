@@ -45,8 +45,8 @@ public interface IModel {
    *                                  tick
    */
   void addMotion(String id, int startTick, double startX, double startY, double startWidth,
-                 double startHeight, Color startColor, int endTick, double endX, double endY, double endWidth,
-                 double endHeight, Color endColor) throws IllegalArgumentException;
+      double startHeight, Color startColor, int endTick, double endX, double endY, double endWidth,
+      double endHeight, Color endColor) throws IllegalArgumentException;
 
   /**
    * Adds a shape to this model to be represented in an animation. Each shape is specified by an
@@ -63,7 +63,7 @@ public interface IModel {
    * @throws IllegalArgumentException if any of the arguments are null, or if the ID already exists
    */
   void addShape(String id, ShapeType shape, double width, double height, double x, double y,
-                Color color) throws IllegalArgumentException;
+      Color color) throws IllegalArgumentException;
 
   /**
    * Removes the shape and its associated motions with the given ID in the list. Throws an exception

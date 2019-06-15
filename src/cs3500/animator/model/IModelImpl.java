@@ -2,7 +2,6 @@ package cs3500.animator.model;
 
 import cs3500.animator.util.AnimationBuilder;
 import java.awt.Color;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,18 +14,36 @@ public class IModelImpl implements IModel {
   // A list of shapes that the model is currently representing as drawings/animations.
   private final List<IModelShape> shapes;
 
-  //
   private final int topX;
   private final int topY;
   private final int width;
   private final int height;
-  private double maxX;
-  private double maxY;
+  private final double maxX;
+  private final double maxY;
 
-  // TODO: Allow for no gaps by having motions come in order
-
+  /**
+   * Constructs an instance of this model with the given parameters.
+   *
+   * @param topX   is the lowest (left most) x-coordinate of the canvas
+   * @param topY   is the lowest (top most) y-coordinate of the canvas
+   * @param width  is the width of the canvas
+   * @param height is the height of the canvas
+   * @param maxX   is the highest (right most) x-coordinate of the canvas
+   * @param maxY   is the highest (bottom most) y-coordinate of the canvas
+   * @param shapes is the list of shapes that the model uses to represents drawings/animations
+   * @throws IllegalArgumentException if the given list of shapes is null, or if the given width
+   *                                  and/or height are not positive
+   */
   public IModelImpl(int topX, int topY, int width, int height, int maxX,
-   int maxY,  List<IModelShape> shapes) {
+      int maxY, List<IModelShape> shapes) throws IllegalArgumentException {
+    if (shapes == null) {
+      throw new IllegalArgumentException("Given list of shapes for IModelImpl cannot be null");
+    }
+
+    if (width <= 0 || height <= 0) {
+      throw new IllegalArgumentException("Given width and height to IModelImpl cannot be negative");
+    }
+
     this.topX = topX;
     this.topY = topY;
     this.width = width;
@@ -36,6 +53,9 @@ public class IModelImpl implements IModel {
     this.shapes = shapes;
   }
 
+  /**
+   * Constructs a default model with 0 for all numeric fields, and an empty list of shapes.
+   */
   public IModelImpl() {
     this(0, 0, 0, 0, 0, 0, new ArrayList<>());
   }
@@ -121,12 +141,12 @@ public class IModelImpl implements IModel {
 
   @Override
   public int getMaxX() {
-    return (int)this.maxX;
+    return (int) this.maxX;
   }
 
   @Override
   public int getMaxY() {
-    return (int)this.maxY;
+    return (int) this.maxY;
   }
 
   @Override
@@ -137,7 +157,8 @@ public class IModelImpl implements IModel {
 
   /**
    * Prints out each shape in this model with its ID followed by the motions it contains. Each
-   * motion is on a new line, and ouputs start and ending information about the shape. This includes
+   * motion is on a new line, and outputs start and ending information about the shape. This
+   * includes
    * tick, position, size, and color.
    *
    * @return the string representation of the animation
@@ -282,7 +303,7 @@ public class IModelImpl implements IModel {
      * Constructor for the Builder. Initializes the values it has to defaults. Defaults are
      * specified below.
      */
-    public Builder()  {
+    public Builder() {
       // Initializes topX and topY to 0 as default values, and width and height to 200 as default
       // values
       this.topX = 0;
@@ -315,7 +336,7 @@ public class IModelImpl implements IModel {
     @Override
     public AnimationBuilder<IModelImpl> declareShape(String name, String type) {
 
-      if(name == null || type == null) {
+      if (name == null || type == null) {
         throw new IllegalArgumentException("Arguments for declareShape cannot be null");
       }
 
@@ -335,7 +356,7 @@ public class IModelImpl implements IModel {
     public AnimationBuilder<IModelImpl> addMotion(String name, int t1, int x1, int y1, int w1,
         int h1, int r1, int g1, int b1, int t2, int x2, int y2, int w2, int h2, int r2, int g2,
         int b2) {
-      if(name == null) {
+      if (name == null) {
         throw new IllegalArgumentException("Arguments for addMotion cannot be null");
       }
 
