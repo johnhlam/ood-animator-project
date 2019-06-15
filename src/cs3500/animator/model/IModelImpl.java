@@ -25,16 +25,19 @@ public class IModelImpl implements IModel {
 
   // TODO: Allow for no gaps by having motions come in order
 
-  public IModelImpl(int topX, int topY, int width, int height, List<IModelShape> shapes) {
+  public IModelImpl(int topX, int topY, int width, int height, int maxX,
+   int maxY,  List<IModelShape> shapes) {
     this.topX = topX;
     this.topY = topY;
     this.width = width;
     this.height = height;
+    this.maxX = maxX;
+    this.maxY = maxY;
     this.shapes = shapes;
   }
 
   public IModelImpl() {
-    this(0, 0, 0, 0, new ArrayList<>());
+    this(0, 0, 0, 0, 0, 0, new ArrayList<>());
   }
 
   @Override
@@ -233,6 +236,9 @@ public class IModelImpl implements IModel {
     private int topY;
     private int width;
     private int height;
+    private int maxX;
+    private int maxY;
+
 
     public Builder()  {
       // Initializes topX and topY to 0 as default values, and width and height to 200 as default
@@ -241,6 +247,8 @@ public class IModelImpl implements IModel {
       this.topY = 0;
       this.width = 200;
       this.height = 200;
+      this.maxX = 0;
+      this.maxY = 0;
       this.shapes = new ArrayList<>();
 
     }
@@ -248,7 +256,8 @@ public class IModelImpl implements IModel {
     @Override
     public IModelImpl build() {
 
-      return new IModelImpl(this.topX, this.topY, this.width, this.height, this.shapes);
+      return new IModelImpl(this.topX, this.topY, this.width, this.height, this.maxX,
+          this.maxY, this.shapes);
     }
 
     @Override
@@ -283,6 +292,11 @@ public class IModelImpl implements IModel {
       if(name == null) {
         throw new IllegalArgumentException("Arguments for addMotion cannot be null");
       }
+
+      maxX = Math.max(maxX, x1 + w1);
+      maxX = Math.max(maxX, x2 + w2);
+      maxY = Math.max(maxY, y1 + h1);
+      maxY = Math.max(maxY, y2 + h2);
 
       for (IModelShape cur : this.shapes) {
         if (cur.getID().equals(name)) {

@@ -1,10 +1,5 @@
 package cs3500.animator.controller;
 
-import java.awt.*;
-import java.awt.geom.Point2D;
-
-import javax.swing.*;
-
 import cs3500.animator.model.IModel;
 import cs3500.animator.view.IView;
 

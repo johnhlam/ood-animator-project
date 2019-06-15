@@ -1,5 +1,7 @@
 package cs3500.animator.view;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.List;
 
 import cs3500.animator.model.IMotion;
@@ -28,10 +30,16 @@ public class SVGView extends ATextualView {
    *
    * @param ap is the Appendable that the text output will be appended to.
    * @param tickRate is the tickRate that the animation runs at
-   * @throws IllegalArgumentException if the given Appendable is null
+   * @throws IllegalArgumentException if the given Appendable is null, or if the given tickRate
+   * is not positive
    */
   public SVGView(Appendable ap, int tickRate) throws IllegalArgumentException {
     super(ap);
+
+    if(tickRate <= 0) {
+      throw new IllegalArgumentException("Given tickRate to SVGView is negative.");
+    }
+
     this.tickRate = tickRate;
   }
 
@@ -50,7 +58,7 @@ public class SVGView extends ATextualView {
     String widthAttribute = null;
     String heightAttribute = null;
 
-    this.attemptAppend("<svg width=\"" + width + "\" height=\"" + height
+    this.attemptAppend("<svg width=\"" + (width + x) + "\" height=\"" + (height + y)
             + "\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n");
 
     for (IReadOnlyShape shape : shapes) {
@@ -92,6 +100,13 @@ public class SVGView extends ATextualView {
     }
 
     this.attemptAppend("</svg>");
+
+//    try {
+//      ((OutputStreamWriter)(this.ap)).close();
+//    } catch (IOException e) {
+//    } catch (ClassCastException e) {
+//
+//    }
   }
 
   /**
@@ -154,9 +169,10 @@ public class SVGView extends ATextualView {
   private void svgAnimationText(String attributeName, String startTime, String duration,
                                 String fromVal, String toVal) {
     StringBuilder animationText = new StringBuilder();
-    animationText.append("<animate attributeType=\"xml\" begin=\"").append(startTime).append("\" ")
-            .append("dur=\"").append(duration).append("\" ").append("attributeName=\"").append(attributeName).append("\" from" +
-            "=\"")
+    animationText.append("<animate attributeType=\"xml\" begin=\"").append(startTime)
+        .append("ms\" ")
+            .append("dur=\"").append(duration).append("ms\" ")
+        .append("attributeName=\"").append(attributeName).append("\" from=\"")
             .append(fromVal).append("\" ").append("to=\"").append(toVal).append("\" fill=\"freeze" +
             "\" />\n");
     this.attemptAppend(animationText.toString());

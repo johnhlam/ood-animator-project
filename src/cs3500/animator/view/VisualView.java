@@ -27,15 +27,11 @@ public class VisualView extends JFrame implements IView {
     this.panel.setMinimumSize(new Dimension(this.canvasWidth, this.canvasHeight));
     this.panel.setPreferredSize(new Dimension(this.maxX, this.maxY));
 
-//    this.panel.setMinimumSize(new Dimension(100, 100));
-//    this.panel.setPreferredSize(new Dimension(500, 500));
+    super.setSize(this.canvasWidth, this.canvasHeight);
+    super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    super.setLocation(0, 0);
 
     this.scrollPane = new JScrollPane(this.panel);
-
-    super.setSize(this.canvasWidth, this.canvasHeight);
-//        super.setSize(500, 500);
-    super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    super.setLocation(canvasWidth / 2, canvasHeight / 2);
 
     super.add(scrollPane);
 
