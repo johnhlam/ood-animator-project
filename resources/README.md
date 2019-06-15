@@ -36,11 +36,11 @@ This class has a field of type ShapeType, which is an enum that represents what 
 
 This class also has contains a list of motions (motions specified below), which represent the states of this shape at any two given "start" and "end" ticks. It assumes and enforces the following invariants about the list:
 1. This list will always be sorted by tick (i.e. in chronological order) by inserting incoming motions in order.
-2. Any two adjacent motions (defined as two motions in the same list/same shape that have the same ending and starting tick values, with respect to their positions in the list) will have the same ending and starting states, with respect to their positions in the list. In other words, the motion that comes first in the list should have the same ending state as the starting state of the motion that comes *immediately after* it in the list, and vice versa. 
-3. There are no overlapping intervals between any two motions in this list. In the future, if it is the case that motions can overlap as long as they perform different actions (e.g. x-y movement vs color changing), we will enforce those rules, but for now, we disallow any overlapping motions based on tick. 
+2. Any two adjacent motions (defined as two motions in the same list/same shape that have the same ending and starting tick values, with respect to their positions in the list) will have the same ending and starting states, with respect to their positions in the list. In other words, the motion that comes first in the list should have the same ending state as the starting state of the motion that comes *immediately after* it in the list, and vice versa.
+3. There are no overlapping intervals between any two motions in this list. In the future, if it is the case that motions can overlap as long as they perform different actions (e.g. x-y movement vs color changing), we will enforce those rules, but for now, we disallow any overlapping motions based on tick.
 4. There are no gaps in the list, meaning that the previous motion's end tick must the same as the following motion's start tick (and vice versa). The list of motions does not necessarily have to begin at tick 0. Details of how the list of motions affects tweening are described below.
 
-In order to calculate the shape's state at a given tick, it uses the tweening function given by the assignment. If the list of motions is empty, then the shape will take the state of its fields (as in whatever it's other fields have been initialized as). If the given tick is before the first motion's start tick, then the state of the shape at the start tick of the first motion is returned. If the given tick is after the end tick of the last motion in the list, then the state of the shape at the end tick of the last motion is returned (freezing it on the screen after all motions have been completed). 
+In order to calculate the shape's state at a given tick, it uses the tweening function given by the assignment. If the list of motions is empty, then the shape will take the state of its fields (as in whatever it's other fields have been initialized as). If the given tick is before the first motion's start tick, then the state of the shape at the start tick of the first motion is returned. If the given tick is after the end tick of the last motion in the list, then the state of the shape at the end tick of the last motion is returned (freezing it on the screen after all motions have been completed).
 
 Since details for birth and death of shapes have not been specified, we have left it so that a shape is always on the screen until removed from the model's list.
 
@@ -61,20 +61,31 @@ The TextControllerImpl class implements the IController interface described abov
 ### TimerControllerImpl
 The TimerControllerImpl class implements the IController interface as well as the ActionListener interface. Like the TextControllerImpl, it stores exactly one IView and one IModel, which cannot be changed. Unlike the TextControllerImpl, it also stores a timer, a tick rate (in ticks/second), and a current tick. The timer is initialized with the tick rate (converted to milliseconds/tick), and this controller itself as the action listener. This class supports being able to change the tick rate, and if the tick rate is changed, the timer is adjusted accordingly. When the run method is called, the timer starts, and the controller begins relaying information between the model and view so that the view can draw an new image at every tick.
 
-We choose to create two separate controller classes because we felt that the differences between the visual view and the text-based views (text and svg) were too great to create a controller that could run both types of views effectively. The greatest distinction between the visual and text-based views were that the visual view required a timer that would allow it to be redrawn at every tick, while the text views did not. The text-based views needed to be played only once to generate their respective outputs, while the visual view needed to be played continuously to generate a smooth animation. Since the views were so different, we created a TextControllerImpl that would only be run once, and a TimerControllerImpl that would be run continuously once the timer started. 
+We choose to create two separate controller classes because we felt that the differences between the visual view and the text-based views (text and svg) were too great to create a controller that could run both types of views effectively. The greatest distinction between the visual and text-based views were that the visual view required a timer that would allow it to be redrawn at every tick, while the text views did not. The text-based views needed to be played only once to generate their respective outputs, while the visual view needed to be played continuously to generate a smooth animation. Since the views were so different, we created a TextControllerImpl that would only be run once, and a TimerControllerImpl that would be run continuously once the timer started.
 
 ## The View
 
 ### IView
+The IView interface is used to represent the "view" of an animation of shapes. Implementing classes should be able to process a given list of shapes into some kind of "view". The view does not necessarily have to represent the animation with images- it may choose to represent it using text or some other medium. It contains three methods that should be offered by implementing classes:
+1. A way to adjust the canvas size (by setting it to given values),
+2. A way to set the maximum window size (although not all implementations may choose to support this).
+3. A way to generate some type of output. This output can vary from implementation to implementation, but can range from a visual representation, to a textual representation.
+
 ### ATextualView
+ATextualView is an abstract class that implements the IView abstract class. It represents a view that outputs text in some form (be it by terminal, or by file). It stores the lowest x and y values of the canvas, and its width and height. It also stores an Appendable (which is final), to which textual output can be appended. Since it stores an Appendable, it is capable of outputting to various locations, such as a file (using some type of writer), or to the terminal (via System.out). It implements the method (from the interface) that adjusts the canvas size, as well as the method that sets the maximum window size (throwing an error in the latter case). It leaves the method for generating output to extending classes, as each class may have different formats for the text.
+
 ### TextView
+TextView is a class that extends the ATextualView abstract class. It stores no extra fields, and relies on the abstract class for storing information. It implements the play(List<IReadOnlyShape>) method (the method that generates output), by using each shape's print method (delegating to each shape), formats it according to the assignment's specifications, and appends it to the Appendable in the abstract class. See the assignment or Javadocs for details on how exactly the text is formatted.  
+
 ### SVGView
+SVGView is a class that extends the ATextualView abstract class. Along with the fields in the abstract class, it also stores a tick rate in ticks/second so that ticks for each animation can be converted into milliseconds, as the format requires. It implements the play(List<IReadOnlyShape>) using a few helper methods that ultimately format the text according to the [SVG documentation](https://www.w3.org/TR/SVG11/) and append it to the Appendable in the abstract class.
+
 ### VisualView
 ### IAnimationPanel
 ### AnimationPanel
 
 ## The Excellence (main) class
-
+** Talk about closing here **
 
 ### Misc.
 More minute details of the implementation (rules for constructing a shape or model, when smaller exceptions are thrown, how processes are coded, etc) are documented appropriately in the actual code.
