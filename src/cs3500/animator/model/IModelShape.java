@@ -28,4 +28,12 @@ public interface IModelShape extends IReadOnlyShape {
    * @throws IllegalArgumentException if the argument is null
    */
   void addMotion(IMotion motion) throws IllegalArgumentException;
+
+  /**
+   * Removes the motion with the given start tick from this shape's motions. If no motion is
+   * found for the start tick, nothing is done.
+   *
+   * @param startTick the starting tick of the motion
+   */
+  void removeMotion(int startTick);
 }

@@ -42,7 +42,9 @@ public class IModelImpl implements IModel {
 
   @Override
   public List<IReadOnlyShape> getShapesAtTick(int tick) throws IllegalArgumentException {
-    this.ensureNoGaps();
+    if (tick < 0) {
+      throw new IllegalArgumentException("Tick cannot be negative.");
+    }
     ArrayList<IReadOnlyShape> shapesAtTick = new ArrayList<>();
 
     for (IModelShape shape : this.shapes) {
@@ -52,18 +54,49 @@ public class IModelImpl implements IModel {
     return shapesAtTick;
   }
 
-  private void ensureNoGaps() {
-    // TODO: Fill me in
-  }
 
+  /**
+   * If no shape is found with the given ID or no motion is found with the given start tick,
+   * nothing is done.
+   */
   @Override
-  public void removeMotionAtStartTick(int tick) throws IllegalArgumentException {
-    //TODO: Fill in
+  public void removeMotionAtStartTick(String id, int startTick) throws IllegalArgumentException {
+    if (id == null) {
+      throw new IllegalArgumentException("ID cannot be null");
+    }
+
+    if (startTick < 0) {
+      throw new IllegalArgumentException("Start tick cannot be less than 0.");
+    }
+
+    for (IModelShape shape : this.shapes) {
+      if (shape.getID().equals(id)) {
+        shape.removeMotion(startTick);
+      }
+    }
   }
 
+  /**
+   * If no motion is found with the given start tick, nothing is done.
+   */
   @Override
   public List<IMotion> getMotionsAtTick(int tick) throws IllegalArgumentException {
-    return null; // TODO: Fill in
+    if (tick < 0) {
+      throw new IllegalArgumentException("Tick cannot be 0.");
+    }
+
+    List<IMotion> motionsToReturn = new ArrayList<IMotion>();
+    for (IModelShape shape : this.shapes) {
+      List<IMotion> motions = shape.getMotions();
+      for (int i = 0; i < motions.size(); i++) {
+        IMotion curMotion = motions.get(i);
+        if (tick > curMotion.getStartTick() && tick < curMotion.getEndTick()) {
+          motionsToReturn.add(curMotion);
+          break;
+        }
+      }
+    }
+    return motionsToReturn;
   }
 
   @Override
@@ -136,7 +169,8 @@ public class IModelImpl implements IModel {
    * in ticks.
    *
    * @throws IllegalArgumentException if the given motion's start or end ticks overlap with
-   *                                  pre-existing motions.
+   *                                  pre-existing motions or if the motion leaves a gap between
+   *                                  the previous motion.
    */
   @Override
   public void addMotion(String id,
@@ -154,15 +188,9 @@ public class IModelImpl implements IModel {
       throw new IllegalArgumentException("Ticks and sizes cannot be negative.");
     }
 
-    if (endTick <= startTick) {
+    if (endTick < startTick) {
       throw new IllegalArgumentException("End tick must come after start tick");
     }
-
-    // update largest x and y values
-    maxX = Math.max(maxX, startX + startWidth);
-    maxX = Math.max(maxX, endX + endWidth);
-    maxY = Math.max(maxY, startY + startHeight);
-    maxY = Math.max(maxY, endY + endHeight);
 
     for (IModelShape cur : this.shapes) {
       if (cur.getID().equals(id)) {
@@ -224,10 +252,20 @@ public class IModelImpl implements IModel {
     throw new IllegalArgumentException("Shape with the given id, " + id + ", cannot be found.");
   }
 
+  /**
+   * Returns a Builder object that can build instances of this model.
+   *
+   * @return a new Builder object
+   */
   public static Builder builder() {
     return new Builder();
   }
 
+  /**
+   * Represents an implementation of the AnimationBuilder that can construct instances of this
+   * model implementation by setting parameters and adding motions/shapes. The model is
+   * constructed with the build method.
+   */
   public final static class Builder implements AnimationBuilder<IModelImpl> {
 
     private List<IModelShape> shapes;
@@ -240,6 +278,10 @@ public class IModelImpl implements IModel {
     private int maxY;
 
 
+    /**
+     * Constructor for the Builder. Initializes the values it has to defaults. Defaults are
+     * specified below.
+     */
     public Builder()  {
       // Initializes topX and topY to 0 as default values, and width and height to 200 as default
       // values
@@ -285,6 +327,10 @@ public class IModelImpl implements IModel {
       return this;
     }
 
+    /**
+     * In this implementation, this method also updates the builder to keep track of the max x
+     * and y coordinates of the animation.
+     */
     @Override
     public AnimationBuilder<IModelImpl> addMotion(String name, int t1, int x1, int y1, int w1,
         int h1, int r1, int g1, int b1, int t2, int x2, int y2, int w2, int h2, int r2, int g2,
@@ -315,6 +361,9 @@ public class IModelImpl implements IModel {
       throw new IllegalArgumentException("Given ID could not be found");
     }
 
+    /**
+     * Left blank as instructed by professors and TAs.
+     */
     @Override
     public AnimationBuilder<IModelImpl> addKeyframe(String name, int t, int x, int y, int w, int h,
         int r, int g, int b) {

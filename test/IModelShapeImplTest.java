@@ -10,6 +10,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 /**
  * Tests the methods of IModelShapeImpl (as well as the methods of ShapeType).
@@ -160,6 +161,24 @@ public class IModelShapeImplTest {
   }
 
   /**
+   * Tests not being able to leave gap in motions
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testAddMotion2() {
+    assertEquals("shape R1 rectangle", this.rect1.printMotions());
+    // does not throw exception
+    this.rect1.addMotion(this.motion1);
+    assertEquals("shape R1 rectangle\nmotion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
+            "15.0 15.0 255 0 0", this.rect1.printMotions());
+    // throws exception
+    this.rect1.addMotion(this.motion4);
+    assertEquals("shape R1 rectangle\nmotion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
+                    "15.0 15.0 255 0 0\nmotion R1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 " +
+                    "15.0 255 0 0\nmotion R1 30 0.0 0.0 15.0 15.0 255 0 0\t40 0.0 0.0 15.0 15.0 255 0 0",
+            this.rect1.printMotions());
+  }
+
+  /**
    * Tests adding a motion.
    */
   @Test
@@ -185,78 +204,6 @@ public class IModelShapeImplTest {
         "15.0 255 0 0", this.rect1.printMotions());
   }
 
-  /**
-   * Tests adding an adjacent motion in the middle of a list.
-   */
-  @Test
-  public void testAddAdjMotion2() {
-    assertEquals("shape R1 rectangle", this.rect1.printMotions());
-    this.rect1.addMotion(this.motion1);
-    assertEquals("shape R1 rectangle\nmotion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-        "15.0 15.0 255 0 0", this.rect1.printMotions());
-    this.rect1.addMotion(this.motion5);
-    assertEquals("shape R1 rectangle\n" +
-            "motion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 15.0 15.0 255 0 0\n" +
-            "motion R1 50 58.4 34.2 15.3 15.6 255 200 0\t100 100.2 200.0 18.34 30.2 255 0 0",
-        this.rect1.printMotions());
-    this.rect1.addMotion(this.motion3);
-    assertEquals("shape R1 rectangle\n" +
-            "motion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 15.0 15.0 255 0 0\n" +
-            "motion R1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 15.0 255 0 0\n" +
-            "motion R1 50 58.4 34.2 15.3 15.6 255 200 0\t100 100.2 200.0 18.34 30.2 255 0 0",
-        this.rect1.printMotions());
-  }
-
-  /**
-   * Tests adding multiple motions in order (adding to end of the list).
-   */
-  @Test
-  public void testAddMotion2() {
-    assertEquals("shape R1 rectangle", this.rect1.printMotions());
-    this.rect1.addMotion(this.motion1);
-    assertEquals("shape R1 rectangle\nmotion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-        "15.0 15.0 255 0 0", this.rect1.printMotions());
-    this.rect1.addMotion(this.motion3);
-    assertEquals("shape R1 rectangle\nmotion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-        "15.0 15.0 255 0 0\nmotion R1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 " +
-        "15.0 255 0 0", this.rect1.printMotions());
-    this.rect1.addMotion(this.motion4);
-    assertEquals("shape R1 rectangle\nmotion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-            "15.0 15.0 255 0 0\nmotion R1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 " +
-            "15.0 255 0 0\nmotion R1 30 0.0 0.0 15.0 15.0 255 0 0\t40 0.0 0.0 15.0 15.0 255 0 0",
-        this.rect1.printMotions());
-  }
-
-  /**
-   * Tests adding multiple motions out of order will result in a sorted list.
-   */
-  @Test
-  public void testAddMotionsOutOfOrder() {
-    assertEquals("shape R1 rectangle", this.rect1.printMotions());
-    this.rect1.addMotion(this.motion5);
-    assertEquals("shape R1 rectangle\n" +
-            "motion R1 50 58.4 34.2 15.3 15.6 255 200 0\t100 100.2 200.0 18.34 30.2 255 0 0",
-        this.rect1.printMotions());
-    this.rect1.addMotion(this.motion1);
-    assertEquals("shape R1 rectangle\n" +
-            "motion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 15.0 15.0 255 0 0\n" +
-            "motion R1 50 58.4 34.2 15.3 15.6 255 200 0\t100 100.2 200.0 18.34 30.2 255 0 0",
-        this.rect1.printMotions());
-    this.rect1.addMotion(this.motion3);
-    assertEquals("shape R1 rectangle\n" +
-            "motion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 15.0 15.0 255 0 0\n" +
-            "motion R1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 15.0 255 0 0\n" +
-            "motion R1 50 58.4 34.2 15.3 15.6 255 200 0\t100 100.2 200.0 18.34 30.2 255 0 0",
-        this.rect1.printMotions());
-    this.rect1.addMotion(this.motion4);
-    assertEquals("shape R1 rectangle\n" +
-            "motion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 15.0 15.0 255 0 0\n" +
-            "motion R1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 15.0 255 0 0\n" +
-            "motion R1 30 0.0 0.0 15.0 15.0 255 0 0\t40 0.0 0.0 15.0 15.0 255 0 0\n" +
-            "motion R1 50 58.4 34.2 15.3 15.6 255 200 0\t100 100.2 200.0 18.34 30.2 255 0 0",
-        this.rect1.printMotions());
-  }
-
   @Test
   public void testPrintMotions() {
     assertEquals("shape E1 ellipse", this.ellipse1.printMotions());
@@ -268,24 +215,6 @@ public class IModelShapeImplTest {
     this.ellipse1.addMotion(this.motion1);
     assertEquals("shape E1 ellipse\nmotion E1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
         "15.0 15.0 255 0 0", this.ellipse1.printMotions());
-  }
-
-  @Test
-  public void testPrintMotions3() {
-    assertEquals("shape E1 ellipse", this.ellipse1.printMotions());
-    this.ellipse1.addMotion(this.motion1);
-    assertEquals("shape E1 ellipse\nmotion E1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-        "15.0 15.0 255 0 0", this.ellipse1.printMotions());
-    this.ellipse1.addMotion(this.motion3);
-    assertEquals("shape E1 ellipse\nmotion E1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-        "15.0 15.0 255 0 0\nmotion E1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 " +
-        "15.0 255 0 0", this.ellipse1.printMotions());
-    this.ellipse1.addMotion(this.motion4);
-    assertEquals("shape E1 ellipse\nmotion E1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-            "15.0 15.0 255 0 0\nmotion E1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 " +
-            "15.0 255 0 0\nmotion E1 30 0.0 0.0 15.0 15.0 255 0 0\t40 0.0 0.0 15.0 15.0 " +
-            "255 0 0",
-        this.ellipse1.printMotions());
   }
 
   @Test
@@ -358,6 +287,49 @@ public class IModelShapeImplTest {
     assertEquals(ShapeType.ELLIPSE, this.ellipse2.getType());
   }
 
+  @Test
+  public void testGetMotions() {
+    assertEquals(new ArrayList<IMotion>(), rect1.getMotions());
+  }
+
+  @Test
+  public void testGetMotions2() {
+    ellipse1.addMotion(this.motion1);
+    ArrayList<IMotion> res = new ArrayList<IMotion>();
+    res.add(this.motion1);
+    assertEquals(res, ellipse1.getMotions());
+  }
+
+  @Test
+  public void testRemoveMotion1() {
+    assertEquals(new ArrayList<IMotion>(), ellipse1.getMotions());
+    ellipse1.removeMotion(10);
+    assertEquals(new ArrayList<IMotion>(), ellipse1.getMotions());
+  }
+
+  /**
+   * Test that nothing happens when start tick isn't found
+   */
+  @Test
+  public void testRemoveMotion2() {
+    ellipse1.addMotion(this.motion1);
+    ArrayList<IMotion> temp = new ArrayList<IMotion>();
+    temp.add(this.motion1);
+    assertEquals(temp, ellipse1.getMotions());
+    ellipse1.removeMotion(3);
+    assertEquals(temp, ellipse1.getMotions());
+  }
+
+  @Test
+  public void testRemoveMotion3() {
+    ellipse1.addMotion(this.motion1);
+    ArrayList<IMotion> temp = new ArrayList<IMotion>();
+    temp.add(this.motion1);
+    assertEquals(temp, ellipse1.getMotions());
+    ellipse1.removeMotion(1);
+    assertEquals(new ArrayList<>(), ellipse1.getMotions());
+  }
+
   /**
    * Tests to make sure that calling typeToString on an RECTANGLE returns "rectangle".
    */
@@ -372,5 +344,37 @@ public class IModelShapeImplTest {
   @Test
   public void testTypeToStringEllipse() {
     assertEquals("ellipse", ShapeType.typeToString(ShapeType.ELLIPSE));
+  }
+
+  /**
+   * Tests that stringToType returns the right type
+   */
+  @Test
+  public void testRectangleStringType() {
+    assertEquals(ShapeType.RECTANGLE, ShapeType.stringToType("rectangle"));
+  }
+
+  /**
+   * Tests that stringToType returns the right type
+   */
+  @Test
+  public void testEllipseStringType() {
+    assertEquals(ShapeType.ELLIPSE, ShapeType.stringToType("ellipse"));
+  }
+
+  /**
+   * Tests an error is thrown when the string is not supported
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testBadStringType() {
+    ShapeType.stringToType("triangle");
+  }
+
+  /**
+   * Tests an error is thrown when the string is null
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testBadStringType2() {
+    ShapeType.stringToType(null);
   }
 }

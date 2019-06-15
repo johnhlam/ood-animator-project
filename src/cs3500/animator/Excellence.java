@@ -98,8 +98,7 @@ public class Excellence {
     try {
       AnimationBuilder<IModelImpl> builder =  IModelImpl.builder();
       model = AnimationReader.parseFile(new BufferedReader(new FileReader(
-          "D:\\Documents\\COLLEGE\\Summer 1 2019\\CS 3500 - Object Oriented "
-              + "Design\\ood-animator-project\\src\\cs3500\\toh-3.txt")), builder);
+          "smalldemo.txt")), builder);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }

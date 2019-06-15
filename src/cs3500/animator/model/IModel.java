@@ -24,8 +24,8 @@ public interface IModel {
   /**
    * Add a motion to the model for the given ID. Specific implementations of the model will have
    * different ways of doing so. Each implementation should further specify the details of this
-   * method. Throws exceptions if null arguments are give, or if either of the ticks are
-   * negative, or if the end tick comes before the start tick.
+   * method. Throws exceptions if null arguments are give, or if either of the ticks are negative,
+   * or if the end tick comes before the start tick.
    *
    * @param id          ID of the shape the motion belongs to
    * @param startTick   starting tick
@@ -41,12 +41,12 @@ public interface IModel {
    * @param endHeight   ending height
    * @param endColor    ending color
    * @throws IllegalArgumentException if arguments are null, or if ticks are negative, or if the ID
-   *                                  is not in the list, or if the end tick comes before the
-   *                                  start tick
+   *                                  is not in the list, or if the end tick comes before the start
+   *                                  tick
    */
   void addMotion(String id, int startTick, double startX, double startY, double startWidth,
-      double startHeight, Color startColor, int endTick, double endX, double endY, double endWidth,
-      double endHeight, Color endColor) throws IllegalArgumentException;
+                 double startHeight, Color startColor, int endTick, double endX, double endY, double endWidth,
+                 double endHeight, Color endColor) throws IllegalArgumentException;
 
   /**
    * Adds a shape to this model to be represented in an animation. Each shape is specified by an
@@ -63,7 +63,7 @@ public interface IModel {
    * @throws IllegalArgumentException if any of the arguments are null, or if the ID already exists
    */
   void addShape(String id, ShapeType shape, double width, double height, double x, double y,
-      Color color) throws IllegalArgumentException;
+                Color color) throws IllegalArgumentException;
 
   /**
    * Removes the shape and its associated motions with the given ID in the list. Throws an exception
@@ -78,7 +78,7 @@ public interface IModel {
    * Returns a copy of the model's shapes as a list at the given tick. Shapes are newly created and
    * are read only, meaning the shapes only have getters. A tick represents any given point in the
    * animation, and the model's list of shapes should represent the instance the shapes are in at
-   * the given tick.
+   * the given tick. Implementations should specify if extra exceptions are thrown.
    *
    * @param tick is the tick value for which each shape's state (at that tick) will be returned
    * @return a copy of the model's list of shapes
@@ -86,17 +86,74 @@ public interface IModel {
    */
   List<IReadOnlyShape> getShapesAtTick(int tick) throws IllegalArgumentException;
 
-  void removeMotionAtStartTick(int tick) throws IllegalArgumentException;
+  /**
+   * Removes the motion from the model at the given start tick from the shape whose ID matches the
+   * given one. If the ID cannot be found or is null, an IllegalArgumentException is thrown.
+   *
+   * @param id        the ID of the shape
+   * @param startTick the starting tick of the motion
+   * @throws IllegalArgumentException if the ID cannot be found or is null, or if the start tick is
+   *                                  negative
+   */
+  void removeMotionAtStartTick(String id, int startTick) throws IllegalArgumentException;
 
+
+  /**
+   * Gets a list of motions whose intervals contain the given tick.
+   *
+   * @param tick the tick of the motions
+   * @return the list of motions
+   * @throws IllegalArgumentException if the tick is negative
+   */
   List<IMotion> getMotionsAtTick(int tick) throws IllegalArgumentException;
 
+  /**
+   * Gets the starting X value of the animation.
+   *
+   * @return the starting x coordinate
+   */
   int getX();
+
+  /**
+   * Gets the starting Y value of the animation.
+   *
+   * @return the starting y coordinate
+   */
   int getY();
+
+  /**
+   * Gets the width of the animation canvas.
+   *
+   * @return the width
+   */
   int getWidth();
+
+  /**
+   * Gets the height of the animation canvas.
+   *
+   * @return the height
+   */
   int getHeight();
+
+  /**
+   * Gets the max y coordinate of the animation.
+   *
+   * @return the max x coordinate
+   */
   int getMaxX();
+
+  /**
+   * Gets the max y coordinate of the animation.
+   *
+   * @return the max x coordinate
+   */
   int getMaxY();
 
+  /**
+   * Returns a copy of the model's shapes in a read-only format.
+   *
+   * @return a list of the model's shapes, in read-only form
+   */
   List<IReadOnlyShape> getShapes();
 
 }
