@@ -162,7 +162,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests not being able to leave gap in motions
+   * Tests not being able to leave gap in motions.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotion2() {
@@ -309,7 +309,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Test that nothing happens when start tick isn't found
+   * Test that nothing happens when start tick isn't found.
    */
   @Test
   public void testRemoveMotion2() {
@@ -443,7 +443,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests that stringToType returns the right type
+   * Tests that stringToType returns the right type.
    */
   @Test
   public void testRectangleStringType() {
@@ -451,7 +451,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests that stringToType returns the right type
+   * Tests that stringToType returns the right type.
    */
   @Test
   public void testEllipseStringType() {
@@ -459,7 +459,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests an error is thrown when the string is not supported
+   * Tests an error is thrown when the string is not supported.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testBadStringType() {
@@ -467,7 +467,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests an error is thrown when the string is null
+   * Tests an error is thrown when the string is null.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testBadStringType2() {

@@ -38,11 +38,11 @@ public class Excellence {
    * Additionally, an output file and/or a speed can be specified optionally
    * (via "-out" <i>fileName</i> and "-speed" <i>tickRate</i>, respectively).
    *
-   * If an error occurs for whatever reason, a JOptionPane error dialog will popup describing
-   * what happened.
+   * <p>If an error occurs for whatever reason, a JOptionPane error dialog will popup describing
+   * what happened.</p>
    *
-   * See {@link Excellence.ArgsProcessor} for more details on what constitutes a valid command line
-   * argument, and how they are parsed.
+   * <p>See {@link Excellence.ArgsProcessor} for more details on what constitutes a valid command
+   * line argument, and how they are parsed.</p>
    *
    * @param args is a String[] of the command line arguments to be parsed into a view.
    */
@@ -71,8 +71,8 @@ public class Excellence {
       // If an exception is thrown while parseFile is called (for whatever reason), an error
       // popup will occur
       Excellence.errorPopup("Error: Model was unable to be built.\n"
-              + "Error message:\n"
-              + e.getMessage());
+          + "Error message:\n"
+          + e.getMessage());
       return;
     }
 
@@ -84,20 +84,20 @@ public class Excellence {
       switch (ArgsProcessor.view) {
         case "text":
           newView = new TextView(ArgsProcessor.out, model.getX(), model.getY());
-          controller = new TextControllerImpl(newView, model, ArgsProcessor.speed);
+          controller = new TextControllerImpl(newView, model);
           break;
         case "svg":
           newView = new SVGView(ArgsProcessor.out, ArgsProcessor.speed);
-          controller = new TextControllerImpl(newView, model, ArgsProcessor.speed);
+          controller = new TextControllerImpl(newView, model);
           break;
         case "visual":
           newView = new VisualView(
-                  model.getWidth(), model.getHeight(), model.getMaxX(), model.getMaxY());
+              model.getWidth(), model.getHeight(), model.getMaxX(), model.getMaxY());
           controller = new TimerControllerImpl(newView, model, ArgsProcessor.speed);
           break;
         default:
           Excellence.errorPopup("Error: Given view parameter: " + ArgsProcessor.view
-                  + " is not supported.");
+              + " is not supported.");
           return;
       }
     } catch (Exception e) {
@@ -105,20 +105,20 @@ public class Excellence {
       // an appropriate message. Examples of exceptions that might occur are negative tick rates
       // (speed), or null arguments.
       Excellence.errorPopup("Error: View and/or controller were unable to be constructed.\n"
-              + "Error message:\n"
-              + e.getMessage());
+          + "Error message:\n"
+          + e.getMessage());
       return;
     }
 
     controller.run();
 
     if ((ArgsProcessor.view.equals("text") || ArgsProcessor.view.equals("svg"))
-            && ArgsProcessor.outFlag) {
+        && ArgsProcessor.outFlag) {
       try {
         ((Closeable) (ArgsProcessor.out)).close();
       } catch (IOException e) {
         Excellence.errorPopup(
-                "Error occurred upon attempting to close the file writer for text based views.");
+            "Error occurred upon attempting to close the file writer for text based views.");
       }
     }
   }
@@ -166,7 +166,7 @@ public class Excellence {
           // Creates a popup in the case that an option is called without an argument directly
           // after it
           Excellence.errorPopup("Error: Attempted to call " + args[i]
-                  + " without an argument.");
+              + " without an argument.");
           return false;
 
         }
@@ -179,7 +179,7 @@ public class Excellence {
      * in the class.
      * Values for {@code option} can be one of "-in", "-view", "-out", or "-speed"
      *
-     * A JOptionPane error dialog will be generated, and the method will return false if:
+     * <p>A JOptionPane error dialog will be generated, and the method will return false if:
      * <ul>
      * <li>The given String {@code option} is not one of the above, or</li>
      * <li>The given String {@code option} has already been processed at an earlier point in the
@@ -190,9 +190,7 @@ public class Excellence {
      * cannot be generated (for whatever reason), or</li>
      * <li>The given {@code option} is "-speed", and the given {@code param} cannot be parsed as
      * an Integer.</li>
-     * </ul>
-     * (as in processed at an earlier point), then an appropriate popup dialog will appear, and
-     * the method will return false.
+     * </ul></p>
      *
      * @param option is the command line option that determines what {@code param} should represent
      * @param param  is the command line parameter that represents what will be stored in the class
@@ -234,23 +232,23 @@ public class Excellence {
             break;
           default:
             Excellence.errorPopup("Error: Attempted to call invalid command-line option, "
-                    + option + ".");
+                + option + ".");
         }
       } catch (FileNotFoundException e) {
         // Creates a popup in the case that creating a FileReader throws a FileNotFoundException
         Excellence.errorPopup("Error: Attempted to call " + option
-                + " with unknown file, " + param + ".");
+            + " with unknown file, " + param + ".");
 
       } catch (IOException e) {
         // Creates a popup in the case that creating a FileWriter throws a IOException
         Excellence.errorPopup("Error: Attempted to call: " + option +
-                " with file name, " + param + ", that could not be created.");
+            " with file name, " + param + ", that could not be created.");
 
       } catch (NumberFormatException e) {
         // Creates a popup in the case that creating a parsing the speed as an Integer throws a
         // NumberFormatException
         Excellence.errorPopup("Error: Attempted to call: " + option
-                + "with invalid number, " + param);
+            + "with invalid number, " + param);
       }
 
       // If you get here, an error was thrown, and/or a error popup was generated, meaning that
