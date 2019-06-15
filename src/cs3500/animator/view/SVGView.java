@@ -30,10 +30,16 @@ public class SVGView extends ATextualView {
    *
    * @param ap is the Appendable that the text output will be appended to.
    * @param tickRate is the tickRate that the animation runs at
-   * @throws IllegalArgumentException if the given Appendable is null
+   * @throws IllegalArgumentException if the given Appendable is null, or if the given tickRate
+   * is not positive
    */
   public SVGView(Appendable ap, int tickRate) throws IllegalArgumentException {
     super(ap);
+
+    if(tickRate <= 0) {
+      throw new IllegalArgumentException("Given tickRate to SVGView is negative.");
+    }
+
     this.tickRate = tickRate;
   }
 
