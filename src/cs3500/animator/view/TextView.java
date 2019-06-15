@@ -19,8 +19,8 @@ public class TextView extends ATextualView {
    * Constructs an instance of TextView with the given Appendable.
    *
    * @param ap is the Appendable that the text output will be appended to.
-   * @param x is the lowest x value
-   * @param y is the lowest y value
+   * @param x  is the lowest x value
+   * @param y  is the lowest y value
    * @throws IllegalArgumentException if the given Appendable is null.
    */
   public TextView(Appendable ap, int x, int y) throws IllegalArgumentException {

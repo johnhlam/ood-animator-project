@@ -13,8 +13,8 @@ import cs3500.animator.model.ShapeType;
  * SVGView stores an integer tickRate along with the fields in ATextualView for reference when
  * converting ticks to milliseconds (as the SVG format requires).
  *
- * The SVGView class currently does not support loopback, and animations will freeze on their end
- * states upon completion.
+ * <p>The SVGView class currently does not support loopback, and animations will freeze on their end
+ * states upon completion.</p>
  */
 public class SVGView extends ATextualView {
 

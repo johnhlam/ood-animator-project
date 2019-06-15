@@ -161,7 +161,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests not being able to leave gap in motions
+   * Tests not being able to leave gap in motions.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotion2() {
@@ -169,13 +169,13 @@ public class IModelShapeImplTest {
     // does not throw exception
     this.rect1.addMotion(this.motion1);
     assertEquals("shape R1 rectangle\nmotion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-            "15.0 15.0 255 0 0", this.rect1.printMotions());
+        "15.0 15.0 255 0 0", this.rect1.printMotions());
     // throws exception
     this.rect1.addMotion(this.motion4);
     assertEquals("shape R1 rectangle\nmotion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-                    "15.0 15.0 255 0 0\nmotion R1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 " +
-                    "15.0 255 0 0\nmotion R1 30 0.0 0.0 15.0 15.0 255 0 0\t40 0.0 0.0 15.0 15.0 255 0 0",
-            this.rect1.printMotions());
+            "15.0 15.0 255 0 0\nmotion R1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 " +
+            "15.0 255 0 0\nmotion R1 30 0.0 0.0 15.0 15.0 255 0 0\t40 0.0 0.0 15.0 15.0 255 0 0",
+        this.rect1.printMotions());
   }
 
   /**
@@ -308,7 +308,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Test that nothing happens when start tick isn't found
+   * Test that nothing happens when start tick isn't found.
    */
   @Test
   public void testRemoveMotion2() {
@@ -347,7 +347,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests that stringToType returns the right type
+   * Tests that stringToType returns the right type.
    */
   @Test
   public void testRectangleStringType() {
@@ -355,7 +355,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests that stringToType returns the right type
+   * Tests that stringToType returns the right type.
    */
   @Test
   public void testEllipseStringType() {
@@ -363,7 +363,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests an error is thrown when the string is not supported
+   * Tests an error is thrown when the string is not supported.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testBadStringType() {
@@ -371,7 +371,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests an error is thrown when the string is null
+   * Tests an error is thrown when the string is null.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testBadStringType2() {

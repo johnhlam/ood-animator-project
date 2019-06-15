@@ -1,7 +1,6 @@
 package cs3500.animator.view;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import cs3500.animator.model.IReadOnlyShape;
@@ -35,7 +34,7 @@ public abstract class ATextualView implements IView {
    * @throws IllegalArgumentException if the given Appendable is null
    */
   protected ATextualView(Appendable ap) throws IllegalArgumentException {
-    if(ap == null) {
+    if (ap == null) {
       throw new IllegalArgumentException("Cannot pass in a null appendable for ATextualView");
     }
 
@@ -48,17 +47,18 @@ public abstract class ATextualView implements IView {
    *
    * @param shapes is the List of IReadOnlyShapes that this IView will display.
    * @throws IllegalStateException if this.ap is unable to be appended to, or is unable to
-   * transmit output.
+   *                               transmit output.
    */
   @Override
   public abstract void play(List<IReadOnlyShape> shapes) throws RuntimeException;
 
   @Override
   public void setCanvas(int x, int y, int width, int height) {
-    if(width <= 0 || height <= 0) {
+    if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("Given width and height to ATextualView#setCanvas(...) "
           + "cannot be less than or equal to 0");
     }
+
     this.x = x;
     this.y = y;
     this.width = width;
@@ -70,12 +70,12 @@ public abstract class ATextualView implements IView {
    *
    * @param toBeAppended the String to be appended to this.ap.
    * @throws IllegalStateException if the given String could not be appended to this.ap (i.e. an
-   * IOException was thrown).
+   *                               IOException was thrown).
    */
   protected void attemptAppend(String toBeAppended) throws IllegalStateException {
     try {
       this.ap.append(toBeAppended);
-    } catch(IOException e) {
+    } catch (IOException e) {
       throw new IllegalStateException("Could not append String to Appendable.");
     }
   }

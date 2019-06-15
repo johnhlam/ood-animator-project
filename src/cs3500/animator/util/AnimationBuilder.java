@@ -1,5 +1,10 @@
 package cs3500.animator.util;
 
+/**
+ * An interface for a factory for building models.
+ *
+ * @param <Doc> is the type of the model that this builder will construct
+ */
 public interface AnimationBuilder<Doc> {
 
   /**

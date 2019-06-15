@@ -40,7 +40,7 @@ public class IModelImpl implements IModel {
       throw new IllegalArgumentException("Given list of shapes for IModelImpl cannot be null");
     }
 
-    if (width <= 0 || height <= 0) {
+    if (width < 0 || height < 0) {
       throw new IllegalArgumentException("Given width and height to IModelImpl cannot be negative");
     }
 
@@ -287,7 +287,7 @@ public class IModelImpl implements IModel {
    * model implementation by setting parameters and adding motions/shapes. The model is
    * constructed with the build method.
    */
-  public final static class Builder implements AnimationBuilder<IModelImpl> {
+  public static final class Builder implements AnimationBuilder<IModelImpl> {
 
     private List<IModelShape> shapes;
 

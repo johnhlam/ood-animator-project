@@ -13,8 +13,8 @@ public interface IController {
   /**
    * Sets the controller's tick rate the given value.
    *
-   * NOTE: This method is not used in this assignment. It was created in anticipation for a
-   * future assignment, where such an operation may need to be supported.
+   * <p>NOTE: This method is not used in this assignment. It was created in anticipation for a
+   * future assignment, where such an operation may need to be supported.</p>
    *
    * @param tickRate is the new tick rate
    * @throws UnsupportedOperationException if the controller does not support changing tick rates

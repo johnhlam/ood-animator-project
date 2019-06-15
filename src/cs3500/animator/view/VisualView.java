@@ -23,7 +23,6 @@ public class VisualView extends JFrame implements IView {
   private int maxX;
   private int maxY;
   private AnimationPanel panel;
-  private JScrollPane scrollPane;
 
   /**
    * Constructs a VisualView with the given parameters, each of which affect the final window
@@ -31,13 +30,14 @@ public class VisualView extends JFrame implements IView {
    * specified dimension, and a scroll bar along the right and the bottom. The created window
    * will be empty, until the {@link VisualView#play(List)} is called.
    *
-   * @param canvasWidth is the width of the panel
+   * @param canvasWidth  is the width of the panel
    * @param canvasHeight is the height of the panel
-   * @param maxX is the preferred size of the panel (maximum x value)
-   * @param maxY is the preferred size of the panel (maximum y value)
+   * @param maxX         is the preferred size of the panel (maximum x value)
+   * @param maxY         is the preferred size of the panel (maximum y value)
    * @throws IllegalArgumentException if either the width or height are not positive
    */
-  public VisualView(int canvasWidth, int canvasHeight, int maxX, int maxY) throws IllegalArgumentException {
+  public VisualView(int canvasWidth, int canvasHeight, int maxX, int maxY)
+      throws IllegalArgumentException {
 
     if (canvasWidth <= 0 || canvasHeight <= 0) {
       throw new IllegalArgumentException("Given width and/or height to VisualView is not positive");
@@ -48,7 +48,6 @@ public class VisualView extends JFrame implements IView {
     this.maxX = maxX;
     this.maxY = maxY;
 
-
     this.panel = new AnimationPanel();
     this.panel.setMinimumSize(new Dimension(this.canvasWidth, this.canvasHeight));
     this.panel.setPreferredSize(new Dimension(this.maxX, this.maxY));
@@ -58,7 +57,7 @@ public class VisualView extends JFrame implements IView {
     // Sets the default popup location of the window to the top-left corner of the screen
     super.setLocation(0, 0);
 
-    this.scrollPane = new JScrollPane(this.panel);
+    JScrollPane scrollPane = new JScrollPane(this.panel);
 
     super.add(scrollPane);
 
@@ -85,6 +84,14 @@ public class VisualView extends JFrame implements IView {
     this.canvasHeight = height;
   }
 
+  /**
+   * Renders the given list of shapes on the panel (the window) that the animation is being
+   * played on. Details of how each shape is drawn is left to the panel. This method should be
+   * called on every tick/frame of the animation.
+   *
+   * @param shapes is the List of IReadOnlyShapes that this IView will display.
+   * @throws RuntimeException if the given list of shapes is null, or the panel is null
+   */
   @Override
   public void play(List<IReadOnlyShape> shapes) throws RuntimeException {
     if (shapes == null) {

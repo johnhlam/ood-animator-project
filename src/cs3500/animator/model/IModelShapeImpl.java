@@ -263,8 +263,8 @@ public class IModelShapeImpl implements IModelShape {
     if (this.sameStateIfAdjacent(motion, motionList.get(this.motionList.size() - 1))) {
       this.motionList.add(motion);
     } else {
-      throw new IllegalArgumentException("Adjacent motions cannot disagree with end and start " +
-          "states.");
+      throw new IllegalArgumentException("Adjacent motions cannot disagree with end and start "
+          + "states.");
     }
   }
 

@@ -13,8 +13,7 @@ public class AnimationReader {
    * A factory for producing new animations, given a source of shapes and a
    * builder for constructing animations.
    *
-   * <p>
-   * The input file format consists of two types of lines:
+   * <p>The input file format consists of two types of lines:
    * <ul>
    * <li>Shape lines: the keyword "shape" followed by two identifiers (i.e.
    * alphabetic strings with no spaces), giving the unique name of the shape,
@@ -24,7 +23,7 @@ public class AnimationReader {
    * eight numbers giving the time, the x and y coordinates, the width and height,
    * and the red, green and blue color values at the start of the motion; followed by
    * eight numbers for the end of the motion.  See {@link AnimationBuilder#addMotion}</li>
-   * </ul>
+   * </ul></p>
    *
    * @param readable The source of data for the animation
    * @param builder  A builder for helping to construct a new animation

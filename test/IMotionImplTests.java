@@ -12,8 +12,10 @@ import static junit.framework.TestCase.assertEquals;
  */
 public class IMotionImplTests {
 
-  IMotion motion1 = new IMotionImpl(1, 20, 30, 15, 15, Color.BLACK, 10, 20, 30, 15, 15, Color.RED);
-  IMotion motion2 = new IMotionImpl(20, 5.5, 3.7, -20.2, 100.5, Color.BLUE, 50, 20.7, 30.3, 100.1,
+  IMotion motion1 = new IMotionImpl(1, 20, 30, 15, 15,
+      Color.BLACK, 10, 20, 30, 15, 15, Color.RED);
+  IMotion motion2 = new IMotionImpl(20, 5.5, 3.7, -20.2,
+      100.5, Color.BLUE, 50, 20.7, 30.3, 100.1,
       -5.1, Color.GREEN);
 
   /**
