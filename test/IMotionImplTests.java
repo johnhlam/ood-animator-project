@@ -93,7 +93,7 @@ public class IMotionImplTests {
    */
   @Test
   public void motionConstructorTest() {
-    assertEquals("1 15.0 15.0 20.0 30.0 0 0 0\t10 15.0 15.0 20.0 30.0 255 0 0",
+    assertEquals("1 15 15 20 30 0 0 0\t10 15 15 20 30 255 0 0",
         this.motion1.printMotion());
   }
 
@@ -102,8 +102,7 @@ public class IMotionImplTests {
    */
   @Test
   public void motionConstructorTest2() {
-    assertEquals("20 -20.2 100.5 5.5 3.7 0 0 255\t50 100.1 "
-            + "-5.1 20.7 30.3 0 255 0",
+    assertEquals("20 -20 100 5 3 0 0 255\t50 100 -5 20 30 0 255 0",
         this.motion2.printMotion());
   }
 
@@ -112,7 +111,7 @@ public class IMotionImplTests {
    */
   @Test
   public void testPrintMotion() {
-    assertEquals("1 15.0 15.0 20.0 30.0 0 0 0\t10 15.0 15.0 20.0 30.0 255 0 0",
+    assertEquals("1 15 15 20 30 0 0 0\t10 15 15 20 30 255 0 0",
         this.motion1.printMotion());
   }
 
@@ -121,8 +120,7 @@ public class IMotionImplTests {
    */
   @Test
   public void testPrintMotion2() {
-    assertEquals("20 -20.2 100.5 5.5 3.7 0 0 255\t50 100.1 "
-            + "-5.1 20.7 30.3 0 255 0",
+    assertEquals("20 -20 100 5 3 0 0 255\t50 100 -5 20 30 0 255 0",
         this.motion2.printMotion());
   }
 

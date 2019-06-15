@@ -2,13 +2,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.Color;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import cs3500.animator.model.IModel;
 import cs3500.animator.model.IModelImpl;
 import cs3500.animator.model.IModelShape;
 import cs3500.animator.model.IMotion;
 import cs3500.animator.model.IMotionImpl;
+import cs3500.animator.model.IReadOnlyShape;
 import cs3500.animator.model.ShapeType;
 import cs3500.animator.util.AnimationBuilder;
 
@@ -127,7 +130,7 @@ public class IModelImplTests {
 
     assertEquals(
             "shape R rectangle\n"
-                    + "motion R 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 40.0 60.0 0 255 255\n\n"
+                    + "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n\n"
                     + "shape C ellipse\n\n"
                     + "shape S rectangle",
             this.model1.printAnimations());
@@ -155,9 +158,9 @@ public class IModelImplTests {
 
     assertEquals(
             "shape R rectangle\n"
-                    + "motion R 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 40.0 60.0 0 255 255\n\n"
+                    + "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n\n"
                     + "shape C ellipse\n"
-                    + "motion C 20 30.0 40.0 0.0 0.0 255 200 0\t30 45.0 60.0 0.0 0.0 255 200 0\n\n"
+                    + "motion C 20 30 40 0 0 255 200 0\t30 45 60 0 0 255 200 0\n\n"
                     + "shape S rectangle",
             this.model1.printAnimations());
   }
@@ -187,11 +190,11 @@ public class IModelImplTests {
 
     assertEquals(
             "shape R rectangle\n" +
-                    "motion R 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 40.0 60.0 0 255 255\n" +
-                    "motion R 10 30.0 40.0 40.0 60.0 0 255 255\t30 50.0 60.0 80.0 120.0 0 255 0\n" +
+                    "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
+                    "motion R 10 30 40 40 60 0 255 255\t30 50 60 80 120 0 255 0\n" +
                     "\n" +
                     "shape C ellipse\n" +
-                    "motion C 20 30.0 40.0 0.0 0.0 255 200 0\t30 45.0 60.0 0.0 0.0 255 200 0\n" +
+                    "motion C 20 30 40 0 0 255 200 0\t30 45 60 0 0 255 200 0\n" +
                     "\n" +
                     "shape S rectangle",
             this.model1.printAnimations());
@@ -236,16 +239,16 @@ public class IModelImplTests {
 
     assertEquals(
             "shape R rectangle\n"
-                    + "motion R 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 40.0 60.0 0 255 255\n"
-                    + "motion R 20 50.0 60.0 80.0 120.0 0 255 255\t30 50.0 60.0 80.0 120.0 0 255 0\n\n"
+                    + "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n"
+                    + "motion R 20 50 60 80 120 0 255 255\t30 50 60 80 120 0 255 0\n\n"
                     + "shape C ellipse\n"
-                    + "motion C 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 10.0 20.0 255 200 0\n"
-                    + "motion C 10 30.0 40.0 10.0 20.0 255 200 0\t15 30.0 40.0 0.0 0.0 255 200 0\n"
-                    + "motion C 20 30.0 40.0 0.0 0.0 255 200 0\t30 45.0 60.0 0.0 0.0 255 200 0\n\n"
+                    + "motion C 1 30 40 10 20 0 255 255\t10 30 40 10 20 255 200 0\n"
+                    + "motion C 10 30 40 10 20 255 200 0\t15 30 40 0 0 255 200 0\n"
+                    + "motion C 20 30 40 0 0 255 200 0\t30 45 60 0 0 255 200 0\n\n"
                     + "shape S rectangle\n"
-                    + "motion S 10 30.0 40.0 10.0 10.0 255 0 0\t25 15.0 20.0 10.0 20.0 255 0 0\n"
-                    + "motion S 30 15.0 20.0 10.0 10.0 255 0 0\t35 15.0 20.0 6.0 7.0 255 0 0\n"
-                    + "motion S 35 15.0 20.0 6.0 7.0 255 0 0\t45 15.0 20.0 6.0 7.0 255 255 0",
+                    + "motion S 10 30 40 10 10 255 0 0\t25 15 20 10 20 255 0 0\n"
+                    + "motion S 30 15 20 10 10 255 0 0\t35 15 20 6 7 255 0 0\n"
+                    + "motion S 35 15 20 6 7 255 0 0\t45 15 20 6 7 255 255 0",
             this.model1.printAnimations());
   }
 
@@ -293,19 +296,19 @@ public class IModelImplTests {
 
     assertEquals(
             "shape R rectangle\n" +
-                    "motion R 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 40.0 60.0 0 255 255\n" +
-                    "motion R 10 30.0 40.0 40.0 60.0 0 255 255\t15 45.0 60.0 40.0 60.0 0 255 255\n" +
-                    "motion R 15 45.0 60.0 40.0 60.0 0 255 255\t30 50.0 60.0 80.0 120.0 0 255 0\n" +
+                    "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
+                    "motion R 10 30 40 40 60 0 255 255\t15 45 60 40 60 0 255 255\n" +
+                    "motion R 15 45 60 40 60 0 255 255\t30 50 60 80 120 0 255 0\n" +
                     "\n" +
                     "shape C ellipse\n" +
-                    "motion C 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 10.0 20.0 255 200 0\n" +
-                    "motion C 10 30.0 40.0 10.0 20.0 255 200 0\t15 30.0 40.0 0.0 0.0 255 200 0\n" +
-                    "motion C 15 30.0 40.0 0.0 0.0 255 200 0\t30 45.0 60.0 0.0 0.0 255 200 0\n" +
+                    "motion C 1 30 40 10 20 0 255 255\t10 30 40 10 20 255 200 0\n" +
+                    "motion C 10 30 40 10 20 255 200 0\t15 30 40 0 0 255 200 0\n" +
+                    "motion C 15 30 40 0 0 255 200 0\t30 45 60 0 0 255 200 0\n" +
                     "\n" +
                     "shape S rectangle\n" +
-                    "motion S 10 30.0 40.0 10.0 10.0 255 0 0\t25 15.0 20.0 10.0 20.0 255 0 0\n" +
-                    "motion S 25 15.0 20.0 10.0 20.0 255 0 0\t35 15.0 20.0 6.0 7.0 255 0 0\n" +
-                    "motion S 35 15.0 20.0 6.0 7.0 255 0 0\t45 15.0 20.0 6.0 7.0 255 255 0",
+                    "motion S 10 30 40 10 10 255 0 0\t25 15 20 10 20 255 0 0\n" +
+                    "motion S 25 15 20 10 20 255 0 0\t35 15 20 6 7 255 0 0\n" +
+                    "motion S 35 15 20 6 7 255 0 0\t45 15 20 6 7 255 255 0",
             this.model1.printAnimations());
   }
 
@@ -393,19 +396,19 @@ public class IModelImplTests {
             45, 15, 20, 6, 7, Color.YELLOW);
     assertEquals(
             "shape R rectangle\n" +
-                    "motion R 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 40.0 60.0 0 255 255\n" +
-                    "motion R 10 30.0 40.0 40.0 60.0 0 255 255\t15 45.0 60.0 40.0 60.0 0 255 255\n" +
-                    "motion R 15 45.0 60.0 40.0 60.0 0 255 255\t30 50.0 60.0 80.0 120.0 0 255 0\n" +
+                    "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
+                    "motion R 10 30 40 40 60 0 255 255\t15 45 60 40 60 0 255 255\n" +
+                    "motion R 15 45 60 40 60 0 255 255\t30 50 60 80 120 0 255 0\n" +
                     "\n" +
                     "shape C ellipse\n" +
-                    "motion C 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 10.0 20.0 255 200 0\n" +
-                    "motion C 10 30.0 40.0 10.0 20.0 255 200 0\t15 30.0 40.0 0.0 0.0 255 200 0\n" +
-                    "motion C 15 30.0 40.0 0.0 0.0 255 200 0\t30 45.0 60.0 0.0 0.0 255 200 0\n" +
+                    "motion C 1 30 40 10 20 0 255 255\t10 30 40 10 20 255 200 0\n" +
+                    "motion C 10 30 40 10 20 255 200 0\t15 30 40 0 0 255 200 0\n" +
+                    "motion C 15 30 40 0 0 255 200 0\t30 45 60 0 0 255 200 0\n" +
                     "\n" +
                     "shape S rectangle\n" +
-                    "motion S 10 30.0 40.0 10.0 10.0 255 0 0\t25 15.0 20.0 10.0 20.0 255 0 0\n" +
-                    "motion S 25 15.0 20.0 10.0 20.0 255 0 0\t35 15.0 20.0 6.0 7.0 255 0 0\n" +
-                    "motion S 35 15.0 20.0 6.0 7.0 255 0 0\t45 15.0 20.0 6.0 7.0 255 255 0",
+                    "motion S 10 30 40 10 10 255 0 0\t25 15 20 10 20 255 0 0\n" +
+                    "motion S 25 15 20 10 20 255 0 0\t35 15 20 6 7 255 0 0\n" +
+                    "motion S 35 15 20 6 7 255 0 0\t45 15 20 6 7 255 255 0",
             this.model1.printAnimations());
   }
 
@@ -875,7 +878,7 @@ public class IModelImplTests {
             10, 30, 40, 40, 60, Color.CYAN);
 
     assertEquals("shape R rectangle\n"
-                    + "motion R 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 40.0 60.0 0 255 255",
+                    + "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255",
             this.model1.printAnimations());
   }
 
@@ -895,7 +898,7 @@ public class IModelImplTests {
             10, 30, 40, 40, 60, Color.CYAN);
 
     assertEquals("shape R rectangle\n"
-                    + "motion R 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 40.0 60.0 0 255 255",
+                    + "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255",
             this.model1.printAnimations());
 
     this.model1.addMotion("R",
@@ -903,8 +906,8 @@ public class IModelImplTests {
             15, 45, 60, 40, 60, Color.CYAN);
 
     assertEquals("shape R rectangle\n"
-                    + "motion R 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 40.0 60.0 0 255 255\n"
-                    + "motion R 10 30.0 40.0 40.0 60.0 0 255 255\t15 45.0 60.0 40.0 60.0 0 255 255",
+                    + "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n"
+                    + "motion R 10 30 40 40 60 0 255 255\t15 45 60 40 60 0 255 255",
             this.model1.printAnimations());
   }
 
@@ -931,9 +934,9 @@ public class IModelImplTests {
             30, 50, 60, 80, 120, Color.GREEN);
 
     assertEquals("shape R rectangle\n" +
-                    "motion R 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 40.0 60.0 0 255 255\n" +
-                    "motion R 10 30.0 40.0 40.0 60.0 0 255 255\t15 45.0 60.0 40.0 60.0 0 255 255\n" +
-                    "motion R 15 45.0 60.0 40.0 60.0 0 255 255\t30 50.0 60.0 80.0 120.0 0 255 0",
+                    "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
+                    "motion R 10 30 40 40 60 0 255 255\t15 45 60 40 60 0 255 255\n" +
+                    "motion R 15 45 60 40 60 0 255 255\t30 50 60 80 120 0 255 0",
             this.model1.printAnimations());
   }
 
@@ -954,7 +957,7 @@ public class IModelImplTests {
             1, 0, 0, 0, 0, Color.BLACK);
 
     assertEquals("shape R rectangle\n"
-                    + "motion R 0 0.0 0.0 0.0 0.0 0 0 0\t1 0.0 0.0 0.0 0.0 0 0 0",
+                    + "motion R 0 0 0 0 0 0 0 0\t1 0 0 0 0 0 0 0",
             this.model1.printAnimations());
   }
 
@@ -1491,32 +1494,68 @@ public class IModelImplTests {
 
     assertEquals(
             "shape R rectangle\n" +
-                    "motion R 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 40.0 60.0 0 255 255\n" +
-                    "motion R 10 30.0 40.0 40.0 60.0 0 255 255\t15 45.0 60.0 40.0 60.0 0 255 255\n" +
-                    "motion R 15 45.0 60.0 40.0 60.0 0 255 255\t30 45.0 60.0 40.0 60.0 0 255 0\n" +
+                    "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
+                    "motion R 10 30 40 40 60 0 255 255\t15 45 60 40 60 0 255 255\n" +
+                    "motion R 15 45 60 40 60 0 255 255\t30 45 60 40 60 0 255 0\n" +
                     "\n" +
                     "shape C ellipse\n" +
-                    "motion C 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 10.0 20.0 255 200 0\n" +
-                    "motion C 10 30.0 40.0 10.0 20.0 255 200 0\t15 30.0 40.0 0.0 0.0 255 200 0\n" +
-                    "motion C 15 30.0 40.0 0.0 0.0 255 200 0\t30 45.0 60.0 0.0 0.0 255 200 0\n" +
+                    "motion C 1 30 40 10 20 0 255 255\t10 30 40 10 20 255 200 0\n" +
+                    "motion C 10 30 40 10 20 255 200 0\t15 30 40 0 0 255 200 0\n" +
+                    "motion C 15 30 40 0 0 255 200 0\t30 45 60 0 0 255 200 0\n" +
                     "\n" +
                     "shape S rectangle\n" +
-                    "motion S 10 30.0 40.0 10.0 10.0 255 0 0\t25 15.0 20.0 10.0 20.0 255 0 0\n" +
-                    "motion S 25 15.0 20.0 10.0 20.0 255 0 0\t35 15.0 20.0 6.0 7.0 255 0 0\n" +
-                    "motion S 35 15.0 20.0 6.0 7.0 255 0 0\t45 15.0 20.0 6.0 7.0 255 255 0",
+                    "motion S 10 30 40 10 10 255 0 0\t25 15 20 10 20 255 0 0\n" +
+                    "motion S 25 15 20 10 20 255 0 0\t35 15 20 6 7 255 0 0\n" +
+                    "motion S 35 15 20 6 7 255 0 0\t45 15 20 6 7 255 255 0",
             this.model1.printAnimations());
     this.model1.removeShape("R");
     assertEquals(
             "shape C ellipse\n" +
-                    "motion C 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 10.0 20.0 255 200 0\n" +
-                    "motion C 10 30.0 40.0 10.0 20.0 255 200 0\t15 30.0 40.0 0.0 0.0 255 200 0\n" +
-                    "motion C 15 30.0 40.0 0.0 0.0 255 200 0\t30 45.0 60.0 0.0 0.0 255 200 0\n" +
+                    "motion C 1 30 40 10 20 0 255 255\t10 30 40 10 20 255 200 0\n" +
+                    "motion C 10 30 40 10 20 255 200 0\t15 30 40 0 0 255 200 0\n" +
+                    "motion C 15 30 40 0 0 255 200 0\t30 45 60 0 0 255 200 0\n" +
                     "\n" +
                     "shape S rectangle\n" +
-                    "motion S 10 30.0 40.0 10.0 10.0 255 0 0\t25 15.0 20.0 10.0 20.0 255 0 0\n" +
-                    "motion S 25 15.0 20.0 10.0 20.0 255 0 0\t35 15.0 20.0 6.0 7.0 255 0 0\n" +
-                    "motion S 35 15.0 20.0 6.0 7.0 255 0 0\t45 15.0 20.0 6.0 7.0 255 255 0",
+                    "motion S 10 30 40 10 10 255 0 0\t25 15 20 10 20 255 0 0\n" +
+                    "motion S 25 15 20 10 20 255 0 0\t35 15 20 6 7 255 0 0\n" +
+                    "motion S 35 15 20 6 7 255 0 0\t45 15 20 6 7 255 255 0",
             this.model1.printAnimations());
+  }
+
+  @Test
+  public void testGetX() {
+    IModel model = this.builder.build();
+    assertEquals(0, model.getX());
+  }
+
+  @Test
+  public void testGetY() {
+    IModel model = this.builder.build();
+    assertEquals(0, model.getY());
+  }
+
+  @Test
+  public void testGetWidth() {
+    IModel model = this.builder.build();
+    assertEquals(200, model.getWidth());
+  }
+
+  @Test
+  public void testGetHeight() {
+    IModel model = this.builder.build();
+    assertEquals(200, model.getHeight());
+  }
+
+  @Test
+  public void testGetMaxX() {
+    IModel model = this.builder.build();
+    assertEquals(0, model.getMaxX());
+  }
+
+  @Test
+  public void testGetMaxY() {
+    IModel model = this.builder.build();
+    assertEquals(0, model.getMaxX());
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -1551,16 +1590,16 @@ public class IModelImplTests {
             30, 45, 60, 40, 60, Color.GREEN);
 
     assertEquals("shape R rectangle\n" +
-                    "motion R 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 40.0 60.0 0 255 255\n" +
-                    "motion R 10 30.0 40.0 40.0 60.0 0 255 255\t15 45.0 60.0 40.0 60.0 0 255 255\n" +
-                    "motion R 15 45.0 60.0 40.0 60.0 0 255 255\t30 45.0 60.0 40.0 60.0 0 255 0",
+                    "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
+                    "motion R 10 30 40 40 60 0 255 255\t15 45 60 40 60 0 255 255\n" +
+                    "motion R 15 45 60 40 60 0 255 255\t30 45 60 40 60 0 255 0",
             model1.printAnimations());
 
     this.model1.removeMotionAtStartTick("R", 15);
 
     assertEquals("shape R rectangle\n" +
-                    "motion R 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 40.0 60.0 0 255 255\n" +
-                    "motion R 10 30.0 40.0 40.0 60.0 0 255 255\t15 45.0 60.0 40.0 60.0 0 255 255",
+                    "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
+                    "motion R 10 30 40 40 60 0 255 255\t15 45 60 40 60 0 255 255",
             model1.printAnimations());
   }
 
@@ -1581,17 +1620,17 @@ public class IModelImplTests {
             30, 45, 60, 40, 60, Color.GREEN);
 
     assertEquals("shape R rectangle\n" +
-                    "motion R 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 40.0 60.0 0 255 255\n" +
-                    "motion R 10 30.0 40.0 40.0 60.0 0 255 255\t15 45.0 60.0 40.0 60.0 0 255 255\n" +
-                    "motion R 15 45.0 60.0 40.0 60.0 0 255 255\t30 45.0 60.0 40.0 60.0 0 255 0",
+                    "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
+                    "motion R 10 30 40 40 60 0 255 255\t15 45 60 40 60 0 255 255\n" +
+                    "motion R 15 45 60 40 60 0 255 255\t30 45 60 40 60 0 255 0",
             model1.printAnimations());
 
     this.model1.removeMotionAtStartTick("E", 15);
 
     assertEquals("shape R rectangle\n" +
-                    "motion R 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 40.0 60.0 0 255 255\n" +
-                    "motion R 10 30.0 40.0 40.0 60.0 0 255 255\t15 45.0 60.0 40.0 60.0 0 255 255\n" +
-                    "motion R 15 45.0 60.0 40.0 60.0 0 255 255\t30 45.0 60.0 40.0 60.0 0 255 0",
+                    "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
+                    "motion R 10 30 40 40 60 0 255 255\t15 45 60 40 60 0 255 255\n" +
+                    "motion R 15 45 60 40 60 0 255 255\t30 45 60 40 60 0 255 0",
             model1.printAnimations());
   }
 
@@ -1612,17 +1651,17 @@ public class IModelImplTests {
             30, 45, 60, 40, 60, Color.GREEN);
 
     assertEquals("shape R rectangle\n" +
-                    "motion R 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 40.0 60.0 0 255 255\n" +
-                    "motion R 10 30.0 40.0 40.0 60.0 0 255 255\t15 45.0 60.0 40.0 60.0 0 255 255\n" +
-                    "motion R 15 45.0 60.0 40.0 60.0 0 255 255\t30 45.0 60.0 40.0 60.0 0 255 0",
+                    "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
+                    "motion R 10 30 40 40 60 0 255 255\t15 45 60 40 60 0 255 255\n" +
+                    "motion R 15 45 60 40 60 0 255 255\t30 45 60 40 60 0 255 0",
             model1.printAnimations());
 
     this.model1.removeMotionAtStartTick("R", 2);
 
     assertEquals("shape R rectangle\n" +
-                    "motion R 1 30.0 40.0 10.0 20.0 0 255 255\t10 30.0 40.0 40.0 60.0 0 255 255\n" +
-                    "motion R 10 30.0 40.0 40.0 60.0 0 255 255\t15 45.0 60.0 40.0 60.0 0 255 255\n" +
-                    "motion R 15 45.0 60.0 40.0 60.0 0 255 255\t30 45.0 60.0 40.0 60.0 0 255 0",
+                    "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
+                    "motion R 10 30 40 40 60 0 255 255\t15 45 60 40 60 0 255 255\n" +
+                    "motion R 15 45 60 40 60 0 255 255\t30 45 60 40 60 0 255 0",
             model1.printAnimations());
   }
 
@@ -1673,6 +1712,158 @@ public class IModelImplTests {
   }
 
   /**
+   * Tests that getting shapes at a negative tick throws an exception
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testShapesAtNegTick(){
+    IModel model = this.builder.build();
+    model.getShapesAtTick(-2);
+  }
+
+  /**
+   * Tests that getting shapes at a given tick in an empty animation returns nothing
+   */
+  @Test
+  public void testNoShapesTween(){
+    IModel model = this.builder.build();
+    assertEquals(new ArrayList<IReadOnlyShape>(), model.getShapesAtTick(1));
+  }
+
+  /**
+   * Tests that getting shapes at a given tick with no motions inside returns the same shapes
+   */
+  @Test
+  public void testShapesNoMotionsTween(){
+    this.builder.declareShape("R", "rectangle");
+    this.builder.declareShape("E", "ellipse");
+    IModel model = this.builder.build();
+    List<IReadOnlyShape> res = new ArrayList<>();
+    res.add(model.getShapes().get(0));
+    res.add(model.getShapes().get(1));
+    assertEquals(res, model.getShapesAtTick(1));
+  }
+
+  /**
+   * Tests that tweening a shape at a tick before its first motion returns the start state of the
+   * first motion
+   */
+  @Test
+  public void testShapesBeforeFirstMotion() {
+    this.builder.declareShape("R", "rectangle");
+    this.builder.addMotion("R",10, 0, 0, 15, 15, 255, 0, 0, 20, 15, 15, 0, 0, 255, 0 ,0);
+    IModel model = this.builder.build();
+    List<IReadOnlyShape> shapes = model.getShapesAtTick(3);
+    IReadOnlyShape shape = shapes.get(0);
+
+    assertEquals(15, shape.getWidth(), .001);
+    assertEquals(15, shape.getHeight(), .001);
+    assertEquals(0, shape.getX(), .001);
+    assertEquals(0, shape.getY(), .001);
+    assertEquals(Color.red, shape.getColor());
+  }
+
+  /**
+   * Tests that tweening a shape at a tick after its last motion returns the end state of the
+   * last motion
+   */
+  @Test
+  public void testShapesAfterLastMotion() {
+    this.builder.declareShape("R", "rectangle");
+    this.builder.addMotion("R",10, 0, 0, 15, 15, 255, 0, 0, 20, 15, 15, 0, 0, 255, 0 ,0);
+    IModel model = this.builder.build();
+    List<IReadOnlyShape> shapes = model.getShapesAtTick(40);
+    IReadOnlyShape shape = shapes.get(0);
+
+    assertEquals(0, shape.getWidth(), .001);
+    assertEquals(0, shape.getHeight(), .001);
+    assertEquals(15, shape.getX(), .001);
+    assertEquals(15, shape.getY(), .001);
+    assertEquals(Color.red, shape.getColor());
+  }
+
+  /**
+   * Tests that tweening a shape during a motion returns the correct output
+   */
+  @Test
+  public void testShapesDuringMotion() {
+    this.builder.declareShape("R", "rectangle");
+    this.builder.addMotion("R",10, 0, 0, 15, 15, 255, 0, 0, 20, 15, 15, 0, 0, 255, 0 ,0);
+    IModel model = this.builder.build();
+    List<IReadOnlyShape> shapes = model.getShapesAtTick(10);
+    IReadOnlyShape shape = shapes.get(0);
+
+    assertEquals(15, shape.getWidth(), .001);
+    assertEquals(15, shape.getHeight(), .001);
+    assertEquals(0, shape.getX(), .001);
+    assertEquals(0, shape.getY(), .001);
+    assertEquals(Color.red, shape.getColor());
+  }
+
+  /**
+   * Tests that tweening a shape during a motion returns the correct output
+   */
+  @Test
+  public void testShapesDuringMotion2() {
+    this.builder.declareShape("R", "rectangle");
+    this.builder.addMotion("R",10, 0, 0, 15, 15, 255, 0, 0, 20, 15, 15, 0, 0, 255, 0 ,0);
+    IModel model = this.builder.build();
+    List<IReadOnlyShape> shapes = model.getShapesAtTick(20);
+    IReadOnlyShape shape = shapes.get(0);
+
+    assertEquals(0, shape.getWidth(), .001);
+    assertEquals(0, shape.getHeight(), .001);
+    assertEquals(15, shape.getX(), .001);
+    assertEquals(15, shape.getY(), .001);
+    assertEquals(Color.red, shape.getColor());
+  }
+
+  /**
+   * Tests that tweening a shape during a motion returns the correct output (including with
+   * negative numbers)
+   */
+  @Test
+  public void testShapesDuringMotion3() {
+    this.builder.declareShape("R", "rectangle");
+    this.builder.addMotion("R",10, -2, 3, 10, 30, 0, 255, 0, 40, 0, 0, 15, 15, 255, 0 ,0);
+    IModel model = this.builder.build();
+    List<IReadOnlyShape> shapes = model.getShapesAtTick(15);
+    IReadOnlyShape shape = shapes.get(0);
+
+    assertEquals(11, shape.getWidth(), .001);
+    assertEquals(28, shape.getHeight(), .001);
+    assertEquals(-2, shape.getX(), .001);
+    assertEquals(3, shape.getY(), .001);
+    assertEquals(new Color(43, 213, 0), shape.getColor());
+  }
+
+  /**
+   * Tests that tweening an animation with multiple shapes functions as expected
+   */
+  @Test
+  public void testShapesDuringMotion4() {
+    this.builder.declareShape("R", "rectangle");
+    this.builder.declareShape("E", "ellipse");
+    this.builder.addMotion("E",10, 0, 0, 15, 15, 255, 0, 0, 20, 15, 15, 0, 0, 255, 0 ,0);
+    this.builder.addMotion("R",10, -2, 3, 10, 30, 0, 255, 0, 40, 0, 0, 15, 15, 255, 0 ,0);
+    IModel model = this.builder.build();
+    List<IReadOnlyShape> shapes = model.getShapesAtTick(20);
+    IReadOnlyShape shape = shapes.get(0);
+    IReadOnlyShape shape2 = shapes.get(1);
+
+    assertEquals(12, shape.getWidth(), .001);
+    assertEquals(25, shape.getHeight(), .001);
+    assertEquals(-1, shape.getX(), .001);
+    assertEquals(2, shape.getY(), .001);
+    assertEquals(new Color(85, 170, 0), shape.getColor());
+
+    assertEquals(0, shape2.getWidth(), .001);
+    assertEquals(0, shape2.getHeight(), .001);
+    assertEquals(15, shape2.getX(), .001);
+    assertEquals(15, shape2.getY(), .001);
+    assertEquals(Color.red, shape2.getColor());
+  }
+
+  /**
    * Tests a builder constructs a model with default values when being called with build.
    */
   @Test
@@ -1715,8 +1906,297 @@ public class IModelImplTests {
     assertEquals(new ArrayList<IModelShape>(), model.getShapes());
   }
 
+  /**
+   * Tests that an exception is thrown given a null shape type
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void declareShapeNullShape() {
+    this.builder.declareShape("B", null);
+  }
+
+  /**
+   * Tests that an exception is thrown given a null ID
+   */
   @Test(expected = IllegalArgumentException.class)
   public void declareShapeNullID() {
     this.builder.declareShape(null, "rectangle");
+  }
+
+  /**
+   * Tests that an exception is thrown given a null ID and null shape type
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void declareShapeNullIDNullShape() {
+    this.builder.declareShape(null, null);
+  }
+
+  /**
+   * Tests that an exception is thrown given an invalid shape type string
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void declareShapeBadString() {
+    this.builder.declareShape("R", "triangle");
+  }
+
+  /**
+   * Tests that declaring a shape actually adds it to the model to build
+   */
+  @Test
+  public void declareShape() {
+    IModel model = this.builder.build();
+    assertEquals(0, model.getX());
+    assertEquals(0, model.getY());
+    assertEquals(200, model.getWidth());
+    assertEquals(200, model.getHeight());
+    assertEquals(0, model.getMaxX());
+    assertEquals(0, model.getMaxY());
+    assertEquals(new ArrayList<IModelShape>(), model.getShapes());
+    this.builder.declareShape("R", "rectangle");
+    model = this.builder.build();
+    assertEquals(0, model.getX());
+    assertEquals(0, model.getY());
+    assertEquals(200, model.getWidth());
+    assertEquals(200, model.getHeight());
+    assertEquals(0, model.getMaxX());
+    assertEquals(0, model.getMaxY());
+    assertEquals(ShapeType.RECTANGLE, model.getShapes().get(0).getType());
+    assertEquals("R", model.getShapes().get(0).getID());
+  }
+
+  /**
+   * Tests that declaring multiple shapes
+   */
+  @Test
+  public void declareShape2() {
+    IModel model = this.builder.build();
+    assertEquals(0, model.getX());
+    assertEquals(0, model.getY());
+    assertEquals(200, model.getWidth());
+    assertEquals(200, model.getHeight());
+    assertEquals(0, model.getMaxX());
+    assertEquals(0, model.getMaxY());
+    assertEquals(new ArrayList<IModelShape>(), model.getShapes());
+    this.builder.declareShape("R", "rectangle");
+    this.builder.declareShape("E", "ellipse");
+    this.builder.declareShape("R2", "rectangle");
+    model = this.builder.build();
+    assertEquals(0, model.getX());
+    assertEquals(0, model.getY());
+    assertEquals(200, model.getWidth());
+    assertEquals(200, model.getHeight());
+    assertEquals(0, model.getMaxX());
+    assertEquals(0, model.getMaxY());
+    assertEquals(ShapeType.RECTANGLE, model.getShapes().get(0).getType());
+    assertEquals("R", model.getShapes().get(0).getID());
+    assertEquals(ShapeType.ELLIPSE, model.getShapes().get(1).getType());
+    assertEquals("E", model.getShapes().get(1).getID());
+    assertEquals(ShapeType.RECTANGLE, model.getShapes().get(2).getType());
+    assertEquals("R2", model.getShapes().get(2).getID());
+  }
+
+  /**
+   * Tests that an exception is thrown when addMotion given a null ID
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testNullMotionID() {
+    this.builder.addMotion(null, 1 ,0 ,0,0,0, 0, 0, 0,
+            20 ,0 ,0,0,0, 0, 0, 0);
+  }
+
+  /**
+   * Tests that an exception is thrown when adding motion to an empty model
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testAddMotionEmptyModel() {
+    this.builder.addMotion("R", 1 ,0 ,0,0,0, 0, 0, 0,
+            20 ,0 ,0,0,0, 0, 0, 0);
+  }
+
+  /**
+   * Tests that an exception is thrown when adding motion to a non-existent ID
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testAddMotionNoID() {
+    this.builder.declareShape("E", "ellipse");
+    this.builder.addMotion("R", 1 ,0 ,0,0,0, 0, 0, 0,
+            20 ,0 ,0,0,0, 0, 0, 0);
+  }
+
+  /**
+   * Tests that an exception is thrown when motion has negative start values
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testAddMotionNegativeStart() {
+    this.builder.declareShape("E", "ellipse");
+    this.builder.addMotion("E", -4 ,-2,-3, -2, -2, -2,
+            2,-2 ,0 ,0,0,0, 0, 0, 0, 0);
+  }
+
+  /**
+   * Tests that an exception is thrown when motion has negative end values
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testAddMotionNegativeEnd() {
+    this.builder.declareShape("E", "ellipse");
+    this.builder.addMotion("E", 1, 2, 2, 0, 0, 0, 0, 0,
+            -10, 2, 3, -2, -2, -2, -2, -2);
+  }
+
+  /**
+   * Tests that adding an overlapping motion throws an exception
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testBuilderOverlapMotion() {
+    this.builder.declareShape("R", "rectangle");
+    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0 ,0,10, 40, 40, 40, 40, 0, 0, 0);
+    this.builder.addMotion("R", 4, 20, 20, 30, 40, 255, 0 ,0,10, 40, 40, 40, 40, 0, 0, 0);
+  }
+
+  /**
+   * Tests that adding a motion but leaving a gap throws an exception
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testBuilderGapMotion() {
+    this.builder.declareShape("R", "rectangle");
+    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0 ,0,10, 40, 40, 40, 40, 0, 0, 0);
+    this.builder.addMotion("R", 15, 20, 20, 30, 40, 255, 0 ,0,10, 40, 40, 40, 40, 0, 0, 0);
+  }
+
+  /**
+   * Tests that adding two motions with adjacent ticks but disagreeing states throws an error
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testBuilderBadAdjMotions() {
+    this.builder.declareShape("R", "rectangle");
+    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0 ,0,10, 40, 40, 40, 40, 0, 0, 0);
+    this.builder.addMotion("R", 10, 20, 20, 30, 40, 255, 0 ,0,10, 40, 40, 40, 40, 0, 0, 0);
+  }
+
+  /**
+   * Tests that adding a motion with end tick before start tick throws an exception
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testBuilderBadEndTick() {
+    this.builder.declareShape("R", "rectangle");
+    this.builder.addMotion("R", 10, 20, 20, 30, 40, 255, 0 ,0,4, 40, 40, 40, 40, 0, 0, 0);
+
+  }
+
+  /**
+   * Tests that a motion can be added to an existing shape in the model builder successfully (ie
+   * added and max x and y coordinates updated)
+   */
+  @Test
+  public void testAddMotionBuilder() {
+    IModel model = this.builder.build();
+    assertEquals(0, model.getX());
+    assertEquals(0, model.getY());
+    assertEquals(200, model.getWidth());
+    assertEquals(200, model.getHeight());
+    assertEquals(0, model.getMaxX());
+    assertEquals(0, model.getMaxY());
+    assertEquals(new ArrayList<IModelShape>(), model.getShapes());
+    this.builder.declareShape("R", "rectangle");
+    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0 ,0,10, 40, 40, 40, 40, 0, 0, 0);
+    model = this.builder.build();
+    IMotion motionAdded = model.getShapes().get(0).getMotions().get(0);
+    assertEquals(0, model.getX());
+    assertEquals(0, model.getY());
+    assertEquals(200, model.getWidth());
+    assertEquals(200, model.getHeight());
+    assertEquals(80, model.getMaxX());
+    assertEquals(80, model.getMaxY());
+    assertEquals(ShapeType.RECTANGLE, model.getShapes().get(0).getType());
+    assertEquals("R", model.getShapes().get(0).getID());
+    assertEquals(1, motionAdded.getStartTick());
+    assertEquals(20, motionAdded.getStartX(), .001);
+    assertEquals(20, motionAdded.getStartY(), .001);
+    assertEquals(30, motionAdded.getStartWidth(), .001);
+    assertEquals(40, motionAdded.getStartHeight(), .001);
+    assertEquals(new Color(255, 0 ,0), motionAdded.getStartColor());
+  }
+
+  /**
+   * Tests that multiple motions can be added to an existing shape in the model builder successfully
+   * (ie added and max x and y coordinates updated)
+   */
+  @Test
+  public void testAddMotionBuilder2() {
+    IModel model = this.builder.build();
+    assertEquals(0, model.getX());
+    assertEquals(0, model.getY());
+    assertEquals(200, model.getWidth());
+    assertEquals(200, model.getHeight());
+    assertEquals(0, model.getMaxX());
+    assertEquals(0, model.getMaxY());
+    assertEquals(new ArrayList<IModelShape>(), model.getShapes());
+    this.builder.declareShape("R", "rectangle");
+    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0 ,0,1, 20, 20, 30, 40, 255, 0 ,0);
+    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0 ,0,10, 40, 40, 40, 40, 0, 0, 0);
+    model = this.builder.build();
+    IMotion motionAdded = model.getShapes().get(0).getMotions().get(0);
+    IMotion motionAdded2 = model.getShapes().get(0).getMotions().get(1);
+    assertEquals(0, model.getX());
+    assertEquals(0, model.getY());
+    assertEquals(200, model.getWidth());
+    assertEquals(200, model.getHeight());
+    assertEquals(80, model.getMaxX());
+    assertEquals(80, model.getMaxY());
+    assertEquals(ShapeType.RECTANGLE, model.getShapes().get(0).getType());
+    assertEquals("R", model.getShapes().get(0).getID());
+    assertEquals(1, motionAdded.getStartTick());
+    assertEquals(20, motionAdded.getStartX(), .001);
+    assertEquals(20, motionAdded.getStartY(), .001);
+    assertEquals(30, motionAdded.getStartWidth(), .001);
+    assertEquals(40, motionAdded.getStartHeight(), .001);
+    assertEquals(new Color(255, 0 ,0), motionAdded.getStartColor());
+    assertEquals(1, motionAdded2.getStartTick());
+    assertEquals(20, motionAdded2.getStartX(), .001);
+    assertEquals(20, motionAdded2.getStartY(), .001);
+    assertEquals(30, motionAdded2.getStartWidth(), .001);
+    assertEquals(40, motionAdded2.getStartHeight(), .001);
+    assertEquals(new Color(255, 0 ,0), motionAdded2.getStartColor());
+  }
+
+  /**
+   * Tests that motions can be added to different shapes in the model
+   */
+  @Test
+  public void testAddMotionBuilder3() {
+    IModel model = this.builder.build();
+    assertEquals(0, model.getX());
+    assertEquals(0, model.getY());
+    assertEquals(200, model.getWidth());
+    assertEquals(200, model.getHeight());
+    assertEquals(0, model.getMaxX());
+    assertEquals(0, model.getMaxY());
+    assertEquals(new ArrayList<IModelShape>(), model.getShapes());
+    this.builder.declareShape("R", "rectangle");
+    this.builder.declareShape("E", "ellipse");
+    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0 ,0,1, 20, 20, 30, 40, 255, 0 ,0);
+    this.builder.addMotion("E", 1, 20, 20, 30, 40, 255, 0 ,0,10, 40, 40, 40, 40, 0, 0, 0);
+    model = this.builder.build();
+    IMotion motionAdded = model.getShapes().get(0).getMotions().get(0);
+    IMotion motionAdded2 = model.getShapes().get(1).getMotions().get(0);
+    assertEquals(0, model.getX());
+    assertEquals(0, model.getY());
+    assertEquals(200, model.getWidth());
+    assertEquals(200, model.getHeight());
+    assertEquals(80, model.getMaxX());
+    assertEquals(80, model.getMaxY());
+    assertEquals(ShapeType.RECTANGLE, model.getShapes().get(0).getType());
+    assertEquals("R", model.getShapes().get(0).getID());
+    assertEquals(1, motionAdded.getStartTick());
+    assertEquals(20, motionAdded.getStartX(), .001);
+    assertEquals(20, motionAdded.getStartY(), .001);
+    assertEquals(30, motionAdded.getStartWidth(), .001);
+    assertEquals(40, motionAdded.getStartHeight(), .001);
+    assertEquals(new Color(255, 0 ,0), motionAdded.getStartColor());
+    assertEquals(1, motionAdded2.getStartTick());
+    assertEquals(20, motionAdded2.getStartX(), .001);
+    assertEquals(20, motionAdded2.getStartY(), .001);
+    assertEquals(30, motionAdded2.getStartWidth(), .001);
+    assertEquals(40, motionAdded2.getStartHeight(), .001);
+    assertEquals(new Color(255, 0 ,0), motionAdded2.getStartColor());
   }
 }

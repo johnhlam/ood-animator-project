@@ -2,6 +2,7 @@ import cs3500.animator.model.IModelShape;
 import cs3500.animator.model.IModelShapeImpl;
 import cs3500.animator.model.IMotion;
 import cs3500.animator.model.IMotionImpl;
+import cs3500.animator.model.IReadOnlyShape;
 import cs3500.animator.model.ShapeType;
 
 import org.junit.Before;
@@ -168,13 +169,13 @@ public class IModelShapeImplTest {
     assertEquals("shape R1 rectangle", this.rect1.printMotions());
     // does not throw exception
     this.rect1.addMotion(this.motion1);
-    assertEquals("shape R1 rectangle\nmotion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-            "15.0 15.0 255 0 0", this.rect1.printMotions());
+    assertEquals("shape R1 rectangle\nmotion R1 1 0 0 10 10 0 0 0\t10 0 0 " +
+            "15 15 255 0 0", this.rect1.printMotions());
     // throws exception
     this.rect1.addMotion(this.motion4);
-    assertEquals("shape R1 rectangle\nmotion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-                    "15.0 15.0 255 0 0\nmotion R1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 " +
-                    "15.0 255 0 0\nmotion R1 30 0.0 0.0 15.0 15.0 255 0 0\t40 0.0 0.0 15.0 15.0 255 0 0",
+    assertEquals("shape R1 rectangle\nmotion R1 1 0 0 10 10 0 0 0\t10 0 0 " +
+                    "15 15 255 0 0\nmotion R1 10 0 0 15 15 255 0 0\t20 0 0 15 " +
+                    "15 255 0 0\nmotion R1 30 0 0 15 15 255 0 0\t40 0 0 15 15 255 0 0",
             this.rect1.printMotions());
   }
 
@@ -185,8 +186,8 @@ public class IModelShapeImplTest {
   public void testAddMotion1() {
     assertEquals("shape R1 rectangle", this.rect1.printMotions());
     this.rect1.addMotion(this.motion1);
-    assertEquals("shape R1 rectangle\nmotion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-        "15.0 15.0 255 0 0", this.rect1.printMotions());
+    assertEquals("shape R1 rectangle\nmotion R1 1 0 0 10 10 0 0 0\t10 0 0 " +
+        "15 15 255 0 0", this.rect1.printMotions());
   }
 
   /**
@@ -196,12 +197,12 @@ public class IModelShapeImplTest {
   public void testAddAdjMotion() {
     assertEquals("shape R1 rectangle", this.rect1.printMotions());
     this.rect1.addMotion(this.motion1);
-    assertEquals("shape R1 rectangle\nmotion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-        "15.0 15.0 255 0 0", this.rect1.printMotions());
+    assertEquals("shape R1 rectangle\nmotion R1 1 0 0 10 10 0 0 0\t10 0 0 " +
+        "15 15 255 0 0", this.rect1.printMotions());
     this.rect1.addMotion(this.motion3);
-    assertEquals("shape R1 rectangle\nmotion R1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-        "15.0 15.0 255 0 0\nmotion R1 10 0.0 0.0 15.0 15.0 255 0 0\t20 0.0 0.0 15.0 " +
-        "15.0 255 0 0", this.rect1.printMotions());
+    assertEquals("shape R1 rectangle\nmotion R1 1 0 0 10 10 0 0 0\t10 0 0 " +
+        "15 15 255 0 0\nmotion R1 10 0 0 15 15 255 0 0\t20 0 0 15 " +
+        "15 255 0 0", this.rect1.printMotions());
   }
 
   @Test
@@ -213,8 +214,8 @@ public class IModelShapeImplTest {
   public void testPrintMotions2() {
     assertEquals("shape E1 ellipse", this.ellipse1.printMotions());
     this.ellipse1.addMotion(this.motion1);
-    assertEquals("shape E1 ellipse\nmotion E1 1 0.0 0.0 10.0 10.0 0 0 0\t10 0.0 0.0 " +
-        "15.0 15.0 255 0 0", this.ellipse1.printMotions());
+    assertEquals("shape E1 ellipse\nmotion E1 1 0 0 10 10 0 0 0\t10 0 0 " +
+        "15 15 255 0 0", this.ellipse1.printMotions());
   }
 
   @Test
@@ -328,6 +329,101 @@ public class IModelShapeImplTest {
     assertEquals(temp, ellipse1.getMotions());
     ellipse1.removeMotion(1);
     assertEquals(new ArrayList<>(), ellipse1.getMotions());
+  }
+
+  /**
+   * Tests that an exception is thrown when getting shape at a negative tick
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testShapeAtNegTick() {
+    ellipse1.addMotion(this.motion1);
+    ellipse1.getShapeAtTick(-2);
+  }
+
+  /**
+   * Tests that getting a shape at a tick without motions returns what it was constructed with
+   */
+  @Test
+  public void testShapeNoMotions() {
+    IReadOnlyShape shape = ellipse1.getShapeAtTick(2);
+    assertEquals(shape, ellipse1);
+  }
+
+  /**
+   * Tests that getting a shape at a tick before its first motion returns its state at the start
+   * of its first motion
+   */
+  @Test
+  public void testShapeBeforeFirstMotion() {
+    ellipse1.addMotion(this.motion3);
+    IReadOnlyShape shape = ellipse1.getShapeAtTick(2);
+    assertEquals(15, shape.getWidth(), .001);
+    assertEquals(15, shape.getHeight(), .001);
+    assertEquals(0, shape.getX(), .001);
+    assertEquals(0, shape.getY(), .001);
+    assertEquals(Color.red, shape.getColor());
+  }
+
+  /**
+   * Tests that getting a shape at a tick after its last motion returns its state at the end
+   * of its last motion
+   */
+  @Test
+  public void testShapeAfterLastMotion() {
+    ellipse1.addMotion(this.motion3);
+    IReadOnlyShape shape = ellipse1.getShapeAtTick(30);
+    assertEquals(15, shape.getWidth(), .001);
+    assertEquals(15, shape.getHeight(), .001);
+    assertEquals(0, shape.getX(), .001);
+    assertEquals(0, shape.getY(), .001);
+    assertEquals(Color.red, shape.getColor());
+  }
+
+  /**
+   * Tests that getting a shape at a tick during a motion returns the correct output
+   */
+  @Test
+  public void testShapeAtStartMotion() {
+    ellipse1.addMotion(this.motion3);
+    IReadOnlyShape shape = ellipse1.getShapeAtTick(10);
+    new IMotionImpl(10, 15, 15, 0, 0, Color.RED, 20, 15, 15, 0, 0, Color.RED);
+    assertEquals(15, shape.getWidth(), .001);
+    assertEquals(15, shape.getHeight(), .001);
+    assertEquals(0, shape.getX(), .001);
+    assertEquals(0, shape.getY(), .001);
+    assertEquals(Color.red, shape.getColor());
+  }
+
+  /**
+   * Tests that getting a shape at a tick during a motion returns the correct output
+   */
+  @Test
+  public void testShapeAtEndMotion() {
+    ellipse1.addMotion(this.motion3);
+    IReadOnlyShape shape = ellipse1.getShapeAtTick(20);
+    new IMotionImpl(10, 15, 15, 0, 0, Color.RED, 20, 15, 15, 0, 0, Color.RED);
+    assertEquals(15, shape.getWidth(), .001);
+    assertEquals(15, shape.getHeight(), .001);
+    assertEquals(0, shape.getX(), .001);
+    assertEquals(0, shape.getY(), .001);
+    assertEquals(Color.red, shape.getColor());
+  }
+
+  /**
+   * Tests that getting a shape at a tick during a motion returns the correct output (including
+   * with negative numbers)
+   */
+  @Test
+  public void testShapeDuringMotion() {
+    ellipse1.addMotion(this.motionBadOverlap);
+    IReadOnlyShape shape = ellipse1.getShapeAtTick(15);
+    new IMotionImpl(10, 10, 30, -2, 3, Color.GREEN, 40, 15, 15, 0, 0,
+            Color.RED);
+    assertEquals(11, shape.getWidth(), .001);
+    assertEquals(28, shape.getHeight(), .001);
+    assertEquals(-2, shape.getX(), .001);
+    assertEquals(3, shape.getY(), .001);
+    assertEquals(new Color(43, 213, 0), shape.getColor());
   }
 
   /**
