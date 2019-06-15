@@ -11,6 +11,8 @@ import cs3500.animator.view.IView;
 import cs3500.animator.view.SVGView;
 import cs3500.animator.view.TextView;
 import cs3500.animator.view.VisualView;
+
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -60,13 +62,11 @@ public class Excellence {
     // Builds the model based on the file specified by the command line
     IModel model;
     try {
-<<<<<<< HEAD
       AnimationBuilder<IModelImpl> builder =  IModelImpl.builder();
       model = AnimationReader.parseFile(new BufferedReader(new FileReader(
           "smalldemo.txt")), builder);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
-=======
       AnimationBuilder<IModelImpl> builder = IModelImpl.builder();
       model = AnimationReader.parseFile(ArgsProcessor.in, builder);
     } catch (Exception e) {
@@ -76,7 +76,6 @@ public class Excellence {
           + "Error message:\n"
           + e.getMessage());
       return;
->>>>>>> 5c8dbbc169ce63ceef82905e698fd950a3f2d021
     }
 
     // Constructs the controller and view based on the given view type
