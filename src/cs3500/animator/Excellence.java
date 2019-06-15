@@ -14,6 +14,7 @@ import cs3500.animator.view.VisualView;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.Closeable;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -54,27 +55,24 @@ public class Excellence {
 
     if (ArgsProcessor.in == null) {
       Excellence.errorPopup("Error: Input file not provided.");
+      return;
     }
     if (ArgsProcessor.view == null) {
       Excellence.errorPopup("Error: View type not provided.");
+      return;
     }
 
     // Builds the model based on the file specified by the command line
     IModel model;
     try {
-      AnimationBuilder<IModelImpl> builder =  IModelImpl.builder();
-      model = AnimationReader.parseFile(new BufferedReader(new FileReader(
-          "smalldemo.txt")), builder);
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
       AnimationBuilder<IModelImpl> builder = IModelImpl.builder();
       model = AnimationReader.parseFile(ArgsProcessor.in, builder);
     } catch (Exception e) {
       // If an exception is thrown while parseFile is called (for whatever reason), an error
       // popup will occur
       Excellence.errorPopup("Error: Model was unable to be built.\n"
-          + "Error message:\n"
-          + e.getMessage());
+              + "Error message:\n"
+              + e.getMessage());
       return;
     }
 
@@ -85,7 +83,7 @@ public class Excellence {
     try {
       switch (ArgsProcessor.view) {
         case "text":
-          newView = new TextView(ArgsProcessor.out);
+          newView = new TextView(ArgsProcessor.out, model.getX(), model.getY());
           controller = new TextControllerImpl(newView, model, ArgsProcessor.speed);
           break;
         case "svg":
@@ -94,12 +92,12 @@ public class Excellence {
           break;
         case "visual":
           newView = new VisualView(
-              model.getWidth(), model.getHeight(), model.getMaxX(), model.getMaxY());
+                  model.getWidth(), model.getHeight(), model.getMaxX(), model.getMaxY());
           controller = new TimerControllerImpl(newView, model, ArgsProcessor.speed);
           break;
         default:
           Excellence.errorPopup("Error: Given view parameter: " + ArgsProcessor.view
-              + " is not supported.");
+                  + " is not supported.");
           return;
       }
     } catch (Exception e) {
@@ -107,26 +105,20 @@ public class Excellence {
       // an appropriate message. Examples of exceptions that might occur are negative tick rates
       // (speed), or null arguments.
       Excellence.errorPopup("Error: View and/or controller were unable to be constructed.\n"
-          + "Error message:\n"
-          + e.getMessage());
+              + "Error message:\n"
+              + e.getMessage());
       return;
     }
 
     controller.run();
 
-    // TODO: No way to check if the timer calls actionPerformed and throws an error, but that
-    //  should never happen
-
-    if (ArgsProcessor.view.equals("text") || ArgsProcessor.view.equals("svg")) {
-      // TODO: Close writer
+    if ((ArgsProcessor.view.equals("text") || ArgsProcessor.view.equals("svg"))
+            && ArgsProcessor.outFlag) {
       try {
-        ((BufferedWriter) (ArgsProcessor.out)).flush();
-        ((BufferedWriter) (ArgsProcessor.out)).close();
+        ((Closeable) (ArgsProcessor.out)).close();
       } catch (IOException e) {
         Excellence.errorPopup(
-            "Error occurred upon attempting to close the file writer for text based views.");
-      } catch (ClassCastException e) {
-        // Do nothing
+                "Error occurred upon attempting to close the file writer for text based views.");
       }
     }
   }
@@ -174,7 +166,7 @@ public class Excellence {
           // Creates a popup in the case that an option is called without an argument directly
           // after it
           Excellence.errorPopup("Error: Attempted to call " + args[i]
-              + " without an argument.");
+                  + " without an argument.");
           return false;
 
         }
@@ -213,7 +205,7 @@ public class Excellence {
         switch (option) {
           case "-in":
             if (!inFlag) {
-              ArgsProcessor.in = new FileReader(param);
+              ArgsProcessor.in = new BufferedReader(new FileReader(param));
               // TODO: Should FileRead be buffered as well?
               ArgsProcessor.inFlag = true;
               return true;
@@ -242,23 +234,23 @@ public class Excellence {
             break;
           default:
             Excellence.errorPopup("Error: Attempted to call invalid command-line option, "
-                + option + ".");
+                    + option + ".");
         }
       } catch (FileNotFoundException e) {
         // Creates a popup in the case that creating a FileReader throws a FileNotFoundException
         Excellence.errorPopup("Error: Attempted to call " + option
-            + " with unknown file, " + param + ".");
+                + " with unknown file, " + param + ".");
 
       } catch (IOException e) {
         // Creates a popup in the case that creating a FileWriter throws a IOException
         Excellence.errorPopup("Error: Attempted to call: " + option +
-            " with file name, " + param + ", that could not be created.");
+                " with file name, " + param + ", that could not be created.");
 
       } catch (NumberFormatException e) {
         // Creates a popup in the case that creating a parsing the speed as an Integer throws a
         // NumberFormatException
         Excellence.errorPopup("Error: Attempted to call: " + option
-            + "with invalid number, " + param);
+                + "with invalid number, " + param);
       }
 
       // If you get here, an error was thrown, and/or a error popup was generated, meaning that

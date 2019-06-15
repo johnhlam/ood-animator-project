@@ -19,8 +19,10 @@ public class TextView extends ATextualView {
    * @param ap is the Appendable that the text output will be appended to.
    * @throws IllegalArgumentException if the given Appendable is null.
    */
-  public TextView(Appendable ap) throws IllegalArgumentException {
+  public TextView(Appendable ap, int x, int y) throws IllegalArgumentException {
     super(ap);
+    this.x = x;
+    this.y = y;
   }
 
   /**

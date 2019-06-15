@@ -21,11 +21,11 @@ public class TimerControllerImpl implements IController, ActionListener {
 
   public TimerControllerImpl(IView view, IModel model, int tickRate) throws IllegalArgumentException {
     if(view == null || model == null) {
-      throw new IllegalArgumentException("Given view and/or model cannot be null");
+      throw new IllegalArgumentException("Given view and/or model cannot be null.");
     }
 
     if (tickRate <= 0) {
-      throw new IllegalArgumentException("Tick rate cannot be less than 0");
+      throw new IllegalArgumentException("Tick rate cannot be less than or equal to 0.");
     }
 
     this.view = view;

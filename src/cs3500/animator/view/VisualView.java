@@ -22,10 +22,6 @@ public class VisualView extends JFrame implements IView {
     this.canvasHeight = canvasHeight;
     this.maxX = maxX;
     this.maxY = maxY;
-    System.out.println(canvasWidth);
-    System.out.println(canvasHeight);
-    System.out.println(maxX);
-    System.out.println(maxY);
 
 
     this.panel = new AnimationPanel();

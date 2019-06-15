@@ -198,7 +198,7 @@ public class IModelShapeImpl implements IModelShape {
     double frac1 = ((double) (endTick - tick)) / (endTick - startTick);
     double frac2 = ((double) (tick - startTick)) / (endTick - startTick);
 
-    return (startParam * frac1 + endParam * frac2);
+    return Math.round(startParam * frac1 + endParam * frac2);
   }
 
   /**
