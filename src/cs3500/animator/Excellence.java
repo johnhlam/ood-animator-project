@@ -49,11 +49,11 @@ public class Excellence {
       // If the above call fails, an error occurred, so returns automatically to halt processing
       return;
     }
-    
-    if(ArgsProcessor.in == null) {
+
+    if (ArgsProcessor.in == null) {
       Excellence.errorPopup("Error: Input file not provided.");
     }
-    if(ArgsProcessor.view == null) {
+    if (ArgsProcessor.view == null) {
       Excellence.errorPopup("Error: View type not provided.");
     }
 
@@ -113,12 +113,12 @@ public class Excellence {
     if (ArgsProcessor.view.equals("text") || ArgsProcessor.view.equals("svg")) {
       // TODO: Close writer
       try {
-        ((BufferedWriter)(ArgsProcessor.out)).flush();
-        ((BufferedWriter)(ArgsProcessor.out)).close();
-      } catch (IOException e){
+        ((BufferedWriter) (ArgsProcessor.out)).flush();
+        ((BufferedWriter) (ArgsProcessor.out)).close();
+      } catch (IOException e) {
         Excellence.errorPopup(
             "Error occurred upon attempting to close the file writer for text based views.");
-      } catch(ClassCastException e) {
+      } catch (ClassCastException e) {
         // Do nothing
       }
     }
@@ -153,7 +153,7 @@ public class Excellence {
      *
      * @param args is the String[] of arguments to be parsed into data
      * @return true if processArgs successfully parsed args into data (i.e. no error message
-     * popped up), false otherwise.
+     *     popped up), false otherwise.
      */
     private static boolean processArgs(String[] args) {
       // Increments by 2 because options and arguments come in pairs
@@ -182,23 +182,24 @@ public class Excellence {
      *
      * A JOptionPane error dialog will be generated, and the method will return false if:
      * <ul>
-     *   <li>The given String {@code option} is not one of the above, or</li>
-     *   <li>The given String {@code option} has already been processed at an earlier point in the 
-     *       program, or</li>
-     *   <li>The given {@code option} is "-in", and a file with the given name of {@code param}
-     *       cannot be found, or</li>
-     *   <li>The given {@code option} is "-out", and a file with the given name of {@code param}
-     *       cannot be generated (for whatever reason), or</li>
-     *   <li>The given {@code option} is "-speed", and the given {@code param} cannot be parsed as
-     *       an Integer.</li>
+     * <li>The given String {@code option} is not one of the above, or</li>
+     * <li>The given String {@code option} has already been processed at an earlier point in the
+     * program, or</li>
+     * <li>The given {@code option} is "-in", and a file with the given name of {@code param}
+     * cannot be found, or</li>
+     * <li>The given {@code option} is "-out", and a file with the given name of {@code param}
+     * cannot be generated (for whatever reason), or</li>
+     * <li>The given {@code option} is "-speed", and the given {@code param} cannot be parsed as
+     * an Integer.</li>
      * </ul>
      * (as in processed at an earlier point), then an appropriate popup dialog will appear, and
      * the method will return false.
+     *
      * @param option is the command line option that determines what {@code param} should represent
-     * @param param is the command line parameter that represents what will be stored in the class
+     * @param param  is the command line parameter that represents what will be stored in the class
      * @return true if the method is successfully able to convert the given String {@code option}
-     *    and a String {@code param} into data stored in the class (i.e. no error popups are
-     *    generated), false otherwise.
+     *     and a String {@code param} into data stored in the class (i.e. no error popups are
+     *     generated), false otherwise.
      */
     private static boolean storeArgs(String option, String param) {
       try {
@@ -206,6 +207,7 @@ public class Excellence {
           case "-in":
             if (!inFlag) {
               ArgsProcessor.in = new FileReader(param);
+              // TODO: Should FileRead be buffered as well?
               ArgsProcessor.inFlag = true;
               return true;
             }
