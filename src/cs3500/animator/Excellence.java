@@ -110,7 +110,7 @@ public class Excellence {
       return;
     }
 
-    controller.run();
+    controller.run(); 
 
     if ((ArgsProcessor.view.equals("text") || ArgsProcessor.view.equals("svg"))
         && ArgsProcessor.outFlag) {
@@ -203,7 +203,6 @@ public class Excellence {
           case "-in":
             if (!inFlag) {
               ArgsProcessor.in = new BufferedReader(new FileReader(param));
-              // TODO: Should FileRead be buffered as well?
               ArgsProcessor.inFlag = true;
               return true;
             }
@@ -232,12 +231,20 @@ public class Excellence {
           default:
             Excellence.errorPopup("Error: Attempted to call invalid command-line option, "
                 + option + ".");
+            // Returns false to exit the method
+            return false;
         }
+
+        // If you get here, then option satisfied one of the cases, but the respective flag was
+        // already true (you went in a case, but nothing happened), meaning that you called the
+        // same option multiple times.
+        Excellence.errorPopup("Error: Attempted to call option " + option + " after it has "
+            + "already been called.");
+
       } catch (FileNotFoundException e) {
         // Creates a popup in the case that creating a FileReader throws a FileNotFoundException
         Excellence.errorPopup("Error: Attempted to call " + option
             + " with unknown file, " + param + ".");
-
       } catch (IOException e) {
         // Creates a popup in the case that creating a FileWriter throws a IOException
         Excellence.errorPopup("Error: Attempted to call: " + option +
@@ -247,13 +254,14 @@ public class Excellence {
         // Creates a popup in the case that creating a parsing the speed as an Integer throws a
         // NumberFormatException
         Excellence.errorPopup("Error: Attempted to call: " + option
-            + "with invalid number, " + param);
+            + " with invalid integer, " + param);
       }
 
       // If you get here, an error was thrown, and/or a error popup was generated, meaning that
       // storeArgs failed
       return false;
     }
+
   }
 
   /**
