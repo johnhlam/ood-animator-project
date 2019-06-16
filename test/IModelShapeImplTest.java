@@ -18,28 +18,31 @@ import java.util.ArrayList;
  */
 public class IModelShapeImplTest {
 
-  IModelShape rect1;
-  IModelShape rect2;
-  IModelShape ellipse1;
-  IModelShape ellipse2;
-  IMotion motion1 = new IMotionImpl(1, 10, 10, 0, 0, Color.BLACK, 10, 15, 15, 0, 0, Color.RED);
-  IMotion motion2 = new IMotionImpl(5, 15, 10, 20, 20, Color.BLACK, 10, 15, 15, 0, 0, Color.RED);
-  IMotion motion3 = new IMotionImpl(10, 15, 15, 0, 0, Color.RED, 20, 15, 15, 0, 0, Color.RED);
-  IMotion motion4 = new IMotionImpl(30, 15, 15, 0, 0, Color.RED, 40, 15, 15, 0, 0, Color.RED);
-  IMotion motion5 = new IMotionImpl(50, 15.3, 15.6, 58.4, 34.2, Color.ORANGE, 100, 18.34, 30.2,
-      100.2, 200, Color.RED);
-  IMotion motionBadOverlap = new IMotionImpl(10, 10, 30, -2, 3, Color.GREEN, 40, 15, 15, 0, 0,
-      Color.RED);
+  private IModelShape rect1;
+  private IModelShape ellipse1;
+  private IModelShape ellipse2;
+  private IMotion motion1 = new IMotionImpl(1, 10, 10, 0, 0, Color.BLACK, 10, 15, 15, 0, 0,
+          Color.RED);
+  private IMotion motion2 = new IMotionImpl(5, 15, 10, 20, 20, Color.BLACK, 10, 15, 15, 0, 0,
+          Color.RED);
+  private IMotion motion3 = new IMotionImpl(10, 15, 15, 0, 0, Color.RED, 20, 15, 15, 0, 0,
+          Color.RED);
+  private IMotion motion4 = new IMotionImpl(30, 15, 15, 0, 0, Color.RED, 40, 15, 15, 0, 0,
+          Color.RED);
+  private IMotion motion5 = new IMotionImpl(50, 15.3, 15.6, 58.4, 34.2, Color.ORANGE, 100, 18.34,
+          30.2,
+          100.2, 200, Color.RED);
+  private IMotion motionBadOverlap = new IMotionImpl(10, 10, 30, -2, 3, Color.GREEN, 40, 15, 15, 0
+          , 0,
+          Color.RED);
 
   @Before
   public void setUp() {
     rect1 = new IModelShapeImpl("R1", ShapeType.RECTANGLE, 10, 10, 0, 0, Color.RED);
-    rect2 = new IModelShapeImpl("R2", ShapeType.RECTANGLE, 5.3, 15.5, -30.2, 30.5,
-        Color.BLUE);
 
     ellipse1 = new IModelShapeImpl("E1", ShapeType.ELLIPSE, 12, 12, 10, 12, Color.WHITE);
     ellipse2 = new IModelShapeImpl("E2", ShapeType.ELLIPSE, 3.5, 6.6, 20.2, -40.5,
-        Color.GREEN);
+            Color.GREEN);
   }
 
   /**
@@ -187,7 +190,7 @@ public class IModelShapeImplTest {
     assertEquals("shape R1 rectangle", this.rect1.printMotions());
     this.rect1.addMotion(this.motion1);
     assertEquals("shape R1 rectangle\nmotion R1 1 0 0 10 10 0 0 0\t10 0 0 " +
-        "15 15 255 0 0", this.rect1.printMotions());
+            "15 15 255 0 0", this.rect1.printMotions());
   }
 
   /**
@@ -198,11 +201,11 @@ public class IModelShapeImplTest {
     assertEquals("shape R1 rectangle", this.rect1.printMotions());
     this.rect1.addMotion(this.motion1);
     assertEquals("shape R1 rectangle\nmotion R1 1 0 0 10 10 0 0 0\t10 0 0 " +
-        "15 15 255 0 0", this.rect1.printMotions());
+            "15 15 255 0 0", this.rect1.printMotions());
     this.rect1.addMotion(this.motion3);
     assertEquals("shape R1 rectangle\nmotion R1 1 0 0 10 10 0 0 0\t10 0 0 " +
-        "15 15 255 0 0\nmotion R1 10 0 0 15 15 255 0 0\t20 0 0 15 " +
-        "15 255 0 0", this.rect1.printMotions());
+            "15 15 255 0 0\nmotion R1 10 0 0 15 15 255 0 0\t20 0 0 15 " +
+            "15 255 0 0", this.rect1.printMotions());
   }
 
   @Test
@@ -215,7 +218,7 @@ public class IModelShapeImplTest {
     assertEquals("shape E1 ellipse", this.ellipse1.printMotions());
     this.ellipse1.addMotion(this.motion1);
     assertEquals("shape E1 ellipse\nmotion E1 1 0 0 10 10 0 0 0\t10 0 0 " +
-        "15 15 255 0 0", this.ellipse1.printMotions());
+            "15 15 255 0 0", this.ellipse1.printMotions());
   }
 
   @Test
@@ -332,7 +335,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests that an exception is thrown when getting shape at a negative tick
+   * Tests that an exception is thrown when getting shape at a negative tick.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testShapeAtNegTick() {
@@ -341,7 +344,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests that getting a shape at a tick without motions returns what it was constructed with
+   * Tests that getting a shape at a tick without motions returns what it was constructed with.
    */
   @Test
   public void testShapeNoMotions() {
@@ -350,8 +353,8 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests that getting a shape at a tick before its first motion returns its state at the start
-   * of its first motion
+   * Tests that getting a shape at a tick before its first motion returns its state at the start of
+   * its first motion.
    */
   @Test
   public void testShapeBeforeFirstMotion() {
@@ -365,8 +368,8 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests that getting a shape at a tick after its last motion returns its state at the end
-   * of its last motion
+   * Tests that getting a shape at a tick after its last motion returns its state at the end of its
+   * last motion.
    */
   @Test
   public void testShapeAfterLastMotion() {
@@ -380,7 +383,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests that getting a shape at a tick during a motion returns the correct output
+   * Tests that getting a shape at a tick during a motion returns the correct output.
    */
   @Test
   public void testShapeAtStartMotion() {
@@ -395,7 +398,7 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests that getting a shape at a tick during a motion returns the correct output
+   * Tests that getting a shape at a tick during a motion returns the correct output.
    */
   @Test
   public void testShapeAtEndMotion() {
@@ -410,8 +413,8 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests that getting a shape at a tick during a motion returns the correct output (including
-   * with negative numbers)
+   * Tests that getting a shape at a tick during a motion returns the correct output (including with
+   * negative numbers).
    */
   @Test
   public void testShapeDuringMotion() {

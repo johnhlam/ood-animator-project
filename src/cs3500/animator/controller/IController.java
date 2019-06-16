@@ -1,12 +1,11 @@
 package cs3500.animator.controller;
 
 /**
- * IController is an interface that represents a controller that will mediate operations between
- * a model and a view. Neither the model nor the view should directly communicate with each other;
- * all operations will go through and be called from the controller. Each instance of an
- * IController should be able to control operations between 1 model and 1 view. Specific
- * implementations may differ in how exactly the controller will relay information to the model
- * and view.
+ * IController is an interface that represents a controller that will mediate operations between a
+ * model and a view. Neither the model nor the view should directly communicate with each other; all
+ * operations will go through and be called from the controller. Each instance of an IController
+ * should be able to control operations between 1 model and 1 view. Specific implementations may
+ * differ in how exactly the controller will relay information to the model and view.
  */
 public interface IController {
 
@@ -23,8 +22,8 @@ public interface IController {
 
   /**
    * Runs the program. Generally, this means relaying information between the model and the view,
-   * and producing some kind of output. Specific implementations may decide how exactly they want
-   * to relay this information, and what their output looks like.
+   * and producing some kind of output. Specific implementations may decide how exactly they want to
+   * relay this information, and what their output looks like.
    */
   void run();
 

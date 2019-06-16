@@ -10,7 +10,6 @@ import cs3500.animator.util.AnimationBuilder;
 import cs3500.animator.view.IView;
 import cs3500.animator.view.SVGView;
 import cs3500.animator.view.TextView;
-import cs3500.animator.view.VisualView;
 
 import static org.junit.Assert.assertEquals;
 
@@ -19,31 +18,28 @@ import static org.junit.Assert.assertEquals;
  * Tests for the textual controller.
  */
 public class ControllerTests {
-  IController textController;
-  IController textController2;
-  IController timerController;
-  AnimationBuilder<IModelImpl> builder = IModelImpl.builder();
-  Appendable out;
-  IView svgView;
-  IView textView;
+  private IController textController;
+  private IController textController2;
+  private AnimationBuilder<IModelImpl> builder = IModelImpl.builder();
+  private Appendable out;
+  private IView svgView;
 
   @Before
   public void init() {
     out = new StringBuilder();
     svgView = new SVGView(out, 10);
-    textView = new TextView(out);
+    IView textView = new TextView(out);
     this.builder.declareShape("R", "rectangle");
     this.builder.declareShape("E", "ellipse");
-    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0 ,0,1, 20, 20, 30, 40, 255, 0 ,0);
-    this.builder.addMotion("E", 1, 20, 20, 30, 40, 255, 0 ,0,10, 40, 40, 40, 40, 0, 0, 0);
+    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0, 0, 1, 20, 20, 30, 40, 255, 0, 0);
+    this.builder.addMotion("E", 1, 20, 20, 30, 40, 255, 0, 0, 10, 40, 40, 40, 40, 0, 0, 0);
     IModel model = this.builder.build();
     textController = new TextControllerImpl(svgView, model);
     textController2 = new TextControllerImpl(textView, model);
-    timerController = new TimerControllerImpl(new VisualView(20, 20, 0 ,0), model, 10);
   }
 
   /**
-   * Tests that setting a tickrate for a text controller is unsupported
+   * Tests that setting a tickrate for a text controller is unsupported.
    */
   @Test(expected = UnsupportedOperationException.class)
   public void textTick() {
@@ -51,7 +47,7 @@ public class ControllerTests {
   }
 
   /**
-   * Tests that passing in a null view to the controller throws an exception
+   * Tests that passing in a null view to the controller throws an exception.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testNullView() {
@@ -59,7 +55,7 @@ public class ControllerTests {
   }
 
   /**
-   * Tests that passing in a null model to the controller throws an exception
+   * Tests that passing in a null model to the controller throws an exception.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testNullModel() {
@@ -67,7 +63,7 @@ public class ControllerTests {
   }
 
   /**
-   * Tests that passing in a null model and view to the controller throws an exception
+   * Tests that passing in a null model and view to the controller throws an exception.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testNullModelView() {
@@ -75,7 +71,7 @@ public class ControllerTests {
   }
 
   /**
-   * Tests that passing in a null view to the controller throws an exception
+   * Tests that passing in a null view to the controller throws an exception.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testNullViewTimer() {
@@ -83,7 +79,7 @@ public class ControllerTests {
   }
 
   /**
-   * Tests that passing in a null model to the controller throws an exception
+   * Tests that passing in a null model to the controller throws an exception.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testNullModelTimer() {
@@ -91,7 +87,7 @@ public class ControllerTests {
   }
 
   /**
-   * Tests that passing in a null model and view to the controller throws an exception
+   * Tests that passing in a null model and view to the controller throws an exception.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testNullModelViewTimer() {
@@ -99,7 +95,7 @@ public class ControllerTests {
   }
 
   /**
-   * Tests that passing a negative tick rate to the timer controller throws an exception
+   * Tests that passing a negative tick rate to the timer controller throws an exception.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testNegTickRateTimer() {
@@ -107,7 +103,7 @@ public class ControllerTests {
   }
 
   /**
-   * Tests that a controller can make a SVG view
+   * Tests that a controller can make a SVG view.
    */
   @Test
   public void testSVGViewController() {
@@ -148,7 +144,7 @@ public class ControllerTests {
   }
 
   /**
-   * Tests that a controller can make a text view
+   * Tests that a controller can make a text view.
    */
   @Test
   public void testTextViewController() {

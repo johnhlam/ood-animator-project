@@ -33,7 +33,7 @@ public class IModelShapeImpl implements IModelShape {
    * @throws IllegalArgumentException if arguments are null, or the width or height are negative
    */
   public IModelShapeImpl(String id, ShapeType type, double width, double height, double x, double y,
-      Color color) throws IllegalArgumentException {
+                         Color color) throws IllegalArgumentException {
 
     if (id == null || type == null || color == null) {
       throw new IllegalArgumentException("No null args allowed.");
@@ -65,14 +65,14 @@ public class IModelShapeImpl implements IModelShape {
     StringBuilder builder = new StringBuilder();
 
     builder.append("shape ").append(this.id).append(" ").append(ShapeType.typeToString(this.type))
-        .append("\n");
+            .append("\n");
 
     for (IMotion curMotion : this.motionList) {
       builder.append("motion ")
-          .append(this.id)
-          .append(" ")
-          .append(curMotion.printMotion())
-          .append("\n");
+              .append(this.id)
+              .append(" ")
+              .append(curMotion.printMotion())
+              .append("\n");
     }
 
     // Removes the last \n in the builder
@@ -116,12 +116,12 @@ public class IModelShapeImpl implements IModelShape {
       Color startColor = lastMotion.getStartColor();
 
       shapeToReturn = new IModelShapeImpl(this.id,
-          this.type,
-          widthAtTick,
-          heightAtTick,
-          xAtTick,
-          yAtTick,
-          startColor);
+              this.type,
+              widthAtTick,
+              heightAtTick,
+              xAtTick,
+              yAtTick,
+              startColor);
     } else if (tick > this.motionList.get(this.motionList.size() - 1).getEndTick()) {
       // If the given tick is after all of the animations, then returns the last state of the shape
       // (based on the last motion in the list)
@@ -135,12 +135,12 @@ public class IModelShapeImpl implements IModelShape {
       Color lastColor = lastMotion.getEndColor();
 
       shapeToReturn = new IModelShapeImpl(this.id,
-          this.type,
-          widthAtTick,
-          heightAtTick,
-          xAtTick,
-          yAtTick,
-          lastColor);
+              this.type,
+              widthAtTick,
+              heightAtTick,
+              xAtTick,
+              yAtTick,
+              lastColor);
     } else {
 
       // If the given tick is not before all of the animations, and isn't after all of the
@@ -151,28 +151,28 @@ public class IModelShapeImpl implements IModelShape {
           int endTick = curMotion.getEndTick();
 
           xAtTick = this.calculateParamAtTick(curMotion.getStartX(), curMotion.getEndX(),
-              tick, startTick, endTick);
+                  tick, startTick, endTick);
           yAtTick = this.calculateParamAtTick(curMotion.getStartY(), curMotion.getEndY(),
-              tick, startTick, endTick);
+                  tick, startTick, endTick);
           widthAtTick = this
-              .calculateParamAtTick(curMotion.getStartWidth(), curMotion.getEndWidth(),
-                  tick, startTick, endTick);
+                  .calculateParamAtTick(curMotion.getStartWidth(), curMotion.getEndWidth(),
+                          tick, startTick, endTick);
           heightAtTick = this
-              .calculateParamAtTick(curMotion.getStartHeight(), curMotion.getEndHeight(),
-                  tick, startTick, endTick);
+                  .calculateParamAtTick(curMotion.getStartHeight(), curMotion.getEndHeight(),
+                          tick, startTick, endTick);
           redAtTick = this.calculateParamAtTick(curMotion.getStartColor().getRed(),
-              curMotion.getEndColor().getRed(), tick, startTick, endTick);
+                  curMotion.getEndColor().getRed(), tick, startTick, endTick);
           greenAtTick = this.calculateParamAtTick(curMotion.getStartColor().getGreen(),
-              curMotion.getEndColor().getGreen(), tick, startTick, endTick);
+                  curMotion.getEndColor().getGreen(), tick, startTick, endTick);
           blueAtTick = this.calculateParamAtTick(curMotion.getStartColor().getBlue(),
-              curMotion.getEndColor().getBlue(), tick, startTick, endTick);
+                  curMotion.getEndColor().getBlue(), tick, startTick, endTick);
           shapeToReturn = new IModelShapeImpl(this.id,
-              this.type,
-              widthAtTick,
-              heightAtTick,
-              xAtTick,
-              yAtTick,
-              new Color((int) redAtTick, (int) greenAtTick, (int) blueAtTick));
+                  this.type,
+                  widthAtTick,
+                  heightAtTick,
+                  xAtTick,
+                  yAtTick,
+                  new Color((int) redAtTick, (int) greenAtTick, (int) blueAtTick));
         }
       }
     }
@@ -181,8 +181,8 @@ public class IModelShapeImpl implements IModelShape {
   }
 
   /**
-   * Given a start and end parameter and a tick, uses the tweening function to return the value
-   * of the parameter between the given start and end tick.
+   * Given a start and end parameter and a tick, uses the tweening function to return the value of
+   * the parameter between the given start and end tick.
    *
    * @param startParam start parameter of a motion
    * @param endParam   end parameter of a motion
@@ -192,7 +192,7 @@ public class IModelShapeImpl implements IModelShape {
    * @return the calculated value of the parameter
    */
   private double calculateParamAtTick(double startParam, double endParam, int tick, int startTick,
-      int endTick) {
+                                      int endTick) {
     double frac1 = ((double) (endTick - tick)) / (endTick - startTick);
     double frac2 = ((double) (tick - startTick)) / (endTick - startTick);
 
@@ -203,8 +203,8 @@ public class IModelShapeImpl implements IModelShape {
    * Adds a motion to this shape's list of motions such that the list of motions remains sorted.
    * Throws an exception if the given motion has overlapping ticks with the motions in the list.
    *
-   * @throws IllegalArgumentException if the given motion overlaps with pre-existing motions or
-   *                                  if the motion is null
+   * @throws IllegalArgumentException if the given motion overlaps with pre-existing motions or if
+   *                                  the motion is null
    */
   @Override
   public void addMotion(IMotion motion) throws IllegalArgumentException {
@@ -232,18 +232,19 @@ public class IModelShapeImpl implements IModelShape {
 
   /**
    * Inserts the given motion into this shape's motions based on start tick time. If the given
-   * motion does not come before an existing motion, it is placed at the end of the list.
-   * INVARIANT: Adjacent motions (two motions with same end tick and start tick) will always have
-   * the corresponding states.
+   * motion does not come before an existing motion, it is placed at the end of the list. INVARIANT:
+   * Adjacent motions (two motions with same end tick and start tick) will always have the
+   * corresponding states.
+   *
    * @param motion the motion to add
-   * @throws IllegalArgumentException if the given motion does not follow right after the
-   *                                  previous motion in the list
+   * @throws IllegalArgumentException if the given motion does not follow right after the previous
+   *                                  motion in the list
    */
   private void insertMotion(IMotion motion) throws IllegalArgumentException {
     if (this.motionList.isEmpty()) {
       this.motionList.add(motion);
     } else if (this.motionList.get(this.motionList.size() - 1).getEndTick() != motion
-        .getStartTick()) {
+            .getStartTick()) {
       throw new IllegalArgumentException("Given motion leaves a gap between previous motion.");
     } else {
       this.handleInsertion(motion);
@@ -264,13 +265,13 @@ public class IModelShapeImpl implements IModelShape {
       this.motionList.add(motion);
     } else {
       throw new IllegalArgumentException("Adjacent motions cannot disagree with end and start "
-          + "states.");
+              + "states.");
     }
   }
 
   /**
-   * Determines if two given motions that are adjacent (overlapping end and start ticks)
-   * have the same state. If they don't, return false.
+   * Determines if two given motions that are adjacent (overlapping end and start ticks) have the
+   * same state. If they don't, return false.
    *
    * @param motion     the motion whose start tick is in question
    * @param prevMotion the motion whose end tick is in question
@@ -278,10 +279,10 @@ public class IModelShapeImpl implements IModelShape {
    */
   private boolean sameStateIfAdjacent(IMotion motion, IMotion prevMotion) {
     return motion.getStartX() == prevMotion.getEndX()
-        && motion.getStartY() == prevMotion.getEndY()
-        && motion.getStartWidth() == prevMotion.getEndWidth()
-        && motion.getStartHeight() == prevMotion.getEndHeight()
-        && motion.getStartColor().equals(prevMotion.getEndColor());
+            && motion.getStartY() == prevMotion.getEndY()
+            && motion.getStartWidth() == prevMotion.getEndWidth()
+            && motion.getStartHeight() == prevMotion.getEndHeight()
+            && motion.getStartColor().equals(prevMotion.getEndColor());
   }
 
   /**
@@ -293,7 +294,7 @@ public class IModelShapeImpl implements IModelShape {
   private boolean hasTickOverlap(IMotion motion) {
     for (IMotion curMotion : this.motionList) {
       if (this.areTicksOverlapping(motion, curMotion) || this.areTicksOverlapping(curMotion,
-          motion)) {
+              motion)) {
         // Returns true to break out of the loop
         return true;
       }
@@ -316,7 +317,7 @@ public class IModelShapeImpl implements IModelShape {
     int existingStartTick = existingMotion.getStartTick();
     int existingEndTick = existingMotion.getEndTick();
     return (addStartTick > existingStartTick && addStartTick < existingEndTick)
-        || (addEndTick > existingStartTick && addEndTick < existingEndTick);
+            || (addEndTick > existingStartTick && addEndTick < existingEndTick);
   }
 
   @Override

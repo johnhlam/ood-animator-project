@@ -8,9 +8,9 @@ import cs3500.animator.model.IReadOnlyShape;
 /**
  * Represents a type of view that outputs text in some form. This abstract class contains an
  * Appendable that the aforementioned text will be appended to. Concrete classes implementing this
- * abstract class may choose to keep track of other information within themselves. Subclasses
- * must also override the toOutput method so that it appends a textual representation of the view
- * to the Appendable.
+ * abstract class may choose to keep track of other information within themselves. Subclasses must
+ * also override the toOutput method so that it appends a textual representation of the view to the
+ * Appendable.
  */
 public abstract class ATextualView implements IView {
 
@@ -25,10 +25,10 @@ public abstract class ATextualView implements IView {
   protected final Appendable ap;
 
   /**
-   * Constructs an instance of ATextualView with the given Appendable, and an empty
-   * ArrayList of IReadOnlyShapes. Once the Appendable is initialized, it cannot be changed.
-   * Concrete classes calling this super constructor may choose to keep track of other
-   * information within themselves.
+   * Constructs an instance of ATextualView with the given Appendable, and an empty ArrayList of
+   * IReadOnlyShapes. Once the Appendable is initialized, it cannot be changed. Concrete classes
+   * calling this super constructor may choose to keep track of other information within
+   * themselves.
    *
    * @param ap is the Appendable that text will be added to
    * @throws IllegalArgumentException if the given Appendable is null
@@ -46,8 +46,8 @@ public abstract class ATextualView implements IView {
    * append the textual output to this.ap.
    *
    * @param shapes is the List of IReadOnlyShapes that this IView will display.
-   * @throws IllegalStateException if this.ap is unable to be appended to, or is unable to
-   *                               transmit output.
+   * @throws IllegalStateException if this.ap is unable to be appended to, or is unable to transmit
+   *                               output.
    */
   @Override
   public abstract void play(List<IReadOnlyShape> shapes) throws IllegalStateException;
@@ -56,7 +56,7 @@ public abstract class ATextualView implements IView {
   public void setCanvas(int x, int y, int width, int height) {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("Given width and height to ATextualView#setCanvas(...) "
-          + "cannot be less than or equal to 0");
+              + "cannot be less than or equal to 0");
     }
 
     this.x = x;

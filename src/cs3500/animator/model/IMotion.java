@@ -4,15 +4,15 @@ import java.awt.Color;
 
 /**
  * Represents a motion that a shape can undergo. Each motion must have start and end ticks, start
- * and end coordinate positions, start and end sizes, and start and end colors. An implementation
- * of this interface is a representation of the start and end of an animation. Each motion should
- * be able to return the appropriate fields based on a given tick during its animation.
+ * and end coordinate positions, start and end sizes, and start and end colors. An implementation of
+ * this interface is a representation of the start and end of an animation. Each motion should be
+ * able to return the appropriate fields based on a given tick during its animation.
  */
 public interface IMotion {
 
   /**
-   * Prints the parameters of this motion in one line. Each implementation should specify how
-   * this information is represented.
+   * Prints the parameters of this motion in one line. Each implementation should specify how this
+   * information is represented.
    *
    * @return the string representation of the start and end parameters of the motion
    */

@@ -2,7 +2,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.Color;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import cs3500.animator.model.IModel;
 import cs3500.animator.model.IModelImpl;
 import cs3500.animator.model.IModelShape;
 import cs3500.animator.model.IMotion;
-import cs3500.animator.model.IMotionImpl;
 import cs3500.animator.model.IReadOnlyShape;
 import cs3500.animator.model.ShapeType;
 import cs3500.animator.util.AnimationBuilder;
@@ -22,8 +20,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class IModelImplTests {
 
-  IModel model1;
-  AnimationBuilder<IModelImpl> builder;
+  private IModel model1;
+  private AnimationBuilder<IModelImpl> builder;
 
   /**
    * Sets up a blank model without any shapes.
@@ -35,11 +33,11 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that a model cannot be constructed with negative width and height
+   * Tests that a model cannot be constructed with negative width and height.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testModelConstructorNegative() {
-    new IModelImpl(0,0,-20, -30, 0, 0, new ArrayList<>());
+    new IModelImpl(0, 0, -20, -30, 0, 0, new ArrayList<>());
   }
 
   // Tests for IModelImpl#printAnimations()
@@ -96,9 +94,9 @@ public class IModelImplTests {
     this.model1.addShape("C", ShapeType.ELLIPSE, 10, 20, 30, 40, Color.CYAN);
 
     assertEquals(
-        "shape R rectangle\n\n"
-            + "shape C ellipse",
-        this.model1.printAnimations());
+            "shape R rectangle\n\n"
+                    + "shape C ellipse",
+            this.model1.printAnimations());
   }
 
   /**
@@ -114,10 +112,10 @@ public class IModelImplTests {
     this.model1.addShape("S", ShapeType.RECTANGLE, 4, 5.9, 6.8, 1000, Color.RED);
 
     assertEquals(
-        "shape R rectangle\n\n"
-            + "shape C ellipse\n\n"
-            + "shape S rectangle",
-        this.model1.printAnimations());
+            "shape R rectangle\n\n"
+                    + "shape C ellipse\n\n"
+                    + "shape S rectangle",
+            this.model1.printAnimations());
   }
 
   /**
@@ -133,8 +131,8 @@ public class IModelImplTests {
     this.model1.addShape("S", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
 
     this.model1.addMotion("R",
-        1, 30, 40, 10, 20, Color.CYAN,
-        10, 30, 40, 40, 60, Color.CYAN);
+            1, 30, 40, 10, 20, Color.CYAN,
+            10, 30, 40, 40, 60, Color.CYAN);
 
     assertEquals(
             "shape R rectangle\n"
@@ -157,12 +155,12 @@ public class IModelImplTests {
     this.model1.addShape("S", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
 
     this.model1.addMotion("R",
-        1, 30, 40, 10, 20, Color.CYAN,
-        10, 30, 40, 40, 60, Color.CYAN);
+            1, 30, 40, 10, 20, Color.CYAN,
+            10, 30, 40, 40, 60, Color.CYAN);
 
     this.model1.addMotion("C",
-        20, 30, 40, 0, 0, Color.ORANGE,
-        30, 45, 60, 0, 0, Color.ORANGE);
+            20, 30, 40, 0, 0, Color.ORANGE,
+            30, 45, 60, 0, 0, Color.ORANGE);
 
     assertEquals(
             "shape R rectangle\n"
@@ -186,15 +184,15 @@ public class IModelImplTests {
     this.model1.addShape("S", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
 
     this.model1.addMotion("R",
-        1, 30, 40, 10, 20, Color.CYAN,
-        10, 30, 40, 40, 60, Color.CYAN);
+            1, 30, 40, 10, 20, Color.CYAN,
+            10, 30, 40, 40, 60, Color.CYAN);
     this.model1.addMotion("C",
-        20, 30, 40, 0, 0, Color.ORANGE,
-        30, 45, 60, 0, 0, Color.ORANGE);
+            20, 30, 40, 0, 0, Color.ORANGE,
+            30, 45, 60, 0, 0, Color.ORANGE);
 
     this.model1.addMotion("R",
-        10, 30, 40, 40, 60, Color.CYAN,
-        30, 50, 60, 80, 120, Color.GREEN);
+            10, 30, 40, 40, 60, Color.CYAN,
+            30, 50, 60, 80, 120, Color.GREEN);
 
     assertEquals(
             "shape R rectangle\n" +
@@ -220,30 +218,30 @@ public class IModelImplTests {
     this.model1.addShape("S", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
 
     this.model1.addMotion("R",
-        1, 30, 40, 10, 20, Color.CYAN,
-        10, 30, 40, 40, 60, Color.CYAN);
+            1, 30, 40, 10, 20, Color.CYAN,
+            10, 30, 40, 40, 60, Color.CYAN);
     this.model1.addMotion("C",
-        20, 30, 40, 0, 0, Color.ORANGE,
-        30, 45, 60, 0, 0, Color.ORANGE);
+            20, 30, 40, 0, 0, Color.ORANGE,
+            30, 45, 60, 0, 0, Color.ORANGE);
     this.model1.addMotion("R",
-        20, 50, 60, 80, 120, Color.CYAN,
-        30, 50, 60, 80, 120, Color.GREEN);
+            20, 50, 60, 80, 120, Color.CYAN,
+            30, 50, 60, 80, 120, Color.GREEN);
     this.model1.addMotion("S",
-        10, 30, 40, 10, 10, Color.RED,
-        25, 15, 20, 10, 20, Color.RED);
+            10, 30, 40, 10, 10, Color.RED,
+            25, 15, 20, 10, 20, Color.RED);
     this.model1.addMotion("S",
-        35, 15, 20, 6, 7, Color.RED,
-        45, 15, 20, 6, 7, Color.YELLOW);
+            35, 15, 20, 6, 7, Color.RED,
+            45, 15, 20, 6, 7, Color.YELLOW);
     this.model1.addMotion("C",
-        10, 30, 40, 10, 20, Color.ORANGE,
-        15, 30, 40, 0, 0, Color.ORANGE);
+            10, 30, 40, 10, 20, Color.ORANGE,
+            15, 30, 40, 0, 0, Color.ORANGE);
     this.model1.addMotion("S",
-        30, 15, 20, 10, 10, Color.RED,
-        35, 15, 20, 6, 7, Color.RED);
+            30, 15, 20, 10, 10, Color.RED,
+            35, 15, 20, 6, 7, Color.RED);
 
     this.model1.addMotion("C",
-        1, 30, 40, 10, 20, Color.CYAN,
-        10, 30, 40, 10, 20, Color.ORANGE);
+            1, 30, 40, 10, 20, Color.CYAN,
+            10, 30, 40, 10, 20, Color.ORANGE);
 
     assertEquals(
             "shape R rectangle\n"
@@ -273,34 +271,34 @@ public class IModelImplTests {
     this.model1.addShape("S", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
 
     this.model1.addMotion("R",
-        1, 30, 40, 10, 20, Color.CYAN,
-        10, 30, 40, 40, 60, Color.CYAN);
+            1, 30, 40, 10, 20, Color.CYAN,
+            10, 30, 40, 40, 60, Color.CYAN);
     this.model1.addMotion("R",
-        10, 30, 40, 40, 60, Color.CYAN,
-        15, 45, 60, 40, 60, Color.CYAN);
+            10, 30, 40, 40, 60, Color.CYAN,
+            15, 45, 60, 40, 60, Color.CYAN);
     this.model1.addMotion("R",
-        15, 45, 60, 40, 60, Color.CYAN,
-        30, 50, 60, 80, 120, Color.GREEN);
+            15, 45, 60, 40, 60, Color.CYAN,
+            30, 50, 60, 80, 120, Color.GREEN);
 
     this.model1.addMotion("C",
-        1, 30, 40, 10, 20, Color.CYAN,
-        10, 30, 40, 10, 20, Color.ORANGE);
+            1, 30, 40, 10, 20, Color.CYAN,
+            10, 30, 40, 10, 20, Color.ORANGE);
     this.model1.addMotion("C",
-        10, 30, 40, 10, 20, Color.ORANGE,
-        15, 30, 40, 0, 0, Color.ORANGE);
+            10, 30, 40, 10, 20, Color.ORANGE,
+            15, 30, 40, 0, 0, Color.ORANGE);
     this.model1.addMotion("C",
-        15, 30, 40, 0, 0, Color.ORANGE,
-        30, 45, 60, 0, 0, Color.ORANGE);
+            15, 30, 40, 0, 0, Color.ORANGE,
+            30, 45, 60, 0, 0, Color.ORANGE);
 
     this.model1.addMotion("S",
-        10, 30, 40, 10, 10, Color.RED,
-        25, 15, 20, 10, 20, Color.RED);
+            10, 30, 40, 10, 10, Color.RED,
+            25, 15, 20, 10, 20, Color.RED);
     this.model1.addMotion("S",
-        25, 15, 20, 10, 20, Color.RED,
-        35, 15, 20, 6, 7, Color.RED);
+            25, 15, 20, 10, 20, Color.RED,
+            35, 15, 20, 6, 7, Color.RED);
     this.model1.addMotion("S",
-        35, 15, 20, 6, 7, Color.RED,
-        45, 15, 20, 6, 7, Color.YELLOW);
+            35, 15, 20, 6, 7, Color.RED,
+            45, 15, 20, 6, 7, Color.YELLOW);
 
     assertEquals(
             "shape R rectangle\n" +
@@ -333,32 +331,32 @@ public class IModelImplTests {
     this.model1.addShape("S", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
 
     this.model1.addMotion("S",
-        30, 15, 20, 10, 10, Color.RED,
-        35, 15, 20, 6, 7, Color.RED);
+            30, 15, 20, 10, 10, Color.RED,
+            35, 15, 20, 6, 7, Color.RED);
     this.model1.addMotion("R",
-        10, 30, 40, 40, 60, Color.CYAN,
-        15, 45, 60, 40, 60, Color.CYAN);
+            10, 30, 40, 40, 60, Color.CYAN,
+            15, 45, 60, 40, 60, Color.CYAN);
     this.model1.addMotion("C",
-        20, 30, 40, 0, 0, Color.ORANGE,
-        30, 45, 60, 0, 0, Color.ORANGE);
+            20, 30, 40, 0, 0, Color.ORANGE,
+            30, 45, 60, 0, 0, Color.ORANGE);
     this.model1.addMotion("R",
-        20, 50, 60, 80, 120, Color.CYAN,
-        30, 50, 60, 80, 120, Color.GREEN);
+            20, 50, 60, 80, 120, Color.CYAN,
+            30, 50, 60, 80, 120, Color.GREEN);
     this.model1.addMotion("S",
-        10, 30, 40, 10, 10, Color.RED,
-        25, 15, 20, 10, 20, Color.RED);
+            10, 30, 40, 10, 10, Color.RED,
+            25, 15, 20, 10, 20, Color.RED);
     this.model1.addMotion("C",
-        1, 30, 40, 10, 20, Color.CYAN,
-        10, 30, 40, 10, 20, Color.ORANGE);
+            1, 30, 40, 10, 20, Color.CYAN,
+            10, 30, 40, 10, 20, Color.ORANGE);
     this.model1.addMotion("R",
-        1, 30, 40, 10, 20, Color.CYAN,
-        10, 30, 40, 40, 60, Color.CYAN);
+            1, 30, 40, 10, 20, Color.CYAN,
+            10, 30, 40, 40, 60, Color.CYAN);
     this.model1.addMotion("S",
-        35, 15, 20, 6, 7, Color.RED,
-        45, 15, 20, 6, 7, Color.YELLOW);
+            35, 15, 20, 6, 7, Color.RED,
+            45, 15, 20, 6, 7, Color.YELLOW);
     this.model1.addMotion("C",
-        10, 30, 40, 10, 20, Color.ORANGE,
-        15, 30, 40, 0, 0, Color.ORANGE);
+            10, 30, 40, 10, 20, Color.ORANGE,
+            15, 30, 40, 0, 0, Color.ORANGE);
   }
 
   /**
@@ -374,34 +372,34 @@ public class IModelImplTests {
     this.model1.addShape("S", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
 
     this.model1.addMotion("R",
-        1, 30, 40, 10, 20, Color.CYAN,
-        10, 30, 40, 40, 60, Color.CYAN);
+            1, 30, 40, 10, 20, Color.CYAN,
+            10, 30, 40, 40, 60, Color.CYAN);
     this.model1.addMotion("R",
-        10, 30, 40, 40, 60, Color.CYAN,
-        15, 45, 60, 40, 60, Color.CYAN);
+            10, 30, 40, 40, 60, Color.CYAN,
+            15, 45, 60, 40, 60, Color.CYAN);
     this.model1.addMotion("R",
-        15, 45, 60, 40, 60, Color.CYAN,
-        30, 50, 60, 80, 120, Color.GREEN);
+            15, 45, 60, 40, 60, Color.CYAN,
+            30, 50, 60, 80, 120, Color.GREEN);
 
     this.model1.addMotion("C",
-        1, 30, 40, 10, 20, Color.CYAN,
-        10, 30, 40, 10, 20, Color.ORANGE);
+            1, 30, 40, 10, 20, Color.CYAN,
+            10, 30, 40, 10, 20, Color.ORANGE);
     this.model1.addMotion("C",
-        10, 30, 40, 10, 20, Color.ORANGE,
-        15, 30, 40, 0, 0, Color.ORANGE);
+            10, 30, 40, 10, 20, Color.ORANGE,
+            15, 30, 40, 0, 0, Color.ORANGE);
     this.model1.addMotion("C",
-        15, 30, 40, 0, 0, Color.ORANGE,
-        30, 45, 60, 0, 0, Color.ORANGE);
+            15, 30, 40, 0, 0, Color.ORANGE,
+            30, 45, 60, 0, 0, Color.ORANGE);
 
     this.model1.addMotion("S",
-        10, 30, 40, 10, 10, Color.RED,
-        25, 15, 20, 10, 20, Color.RED);
+            10, 30, 40, 10, 10, Color.RED,
+            25, 15, 20, 10, 20, Color.RED);
     this.model1.addMotion("S",
-        25, 15, 20, 10, 20, Color.RED,
-        35, 15, 20, 6, 7, Color.RED);
+            25, 15, 20, 10, 20, Color.RED,
+            35, 15, 20, 6, 7, Color.RED);
     this.model1.addMotion("S",
-        35, 15, 20, 6, 7, Color.RED,
-        45, 15, 20, 6, 7, Color.YELLOW);
+            35, 15, 20, 6, 7, Color.RED,
+            45, 15, 20, 6, 7, Color.YELLOW);
     assertEquals(
             "shape R rectangle\n" +
                     "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
@@ -429,7 +427,7 @@ public class IModelImplTests {
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionNullID() {
     this.model1.addMotion(null, 1, 1, 1, 1, 1, Color.PINK,
-        10, 10, 10, 10, 10, Color.PINK);
+            10, 10, 10, 10, 10, Color.PINK);
   }
 
   /**
@@ -438,7 +436,7 @@ public class IModelImplTests {
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionSColor() {
     this.model1.addMotion("ID", 1, 1, 1, 1, 1, null,
-        10, 10, 10, 10, 10, Color.PINK);
+            10, 10, 10, 10, 10, Color.PINK);
   }
 
   /**
@@ -447,7 +445,7 @@ public class IModelImplTests {
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionEColor() {
     this.model1.addMotion("ID", 1, 1, 1, 1, 1, Color.PINK,
-        10, 10, 10, 10, 10, null);
+            10, 10, 10, 10, 10, null);
   }
 
   /**
@@ -457,7 +455,7 @@ public class IModelImplTests {
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionAll() {
     this.model1.addMotion(null, 1, 1, 1, 1, 1, null,
-        10, 10, 10, 10, 10, null);
+            10, 10, 10, 10, 10, null);
   }
 
   /**
@@ -466,7 +464,7 @@ public class IModelImplTests {
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionNegSTick() {
     this.model1.addMotion("ID", -1, 1, 1, 1, 1, Color.GREEN,
-        10, 10, 10, 10, 10, Color.GREEN);
+            10, 10, 10, 10, 10, Color.GREEN);
   }
 
   /**
@@ -475,7 +473,7 @@ public class IModelImplTests {
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionNegSWidth() {
     this.model1.addMotion("ID", 1, 1, 1, -1, 1, Color.GREEN,
-        10, 10, 10, 10, 10, Color.GREEN);
+            10, 10, 10, 10, 10, Color.GREEN);
   }
 
   /**
@@ -484,7 +482,7 @@ public class IModelImplTests {
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionNegSHeight() {
     this.model1.addMotion("ID", 1, 1, 1, 1, -1, Color.GREEN,
-        10, 10, 10, 10, 10, Color.GREEN);
+            10, 10, 10, 10, 10, Color.GREEN);
   }
 
   /**
@@ -493,7 +491,7 @@ public class IModelImplTests {
   @Test(expected = IllegalArgumentException.class)
   public void testAddNegETick() {
     this.model1.addMotion("ID", 1, 1, 1, 1, 1, Color.GREEN,
-        -10, 10, 10, 10, 10, Color.GREEN);
+            -10, 10, 10, 10, 10, Color.GREEN);
   }
 
   /**
@@ -502,7 +500,7 @@ public class IModelImplTests {
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionNegEWidth() {
     this.model1.addMotion("ID", 1, 1, 1, 1, 1, Color.GREEN,
-        10, 10, 10, -10, 10, Color.GREEN);
+            10, 10, 10, -10, 10, Color.GREEN);
   }
 
   /**
@@ -511,7 +509,7 @@ public class IModelImplTests {
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionNegEHeight() {
     this.model1.addMotion("ID", 1, 1, 1, 1, 1, Color.GREEN,
-        10, 10, 10, 10, -10, Color.GREEN);
+            10, 10, 10, 10, -10, Color.GREEN);
   }
 
   /**
@@ -521,7 +519,7 @@ public class IModelImplTests {
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionNegAll() {
     this.model1.addMotion("ID", -1, 1, 1, -1, -1, Color.GREEN,
-        -10, 10, 10, -10, -10, Color.GREEN);
+            -10, 10, 10, -10, -10, Color.GREEN);
   }
 
   /**
@@ -531,7 +529,7 @@ public class IModelImplTests {
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionEndLessStart() {
     this.model1.addMotion("ID", 20, 1, 1, 1, 1, Color.GREEN,
-        10, 10, 10, 10, 10, Color.GREEN);
+            10, 10, 10, 10, 10, Color.GREEN);
   }
 
   /**
@@ -541,7 +539,7 @@ public class IModelImplTests {
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionEndEqualStart() {
     this.model1.addMotion("ID", 20, 1, 1, 1, 1, Color.GREEN,
-        20, 10, 10, 10, 10, Color.GREEN);
+            20, 10, 10, 10, 10, Color.GREEN);
   }
 
   /**
@@ -551,7 +549,7 @@ public class IModelImplTests {
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionEmpty() {
     this.model1.addMotion("ID", 1, 0, 0, 20, 20, Color.ORANGE,
-        10, 10, 10, 20, 20, Color.BLACK);
+            10, 10, 10, 20, 20, Color.BLACK);
   }
 
   /**
@@ -564,7 +562,7 @@ public class IModelImplTests {
     this.model1.addShape("C", ShapeType.ELLIPSE, 10, 20, 30, 40, Color.CYAN);
     this.model1.addShape("S", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
     this.model1.addMotion("ID", 1, 0, 0, 20, 20, Color.ORANGE,
-        10, 10, 10, 20, 20, Color.BLACK);
+            10, 10, 10, 20, 20, Color.BLACK);
   }
 
   /**
@@ -577,7 +575,7 @@ public class IModelImplTests {
     this.model1.addShape("C", ShapeType.ELLIPSE, 10, 20, 30, 40, Color.CYAN);
     this.model1.addShape("S", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
     this.model1.addMotion("r", 1, 0, 0, 20, 20, Color.ORANGE,
-        10, 10, 10, 20, 20, Color.BLACK);
+            10, 10, 10, 20, 20, Color.BLACK);
   }
 
   /**
@@ -590,7 +588,7 @@ public class IModelImplTests {
     this.model1.addShape("C", ShapeType.ELLIPSE, 10, 20, 30, 40, Color.CYAN);
     this.model1.addShape("S", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
     this.model1.addMotion("c", 1, 0, 0, 20, 20, Color.ORANGE,
-        10, 10, 10, 20, 20, Color.BLACK);
+            10, 10, 10, 20, 20, Color.BLACK);
   }
 
   /**
@@ -603,7 +601,7 @@ public class IModelImplTests {
     this.model1.addShape("C", ShapeType.ELLIPSE, 10, 20, 30, 40, Color.CYAN);
     this.model1.addShape("S", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
     this.model1.addMotion("s", 1, 0, 0, 20, 20, Color.ORANGE,
-        10, 10, 10, 20, 20, Color.BLACK);
+            10, 10, 10, 20, 20, Color.BLACK);
   }
 
   /**
@@ -616,7 +614,7 @@ public class IModelImplTests {
     this.model1.addShape("c", ShapeType.ELLIPSE, 10, 20, 30, 40, Color.CYAN);
     this.model1.addShape("s", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
     this.model1.addMotion("R", 1, 0, 0, 20, 20, Color.ORANGE,
-        10, 10, 10, 20, 20, Color.BLACK);
+            10, 10, 10, 20, 20, Color.BLACK);
   }
 
   /**
@@ -629,7 +627,7 @@ public class IModelImplTests {
     this.model1.addShape("c", ShapeType.ELLIPSE, 10, 20, 30, 40, Color.CYAN);
     this.model1.addShape("s", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
     this.model1.addMotion("C", 1, 0, 0, 20, 20, Color.ORANGE,
-        10, 10, 10, 20, 20, Color.BLACK);
+            10, 10, 10, 20, 20, Color.BLACK);
   }
 
   /**
@@ -642,7 +640,7 @@ public class IModelImplTests {
     this.model1.addShape("c", ShapeType.ELLIPSE, 10, 20, 30, 40, Color.CYAN);
     this.model1.addShape("s", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
     this.model1.addMotion("S", 1, 0, 0, 20, 20, Color.ORANGE,
-        10, 10, 10, 20, 20, Color.BLACK);
+            10, 10, 10, 20, 20, Color.BLACK);
   }
 
   /**
@@ -655,15 +653,15 @@ public class IModelImplTests {
     this.model1.addShape("R", ShapeType.RECTANGLE, 10, 20, 30, 40, Color.CYAN);
 
     this.model1.addMotion("R", 10, 10, 20, 30, 40, Color.CYAN,
-        20, 10, 40, 30, 40, Color.CYAN);
+            20, 10, 40, 30, 40, Color.CYAN);
     this.model1.addMotion("R", 20, 10, 40, 30, 40, Color.CYAN,
-        35, 10, 40, 60, 120, Color.CYAN);
+            35, 10, 40, 60, 120, Color.CYAN);
     this.model1.addMotion("R", 40, 10, 40, 60, 120, Color.CYAN,
-        45, 20, 40, 60, 120, Color.DARK_GRAY);
+            45, 20, 40, 60, 120, Color.DARK_GRAY);
 
     // This call should throw an error
     this.model1.addMotion("R", 0, 10, 20, 30, 40, Color.CYAN,
-        15, 10, 40, 30, 40, Color.CYAN);
+            15, 10, 40, 30, 40, Color.CYAN);
   }
 
   /**
@@ -676,15 +674,15 @@ public class IModelImplTests {
     this.model1.addShape("R", ShapeType.RECTANGLE, 10, 20, 30, 40, Color.CYAN);
 
     this.model1.addMotion("R", 10, 10, 20, 30, 40, Color.CYAN,
-        20, 10, 40, 30, 40, Color.CYAN);
+            20, 10, 40, 30, 40, Color.CYAN);
     this.model1.addMotion("R", 20, 10, 40, 30, 40, Color.CYAN,
-        35, 10, 40, 60, 120, Color.CYAN);
+            35, 10, 40, 60, 120, Color.CYAN);
     this.model1.addMotion("R", 40, 10, 40, 60, 120, Color.CYAN,
-        45, 20, 40, 60, 120, Color.DARK_GRAY);
+            45, 20, 40, 60, 120, Color.DARK_GRAY);
 
     // This call should throw an error
     this.model1.addMotion("R", 20, 10, 20, 30, 40, Color.CYAN,
-        27, 10, 40, 30, 40, Color.CYAN);
+            27, 10, 40, 30, 40, Color.CYAN);
   }
 
   /**
@@ -697,15 +695,15 @@ public class IModelImplTests {
     this.model1.addShape("R", ShapeType.RECTANGLE, 10, 20, 30, 40, Color.CYAN);
 
     this.model1.addMotion("R", 10, 10, 20, 30, 40, Color.CYAN,
-        20, 10, 40, 30, 40, Color.CYAN);
+            20, 10, 40, 30, 40, Color.CYAN);
     this.model1.addMotion("R", 20, 10, 40, 30, 40, Color.CYAN,
-        35, 10, 40, 60, 120, Color.CYAN);
+            35, 10, 40, 60, 120, Color.CYAN);
     this.model1.addMotion("R", 40, 10, 40, 60, 120, Color.CYAN,
-        45, 20, 40, 60, 120, Color.DARK_GRAY);
+            45, 20, 40, 60, 120, Color.DARK_GRAY);
 
     // This call should throw an error
     this.model1.addMotion("R", 27, 10, 20, 30, 40, Color.CYAN,
-        38, 10, 40, 30, 40, Color.CYAN);
+            38, 10, 40, 30, 40, Color.CYAN);
   }
 
   /**
@@ -718,15 +716,15 @@ public class IModelImplTests {
     this.model1.addShape("R", ShapeType.RECTANGLE, 10, 20, 30, 40, Color.CYAN);
 
     this.model1.addMotion("R", 10, 10, 20, 30, 40, Color.CYAN,
-        20, 10, 40, 30, 40, Color.CYAN);
+            20, 10, 40, 30, 40, Color.CYAN);
     this.model1.addMotion("R", 20, 10, 40, 30, 40, Color.CYAN,
-        35, 10, 40, 60, 120, Color.CYAN);
+            35, 10, 40, 60, 120, Color.CYAN);
     this.model1.addMotion("R", 40, 10, 40, 60, 120, Color.CYAN,
-        45, 20, 40, 60, 120, Color.DARK_GRAY);
+            45, 20, 40, 60, 120, Color.DARK_GRAY);
 
     // This call should throw an error
     this.model1.addMotion("R", 38, 10, 20, 30, 40, Color.CYAN,
-        41, 10, 40, 30, 40, Color.CYAN);
+            41, 10, 40, 30, 40, Color.CYAN);
   }
 
   /**
@@ -739,15 +737,15 @@ public class IModelImplTests {
     this.model1.addShape("R", ShapeType.RECTANGLE, 10, 20, 30, 40, Color.CYAN);
 
     this.model1.addMotion("R", 10, 10, 20, 30, 40, Color.CYAN,
-        20, 10, 40, 30, 40, Color.CYAN);
+            20, 10, 40, 30, 40, Color.CYAN);
     this.model1.addMotion("R", 20, 10, 40, 30, 40, Color.CYAN,
-        35, 10, 40, 60, 120, Color.CYAN);
+            35, 10, 40, 60, 120, Color.CYAN);
     this.model1.addMotion("R", 40, 10, 40, 60, 120, Color.CYAN,
-        45, 20, 40, 60, 120, Color.DARK_GRAY);
+            45, 20, 40, 60, 120, Color.DARK_GRAY);
 
     // This call should throw an error
     this.model1.addMotion("R", 44, 20, 40, 60, 120, Color.DARK_GRAY,
-        50, 10, 40, 30, 40, Color.CYAN);
+            50, 10, 40, 30, 40, Color.CYAN);
   }
 
   /**
@@ -760,15 +758,15 @@ public class IModelImplTests {
     this.model1.addShape("R", ShapeType.RECTANGLE, 10, 20, 30, 40, Color.CYAN);
 
     this.model1.addMotion("R", 10, 10, 20, 30, 40, Color.CYAN,
-        20, 10, 40, 30, 40, Color.CYAN);
+            20, 10, 40, 30, 40, Color.CYAN);
     this.model1.addMotion("R", 20, 10, 40, 30, 40, Color.CYAN,
-        35, 10, 40, 60, 120, Color.CYAN);
+            35, 10, 40, 60, 120, Color.CYAN);
     this.model1.addMotion("R", 40, 10, 40, 60, 120, Color.CYAN,
-        45, 20, 40, 60, 120, Color.DARK_GRAY);
+            45, 20, 40, 60, 120, Color.DARK_GRAY);
 
     // This call should throw an error
     this.model1.addMotion("R", 0, 10, 20, 30, 40, Color.CYAN,
-        100, 10, 40, 30, 40, Color.CYAN);
+            100, 10, 40, 30, 40, Color.CYAN);
   }
 
   /**
@@ -781,15 +779,15 @@ public class IModelImplTests {
     this.model1.addShape("R", ShapeType.RECTANGLE, 10, 20, 30, 40, Color.CYAN);
 
     this.model1.addMotion("R", 10, 10, 20, 30, 40, Color.CYAN,
-        20, 10, 40, 30, 40, Color.CYAN);
+            20, 10, 40, 30, 40, Color.CYAN);
     this.model1.addMotion("R", 20, 10, 40, 30, 40, Color.CYAN,
-        35, 10, 40, 60, 120, Color.CYAN);
+            35, 10, 40, 60, 120, Color.CYAN);
     this.model1.addMotion("R", 40, 10, 40, 60, 120, Color.CYAN,
-        45, 20, 40, 60, 120, Color.DARK_GRAY);
+            45, 20, 40, 60, 120, Color.DARK_GRAY);
 
     // This call should throw an error
     this.model1.addMotion("R", 0, 10, 20, 30, 40, Color.CYAN,
-        37, 10, 40, 30, 40, Color.CYAN);
+            37, 10, 40, 30, 40, Color.CYAN);
   }
 
   /**
@@ -802,15 +800,15 @@ public class IModelImplTests {
     this.model1.addShape("R", ShapeType.RECTANGLE, 10, 20, 30, 40, Color.CYAN);
 
     this.model1.addMotion("R", 10, 10, 20, 30, 40, Color.CYAN,
-        20, 10, 40, 30, 40, Color.CYAN);
+            20, 10, 40, 30, 40, Color.CYAN);
     this.model1.addMotion("R", 20, 10, 40, 30, 40, Color.CYAN,
-        35, 10, 40, 60, 120, Color.CYAN);
+            35, 10, 40, 60, 120, Color.CYAN);
     this.model1.addMotion("R", 40, 10, 40, 60, 120, Color.CYAN,
-        45, 20, 40, 60, 120, Color.DARK_GRAY);
+            45, 20, 40, 60, 120, Color.DARK_GRAY);
 
     // This call should throw an error
     this.model1.addMotion("R", 37, 10, 40, 60, 120, Color.CYAN,
-        50, 10, 40, 30, 40, Color.CYAN);
+            50, 10, 40, 30, 40, Color.CYAN);
   }
 
   /**
@@ -822,14 +820,14 @@ public class IModelImplTests {
     this.model1.addShape("R", ShapeType.RECTANGLE, 10, 20, 30, 40, Color.CYAN);
 
     this.model1.addMotion("R", 10, 10, 20, 30, 40, Color.CYAN,
-        20, 10, 40, 30, 40, Color.CYAN);
+            20, 10, 40, 30, 40, Color.CYAN);
     this.model1.addMotion("R", 20, 10, 40, 30, 40, Color.CYAN,
-        35, 10, 40, 60, 120, Color.CYAN);
+            35, 10, 40, 60, 120, Color.CYAN);
     this.model1.addMotion("R", 40, 10, 40, 60, 120, Color.CYAN,
-        45, 20, 40, 60, 120, Color.DARK_GRAY);
+            45, 20, 40, 60, 120, Color.DARK_GRAY);
 
     this.model1.addMotion("R", 35, 5, 10, 15, 20, Color.GREEN,
-        40, 20, 40, 60, 120, Color.CYAN);
+            40, 20, 40, 60, 120, Color.CYAN);
   }
 
   /**
@@ -841,14 +839,14 @@ public class IModelImplTests {
     this.model1.addShape("R", ShapeType.RECTANGLE, 10, 20, 30, 40, Color.CYAN);
 
     this.model1.addMotion("R", 10, 10, 20, 30, 40, Color.CYAN,
-        20, 10, 40, 30, 40, Color.CYAN);
+            20, 10, 40, 30, 40, Color.CYAN);
     this.model1.addMotion("R", 20, 10, 40, 30, 40, Color.CYAN,
-        35, 10, 40, 60, 120, Color.CYAN);
+            35, 10, 40, 60, 120, Color.CYAN);
     this.model1.addMotion("R", 40, 10, 40, 60, 120, Color.CYAN,
-        45, 20, 40, 60, 120, Color.DARK_GRAY);
+            45, 20, 40, 60, 120, Color.DARK_GRAY);
 
     this.model1.addMotion("R", 40, 10, 40, 60, 120, Color.CYAN,
-        40, 10, 15, 19, 25, Color.RED);
+            40, 10, 15, 19, 25, Color.RED);
   }
 
   /**
@@ -860,14 +858,14 @@ public class IModelImplTests {
     this.model1.addShape("R", ShapeType.RECTANGLE, 10, 20, 30, 40, Color.CYAN);
 
     this.model1.addMotion("R", 10, 10, 20, 30, 40, Color.CYAN,
-        20, 10, 40, 30, 40, Color.CYAN);
+            20, 10, 40, 30, 40, Color.CYAN);
     this.model1.addMotion("R", 20, 10, 40, 30, 40, Color.CYAN,
-        35, 10, 40, 60, 120, Color.CYAN);
+            35, 10, 40, 60, 120, Color.CYAN);
     this.model1.addMotion("R", 40, 10, 40, 60, 120, Color.CYAN,
-        45, 20, 40, 60, 120, Color.DARK_GRAY);
+            45, 20, 40, 60, 120, Color.DARK_GRAY);
 
     this.model1.addMotion("R", 35, 5, 10, 15, 20, Color.GREEN,
-        40, 10, 15, 19, 25, Color.RED);
+            40, 10, 15, 19, 25, Color.RED);
   }
 
   /**
@@ -882,8 +880,8 @@ public class IModelImplTests {
     assertEquals("shape R rectangle", this.model1.printAnimations());
 
     this.model1.addMotion("R",
-        1, 30, 40, 10, 20, Color.CYAN,
-        10, 30, 40, 40, 60, Color.CYAN);
+            1, 30, 40, 10, 20, Color.CYAN,
+            10, 30, 40, 40, 60, Color.CYAN);
 
     assertEquals("shape R rectangle\n"
                     + "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255",
@@ -902,16 +900,16 @@ public class IModelImplTests {
     assertEquals("shape R rectangle", this.model1.printAnimations());
 
     this.model1.addMotion("R",
-        1, 30, 40, 10, 20, Color.CYAN,
-        10, 30, 40, 40, 60, Color.CYAN);
+            1, 30, 40, 10, 20, Color.CYAN,
+            10, 30, 40, 40, 60, Color.CYAN);
 
     assertEquals("shape R rectangle\n"
                     + "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255",
             this.model1.printAnimations());
 
     this.model1.addMotion("R",
-        10, 30, 40, 40, 60, Color.CYAN,
-        15, 45, 60, 40, 60, Color.CYAN);
+            10, 30, 40, 40, 60, Color.CYAN,
+            15, 45, 60, 40, 60, Color.CYAN);
 
     assertEquals("shape R rectangle\n"
                     + "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n"
@@ -932,14 +930,14 @@ public class IModelImplTests {
     assertEquals("shape R rectangle", this.model1.printAnimations());
 
     this.model1.addMotion("R",
-        1, 30, 40, 10, 20, Color.CYAN,
-        10, 30, 40, 40, 60, Color.CYAN);
+            1, 30, 40, 10, 20, Color.CYAN,
+            10, 30, 40, 40, 60, Color.CYAN);
     this.model1.addMotion("R",
-        10, 30, 40, 40, 60, Color.CYAN,
-        15, 45, 60, 40, 60, Color.CYAN);
+            10, 30, 40, 40, 60, Color.CYAN,
+            15, 45, 60, 40, 60, Color.CYAN);
     this.model1.addMotion("R",
-        15, 45, 60, 40, 60, Color.CYAN,
-        30, 50, 60, 80, 120, Color.GREEN);
+            15, 45, 60, 40, 60, Color.CYAN,
+            30, 50, 60, 80, 120, Color.GREEN);
 
     assertEquals("shape R rectangle\n" +
                     "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
@@ -962,7 +960,7 @@ public class IModelImplTests {
     assertEquals("shape R rectangle", this.model1.printAnimations());
 
     this.model1.addMotion("R", 0, 0, 0, 0, 0, Color.BLACK,
-        1, 0, 0, 0, 0, Color.BLACK);
+            1, 0, 0, 0, 0, Color.BLACK);
 
     assertEquals("shape R rectangle\n"
                     + "motion R 0 0 0 0 0 0 0 0\t1 0 0 0 0 0 0 0",
@@ -1093,9 +1091,9 @@ public class IModelImplTests {
     this.model1.addShape("C", ShapeType.ELLIPSE, 10, 20, 30, 40, Color.CYAN);
 
     assertEquals(
-        "shape R rectangle\n\n"
-            + "shape C ellipse",
-        this.model1.printAnimations());
+            "shape R rectangle\n\n"
+                    + "shape C ellipse",
+            this.model1.printAnimations());
   }
 
   /**
@@ -1112,10 +1110,10 @@ public class IModelImplTests {
     this.model1.addShape("S", ShapeType.RECTANGLE, 4, 5.9, 6.8, 1000, Color.RED);
 
     assertEquals(
-        "shape R rectangle\n\n"
-            + "shape C ellipse\n\n"
-            + "shape S rectangle",
-        this.model1.printAnimations());
+            "shape R rectangle\n\n"
+                    + "shape C ellipse\n\n"
+                    + "shape S rectangle",
+            this.model1.printAnimations());
   }
 
   /**
@@ -1133,11 +1131,11 @@ public class IModelImplTests {
     this.model1.addShape("r", ShapeType.RECTANGLE, 10.3, 20.5, 30.7, 40.9, Color.CYAN);
 
     assertEquals(
-        "shape R rectangle\n\n"
-            + "shape C ellipse\n\n"
-            + "shape S rectangle\n\n"
-            + "shape r rectangle",
-        this.model1.printAnimations());
+            "shape R rectangle\n\n"
+                    + "shape C ellipse\n\n"
+                    + "shape S rectangle\n\n"
+                    + "shape r rectangle",
+            this.model1.printAnimations());
   }
 
   /**
@@ -1155,11 +1153,11 @@ public class IModelImplTests {
     this.model1.addShape("c", ShapeType.ELLIPSE, 10, 20, 30, 40, Color.CYAN);
 
     assertEquals(
-        "shape R rectangle\n\n"
-            + "shape C ellipse\n\n"
-            + "shape S rectangle\n\n"
-            + "shape c ellipse",
-        this.model1.printAnimations());
+            "shape R rectangle\n\n"
+                    + "shape C ellipse\n\n"
+                    + "shape S rectangle\n\n"
+                    + "shape c ellipse",
+            this.model1.printAnimations());
   }
 
   /**
@@ -1177,11 +1175,11 @@ public class IModelImplTests {
     this.model1.addShape("s", ShapeType.RECTANGLE, 4, 5.9, 6.8, 1000, Color.RED);
 
     assertEquals(
-        "shape R rectangle\n\n"
-            + "shape C ellipse\n\n"
-            + "shape S rectangle\n\n"
-            + "shape s rectangle",
-        this.model1.printAnimations());
+            "shape R rectangle\n\n"
+                    + "shape C ellipse\n\n"
+                    + "shape S rectangle\n\n"
+                    + "shape s rectangle",
+            this.model1.printAnimations());
   }
 
   /**
@@ -1199,11 +1197,11 @@ public class IModelImplTests {
     this.model1.addShape("R", ShapeType.RECTANGLE, 10.3, 20.5, 30.7, 40.9, Color.CYAN);
 
     assertEquals(
-        "shape r rectangle\n\n"
-            + "shape c ellipse\n\n"
-            + "shape s rectangle\n\n"
-            + "shape R rectangle",
-        this.model1.printAnimations());
+            "shape r rectangle\n\n"
+                    + "shape c ellipse\n\n"
+                    + "shape s rectangle\n\n"
+                    + "shape R rectangle",
+            this.model1.printAnimations());
   }
 
   /**
@@ -1221,11 +1219,11 @@ public class IModelImplTests {
     this.model1.addShape("C", ShapeType.ELLIPSE, 10, 20, 30, 40, Color.CYAN);
 
     assertEquals(
-        "shape r rectangle\n\n"
-            + "shape c ellipse\n\n"
-            + "shape s rectangle\n\n"
-            + "shape C ellipse",
-        this.model1.printAnimations());
+            "shape r rectangle\n\n"
+                    + "shape c ellipse\n\n"
+                    + "shape s rectangle\n\n"
+                    + "shape C ellipse",
+            this.model1.printAnimations());
   }
 
   /**
@@ -1243,11 +1241,11 @@ public class IModelImplTests {
     this.model1.addShape("S", ShapeType.RECTANGLE, 4, 5.9, 6.8, 1000, Color.RED);
 
     assertEquals(
-        "shape r rectangle\n\n"
-            + "shape c ellipse\n\n"
-            + "shape s rectangle\n\n"
-            + "shape S rectangle",
-        this.model1.printAnimations());
+            "shape r rectangle\n\n"
+                    + "shape c ellipse\n\n"
+                    + "shape s rectangle\n\n"
+                    + "shape S rectangle",
+            this.model1.printAnimations());
   }
 
   /**
@@ -1258,10 +1256,10 @@ public class IModelImplTests {
     assertEquals("", this.model1.printAnimations());
 
     this.model1.addShape("hdsafhufhf17483%^$*&ihfh346&*&$./';]",
-        ShapeType.RECTANGLE, 10.3, 20.5, 30.7, 40.9, Color.CYAN);
+            ShapeType.RECTANGLE, 10.3, 20.5, 30.7, 40.9, Color.CYAN);
 
     assertEquals("shape hdsafhufhf17483%^$*&ihfh346&*&$./';] rectangle",
-        this.model1.printAnimations());
+            this.model1.printAnimations());
   }
 
   /**
@@ -1277,14 +1275,14 @@ public class IModelImplTests {
     this.model1.addShape("S", ShapeType.RECTANGLE, 4, 5.9, 6.8, 1000, Color.RED);
 
     this.model1.addShape("hdsafhufhf17483%^$*&ihfh346&*&$./';]",
-        ShapeType.RECTANGLE, 10.3, 20.5, 30.7, 40.9, Color.CYAN);
+            ShapeType.RECTANGLE, 10.3, 20.5, 30.7, 40.9, Color.CYAN);
 
     assertEquals(
-        "shape R rectangle\n\n"
-            + "shape C ellipse\n\n"
-            + "shape S rectangle\n\n"
-            + "shape hdsafhufhf17483%^$*&ihfh346&*&$./';] rectangle",
-        this.model1.printAnimations());
+            "shape R rectangle\n\n"
+                    + "shape C ellipse\n\n"
+                    + "shape S rectangle\n\n"
+                    + "shape hdsafhufhf17483%^$*&ihfh346&*&$./';] rectangle",
+            this.model1.printAnimations());
   }
 
   /**
@@ -1414,11 +1412,11 @@ public class IModelImplTests {
     this.model1.addShape("S", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
 
     assertEquals("shape R rectangle\n\n"
-        + "shape C ellipse\n\n"
-        + "shape S rectangle", this.model1.printAnimations());
+            + "shape C ellipse\n\n"
+            + "shape S rectangle", this.model1.printAnimations());
     this.model1.removeShape("R");
     assertEquals("shape C ellipse\n\n"
-        + "shape S rectangle", this.model1.printAnimations());
+            + "shape S rectangle", this.model1.printAnimations());
   }
 
   /**
@@ -1433,11 +1431,11 @@ public class IModelImplTests {
     this.model1.addShape("S", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
 
     assertEquals("shape R rectangle\n\n"
-        + "shape C ellipse\n\n"
-        + "shape S rectangle", this.model1.printAnimations());
+            + "shape C ellipse\n\n"
+            + "shape S rectangle", this.model1.printAnimations());
     this.model1.removeShape("C");
     assertEquals("shape R rectangle\n\n"
-        + "shape S rectangle", this.model1.printAnimations());
+            + "shape S rectangle", this.model1.printAnimations());
   }
 
   /**
@@ -1452,11 +1450,11 @@ public class IModelImplTests {
     this.model1.addShape("S", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
 
     assertEquals("shape R rectangle\n\n"
-        + "shape C ellipse\n\n"
-        + "shape S rectangle", this.model1.printAnimations());
+            + "shape C ellipse\n\n"
+            + "shape S rectangle", this.model1.printAnimations());
     this.model1.removeShape("S");
     assertEquals("shape R rectangle\n\n"
-        + "shape C ellipse", this.model1.printAnimations());
+            + "shape C ellipse", this.model1.printAnimations());
   }
 
   /**
@@ -1471,34 +1469,34 @@ public class IModelImplTests {
     this.model1.addShape("S", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
 
     this.model1.addMotion("R",
-        1, 30, 40, 10, 20, Color.CYAN,
-        10, 30, 40, 40, 60, Color.CYAN);
+            1, 30, 40, 10, 20, Color.CYAN,
+            10, 30, 40, 40, 60, Color.CYAN);
     this.model1.addMotion("R",
-        10, 30, 40, 40, 60, Color.CYAN,
-        15, 45, 60, 40, 60, Color.CYAN);
+            10, 30, 40, 40, 60, Color.CYAN,
+            15, 45, 60, 40, 60, Color.CYAN);
     this.model1.addMotion("R",
-        15, 45, 60, 40, 60, Color.CYAN,
-        30, 45, 60, 40, 60, Color.GREEN);
+            15, 45, 60, 40, 60, Color.CYAN,
+            30, 45, 60, 40, 60, Color.GREEN);
 
     this.model1.addMotion("C",
-        1, 30, 40, 10, 20, Color.CYAN,
-        10, 30, 40, 10, 20, Color.ORANGE);
+            1, 30, 40, 10, 20, Color.CYAN,
+            10, 30, 40, 10, 20, Color.ORANGE);
     this.model1.addMotion("C",
-        10, 30, 40, 10, 20, Color.ORANGE,
-        15, 30, 40, 0, 0, Color.ORANGE);
+            10, 30, 40, 10, 20, Color.ORANGE,
+            15, 30, 40, 0, 0, Color.ORANGE);
     this.model1.addMotion("C",
-        15, 30, 40, 0, 0, Color.ORANGE,
-        30, 45, 60, 0, 0, Color.ORANGE);
+            15, 30, 40, 0, 0, Color.ORANGE,
+            30, 45, 60, 0, 0, Color.ORANGE);
 
     this.model1.addMotion("S",
-        10, 30, 40, 10, 10, Color.RED,
-        25, 15, 20, 10, 20, Color.RED);
+            10, 30, 40, 10, 10, Color.RED,
+            25, 15, 20, 10, 20, Color.RED);
     this.model1.addMotion("S",
-        25, 15, 20, 10, 20, Color.RED,
-        35, 15, 20, 6, 7, Color.RED);
+            25, 15, 20, 10, 20, Color.RED,
+            35, 15, 20, 6, 7, Color.RED);
     this.model1.addMotion("S",
-        35, 15, 20, 6, 7, Color.RED,
-        45, 15, 20, 6, 7, Color.YELLOW);
+            35, 15, 20, 6, 7, Color.RED,
+            45, 15, 20, 6, 7, Color.YELLOW);
 
     assertEquals(
             "shape R rectangle\n" +
@@ -1588,14 +1586,14 @@ public class IModelImplTests {
   public void testRemoveMotion() {
     this.model1.addShape("R", ShapeType.RECTANGLE, 10, 20, 30, 40, Color.CYAN);
     this.model1.addMotion("R",
-        1, 30, 40, 10, 20, Color.CYAN,
-        10, 30, 40, 40, 60, Color.CYAN);
+            1, 30, 40, 10, 20, Color.CYAN,
+            10, 30, 40, 40, 60, Color.CYAN);
     this.model1.addMotion("R",
-        10, 30, 40, 40, 60, Color.CYAN,
-        15, 45, 60, 40, 60, Color.CYAN);
+            10, 30, 40, 40, 60, Color.CYAN,
+            15, 45, 60, 40, 60, Color.CYAN);
     this.model1.addMotion("R",
-        15, 45, 60, 40, 60, Color.CYAN,
-        30, 45, 60, 40, 60, Color.GREEN);
+            15, 45, 60, 40, 60, Color.CYAN,
+            30, 45, 60, 40, 60, Color.GREEN);
 
     assertEquals("shape R rectangle\n" +
                     "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
@@ -1618,14 +1616,14 @@ public class IModelImplTests {
   public void testRemoveMotion2() {
     this.model1.addShape("R", ShapeType.RECTANGLE, 10, 20, 30, 40, Color.CYAN);
     this.model1.addMotion("R",
-        1, 30, 40, 10, 20, Color.CYAN,
-        10, 30, 40, 40, 60, Color.CYAN);
+            1, 30, 40, 10, 20, Color.CYAN,
+            10, 30, 40, 40, 60, Color.CYAN);
     this.model1.addMotion("R",
-        10, 30, 40, 40, 60, Color.CYAN,
-        15, 45, 60, 40, 60, Color.CYAN);
+            10, 30, 40, 40, 60, Color.CYAN,
+            15, 45, 60, 40, 60, Color.CYAN);
     this.model1.addMotion("R",
-        15, 45, 60, 40, 60, Color.CYAN,
-        30, 45, 60, 40, 60, Color.GREEN);
+            15, 45, 60, 40, 60, Color.CYAN,
+            30, 45, 60, 40, 60, Color.GREEN);
 
     assertEquals("shape R rectangle\n" +
                     "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
@@ -1649,14 +1647,14 @@ public class IModelImplTests {
   public void testRemoveMotion3() {
     this.model1.addShape("R", ShapeType.RECTANGLE, 10, 20, 30, 40, Color.CYAN);
     this.model1.addMotion("R",
-        1, 30, 40, 10, 20, Color.CYAN,
-        10, 30, 40, 40, 60, Color.CYAN);
+            1, 30, 40, 10, 20, Color.CYAN,
+            10, 30, 40, 40, 60, Color.CYAN);
     this.model1.addMotion("R",
-        10, 30, 40, 40, 60, Color.CYAN,
-        15, 45, 60, 40, 60, Color.CYAN);
+            10, 30, 40, 40, 60, Color.CYAN,
+            15, 45, 60, 40, 60, Color.CYAN);
     this.model1.addMotion("R",
-        15, 45, 60, 40, 60, Color.CYAN,
-        30, 45, 60, 40, 60, Color.GREEN);
+            15, 45, 60, 40, 60, Color.CYAN,
+            30, 45, 60, 40, 60, Color.GREEN);
 
     assertEquals("shape R rectangle\n" +
                     "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
@@ -1679,12 +1677,12 @@ public class IModelImplTests {
   @Test
   public void testRemoveMotion4() {
     assertEquals("",
-        model1.printAnimations());
+            model1.printAnimations());
 
     this.model1.removeMotionAtStartTick("E", 2);
 
     assertEquals("",
-        model1.printAnimations());
+            model1.printAnimations());
   }
 
   @Test
@@ -1702,15 +1700,15 @@ public class IModelImplTests {
     this.model1.addShape("S", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
 
     this.model1.addMotion("R",
-        1, 30, 40, 10, 20, Color.CYAN,
-        10, 30, 40, 40, 60, Color.CYAN);
+            1, 30, 40, 10, 20, Color.CYAN,
+            10, 30, 40, 40, 60, Color.CYAN);
     this.model1.addMotion("R",
-        10, 30, 40, 40, 60, Color.CYAN,
-        15, 45, 60, 40, 60, Color.CYAN);
+            10, 30, 40, 40, 60, Color.CYAN,
+            15, 45, 60, 40, 60, Color.CYAN);
 
     this.model1.addMotion("S",
-        10, 30, 40, 10, 10, Color.RED,
-        25, 15, 20, 10, 20, Color.RED);
+            10, 30, 40, 10, 10, Color.RED,
+            25, 15, 20, 10, 20, Color.RED);
 
     ArrayList<IMotion> res = new ArrayList<>();
     res.add(model1.getShapes().get(0).getMotions().get(1));
@@ -1720,28 +1718,28 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that getting shapes at a negative tick throws an exception
+   * Tests that getting shapes at a negative tick throws an exception.
    */
   @Test(expected = IllegalArgumentException.class)
-  public void testShapesAtNegTick(){
+  public void testShapesAtNegTick() {
     IModel model = this.builder.build();
     model.getShapesAtTick(-2);
   }
 
   /**
-   * Tests that getting shapes at a given tick in an empty animation returns nothing
+   * Tests that getting shapes at a given tick in an empty animation returns nothing.
    */
   @Test
-  public void testNoShapesTween(){
+  public void testNoShapesTween() {
     IModel model = this.builder.build();
     assertEquals(new ArrayList<IReadOnlyShape>(), model.getShapesAtTick(1));
   }
 
   /**
-   * Tests that getting shapes at a given tick with no motions inside returns the same shapes
+   * Tests that getting shapes at a given tick with no motions inside returns the same shapes.
    */
   @Test
-  public void testShapesNoMotionsTween(){
+  public void testShapesNoMotionsTween() {
     this.builder.declareShape("R", "rectangle");
     this.builder.declareShape("E", "ellipse");
     IModel model = this.builder.build();
@@ -1753,12 +1751,12 @@ public class IModelImplTests {
 
   /**
    * Tests that tweening a shape at a tick before its first motion returns the start state of the
-   * first motion
+   * first motion.
    */
   @Test
   public void testShapesBeforeFirstMotion() {
     this.builder.declareShape("R", "rectangle");
-    this.builder.addMotion("R",10, 0, 0, 15, 15, 255, 0, 0, 20, 15, 15, 0, 0, 255, 0 ,0);
+    this.builder.addMotion("R", 10, 0, 0, 15, 15, 255, 0, 0, 20, 15, 15, 0, 0, 255, 0, 0);
     IModel model = this.builder.build();
     List<IReadOnlyShape> shapes = model.getShapesAtTick(3);
     IReadOnlyShape shape = shapes.get(0);
@@ -1771,13 +1769,13 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that tweening a shape at a tick after its last motion returns the end state of the
-   * last motion
+   * Tests that tweening a shape at a tick after its last motion returns the end state of the last
+   * motion.
    */
   @Test
   public void testShapesAfterLastMotion() {
     this.builder.declareShape("R", "rectangle");
-    this.builder.addMotion("R",10, 0, 0, 15, 15, 255, 0, 0, 20, 15, 15, 0, 0, 255, 0 ,0);
+    this.builder.addMotion("R", 10, 0, 0, 15, 15, 255, 0, 0, 20, 15, 15, 0, 0, 255, 0, 0);
     IModel model = this.builder.build();
     List<IReadOnlyShape> shapes = model.getShapesAtTick(40);
     IReadOnlyShape shape = shapes.get(0);
@@ -1790,12 +1788,12 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that tweening a shape during a motion returns the correct output
+   * Tests that tweening a shape during a motion returns the correct output.
    */
   @Test
   public void testShapesDuringMotion() {
     this.builder.declareShape("R", "rectangle");
-    this.builder.addMotion("R",10, 0, 0, 15, 15, 255, 0, 0, 20, 15, 15, 0, 0, 255, 0 ,0);
+    this.builder.addMotion("R", 10, 0, 0, 15, 15, 255, 0, 0, 20, 15, 15, 0, 0, 255, 0, 0);
     IModel model = this.builder.build();
     List<IReadOnlyShape> shapes = model.getShapesAtTick(10);
     IReadOnlyShape shape = shapes.get(0);
@@ -1808,12 +1806,12 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that tweening a shape during a motion returns the correct output
+   * Tests that tweening a shape during a motion returns the correct output.
    */
   @Test
   public void testShapesDuringMotion2() {
     this.builder.declareShape("R", "rectangle");
-    this.builder.addMotion("R",10, 0, 0, 15, 15, 255, 0, 0, 20, 15, 15, 0, 0, 255, 0 ,0);
+    this.builder.addMotion("R", 10, 0, 0, 15, 15, 255, 0, 0, 20, 15, 15, 0, 0, 255, 0, 0);
     IModel model = this.builder.build();
     List<IReadOnlyShape> shapes = model.getShapesAtTick(20);
     IReadOnlyShape shape = shapes.get(0);
@@ -1826,13 +1824,13 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that tweening a shape during a motion returns the correct output (including with
-   * negative numbers)
+   * Tests that tweening a shape during a motion returns the correct output (including with negative
+   * numbers).
    */
   @Test
   public void testShapesDuringMotion3() {
     this.builder.declareShape("R", "rectangle");
-    this.builder.addMotion("R",10, -2, 3, 10, 30, 0, 255, 0, 40, 0, 0, 15, 15, 255, 0 ,0);
+    this.builder.addMotion("R", 10, -2, 3, 10, 30, 0, 255, 0, 40, 0, 0, 15, 15, 255, 0, 0);
     IModel model = this.builder.build();
     List<IReadOnlyShape> shapes = model.getShapesAtTick(15);
     IReadOnlyShape shape = shapes.get(0);
@@ -1845,14 +1843,14 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that tweening an animation with multiple shapes functions as expected
+   * Tests that tweening an animation with multiple shapes functions as expected.
    */
   @Test
   public void testShapesDuringMotion4() {
     this.builder.declareShape("R", "rectangle");
     this.builder.declareShape("E", "ellipse");
-    this.builder.addMotion("E",10, 0, 0, 15, 15, 255, 0, 0, 20, 15, 15, 0, 0, 255, 0 ,0);
-    this.builder.addMotion("R",10, -2, 3, 10, 30, 0, 255, 0, 40, 0, 0, 15, 15, 255, 0 ,0);
+    this.builder.addMotion("E", 10, 0, 0, 15, 15, 255, 0, 0, 20, 15, 15, 0, 0, 255, 0, 0);
+    this.builder.addMotion("R", 10, -2, 3, 10, 30, 0, 255, 0, 40, 0, 0, 15, 15, 255, 0, 0);
     IModel model = this.builder.build();
     List<IReadOnlyShape> shapes = model.getShapesAtTick(20);
     IReadOnlyShape shape = shapes.get(0);
@@ -1872,7 +1870,7 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that tweening an animation with multiple shapes and motions functions as expected
+   * Tests that tweening an animation with multiple shapes and motions functions as expected.
    */
   @Test
   public void testShapesDuringMotion5() {
@@ -1880,12 +1878,12 @@ public class IModelImplTests {
     this.builder.declareShape("E", "ellipse");
     this.builder.addMotion("E", 5, 100, 200, 30, 30, 200, 0, 3,
             10, 0, 0, 15, 15, 255, 0, 0);
-    this.builder.addMotion("E",10, 0, 0, 15, 15, 255, 0, 0,
-            20, 15, 15, 0, 0, 255, 0 ,0);
-    this.builder.addMotion("R",10, -2, 3, 10, 30, 0, 255, 0,
-            40, 0, 0, 15, 15, 255, 0 ,0);
-    this.builder.addMotion("R",40, 0, 0, 15, 15, 255, 0 ,0,
-            40, 0, 0, 15, 15, 255, 0 ,0);
+    this.builder.addMotion("E", 10, 0, 0, 15, 15, 255, 0, 0,
+            20, 15, 15, 0, 0, 255, 0, 0);
+    this.builder.addMotion("R", 10, -2, 3, 10, 30, 0, 255, 0,
+            40, 0, 0, 15, 15, 255, 0, 0);
+    this.builder.addMotion("R", 40, 0, 0, 15, 15, 255, 0, 0,
+            40, 0, 0, 15, 15, 255, 0, 0);
     IModel model = this.builder.build();
     List<IReadOnlyShape> shapes = model.getShapesAtTick(10);
     IReadOnlyShape shape = shapes.get(1);
@@ -1920,7 +1918,7 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that building a model with negative width and height throws an error
+   * Tests that building a model with negative width and height throws an error.
    */
   @Test(expected = IllegalArgumentException.class)
   public void buildNegModel() {
@@ -1930,9 +1928,6 @@ public class IModelImplTests {
 
   /**
    * Tests that setBounds updates the builders fields.
-   */
-  /**
-   * Tests a builder constructs a model with default values when being called with build.
    */
   @Test
   public void testSetBounds() {
@@ -1957,7 +1952,7 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that an exception is thrown given a null shape type
+   * Tests that an exception is thrown given a null shape type.
    */
   @Test(expected = IllegalArgumentException.class)
   public void declareShapeNullShape() {
@@ -1965,7 +1960,7 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that an exception is thrown given a null ID
+   * Tests that an exception is thrown given a null ID.
    */
   @Test(expected = IllegalArgumentException.class)
   public void declareShapeNullID() {
@@ -1973,7 +1968,7 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that an exception is thrown given a null ID and null shape type
+   * Tests that an exception is thrown given a null ID and null shape type.
    */
   @Test(expected = IllegalArgumentException.class)
   public void declareShapeNullIDNullShape() {
@@ -1981,7 +1976,7 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that an exception is thrown given an invalid shape type string
+   * Tests that an exception is thrown given an invalid shape type string.
    */
   @Test(expected = IllegalArgumentException.class)
   public void declareShapeBadString() {
@@ -1989,7 +1984,7 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that declaring a shape actually adds it to the model to build
+   * Tests that declaring a shape actually adds it to the model to build.
    */
   @Test
   public void declareShape() {
@@ -2014,7 +2009,7 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that declaring multiple shapes
+   * Tests that declaring multiple shapes.
    */
   @Test
   public void declareShape2() {
@@ -2045,45 +2040,45 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that an exception is thrown when addMotion given a null ID
+   * Tests that an exception is thrown when addMotion given a null ID.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testNullMotionID() {
-    this.builder.addMotion(null, 1 ,0 ,0,0,0, 0, 0, 0,
-            20 ,0 ,0,0,0, 0, 0, 0);
+    this.builder.addMotion(null, 1, 0, 0, 0, 0, 0, 0, 0,
+            20, 0, 0, 0, 0, 0, 0, 0);
   }
 
   /**
-   * Tests that an exception is thrown when adding motion to an empty model
+   * Tests that an exception is thrown when adding motion to an empty model.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionEmptyModel() {
-    this.builder.addMotion("R", 1 ,0 ,0,0,0, 0, 0, 0,
-            20 ,0 ,0,0,0, 0, 0, 0);
+    this.builder.addMotion("R", 1, 0, 0, 0, 0, 0, 0, 0,
+            20, 0, 0, 0, 0, 0, 0, 0);
   }
 
   /**
-   * Tests that an exception is thrown when adding motion to a non-existent ID
+   * Tests that an exception is thrown when adding motion to a non-existent ID.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionNoID() {
     this.builder.declareShape("E", "ellipse");
-    this.builder.addMotion("R", 1 ,0 ,0,0,0, 0, 0, 0,
-            20 ,0 ,0,0,0, 0, 0, 0);
+    this.builder.addMotion("R", 1, 0, 0, 0, 0, 0, 0, 0,
+            20, 0, 0, 0, 0, 0, 0, 0);
   }
 
   /**
-   * Tests that an exception is thrown when motion has negative start values
+   * Tests that an exception is thrown when motion has negative start values.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionNegativeStart() {
     this.builder.declareShape("E", "ellipse");
-    this.builder.addMotion("E", -4 ,-2,-3, -2, -2, -2,
-            2,-2 ,0 ,0,0,0, 0, 0, 0, 0);
+    this.builder.addMotion("E", -4, -2, -3, -2, -2, -2,
+            2, -2, 0, 0, 0, 0, 0, 0, 0, 0);
   }
 
   /**
-   * Tests that an exception is thrown when motion has negative end values
+   * Tests that an exception is thrown when motion has negative end values.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testAddMotionNegativeEnd() {
@@ -2093,48 +2088,48 @@ public class IModelImplTests {
   }
 
   /**
-   * Tests that adding an overlapping motion throws an exception
+   * Tests that adding an overlapping motion throws an exception.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testBuilderOverlapMotion() {
     this.builder.declareShape("R", "rectangle");
-    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0 ,0,10, 40, 40, 40, 40, 0, 0, 0);
-    this.builder.addMotion("R", 4, 20, 20, 30, 40, 255, 0 ,0,10, 40, 40, 40, 40, 0, 0, 0);
+    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0, 0, 10, 40, 40, 40, 40, 0, 0, 0);
+    this.builder.addMotion("R", 4, 20, 20, 30, 40, 255, 0, 0, 10, 40, 40, 40, 40, 0, 0, 0);
   }
 
   /**
-   * Tests that adding a motion but leaving a gap throws an exception
+   * Tests that adding a motion but leaving a gap throws an exception.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testBuilderGapMotion() {
     this.builder.declareShape("R", "rectangle");
-    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0 ,0,10, 40, 40, 40, 40, 0, 0, 0);
-    this.builder.addMotion("R", 15, 20, 20, 30, 40, 255, 0 ,0,10, 40, 40, 40, 40, 0, 0, 0);
+    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0, 0, 10, 40, 40, 40, 40, 0, 0, 0);
+    this.builder.addMotion("R", 15, 20, 20, 30, 40, 255, 0, 0, 10, 40, 40, 40, 40, 0, 0, 0);
   }
 
   /**
-   * Tests that adding two motions with adjacent ticks but disagreeing states throws an error
+   * Tests that adding two motions with adjacent ticks but disagreeing states throws an error.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testBuilderBadAdjMotions() {
     this.builder.declareShape("R", "rectangle");
-    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0 ,0,10, 40, 40, 40, 40, 0, 0, 0);
-    this.builder.addMotion("R", 10, 20, 20, 30, 40, 255, 0 ,0,10, 40, 40, 40, 40, 0, 0, 0);
+    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0, 0, 10, 40, 40, 40, 40, 0, 0, 0);
+    this.builder.addMotion("R", 10, 20, 20, 30, 40, 255, 0, 0, 10, 40, 40, 40, 40, 0, 0, 0);
   }
 
   /**
-   * Tests that adding a motion with end tick before start tick throws an exception
+   * Tests that adding a motion with end tick before start tick throws an exception.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testBuilderBadEndTick() {
     this.builder.declareShape("R", "rectangle");
-    this.builder.addMotion("R", 10, 20, 20, 30, 40, 255, 0 ,0,4, 40, 40, 40, 40, 0, 0, 0);
+    this.builder.addMotion("R", 10, 20, 20, 30, 40, 255, 0, 0, 4, 40, 40, 40, 40, 0, 0, 0);
 
   }
 
   /**
    * Tests that a motion can be added to an existing shape in the model builder successfully (ie
-   * added and max x and y coordinates updated)
+   * added and max x and y coordinates updated).
    */
   @Test
   public void testAddMotionBuilder() {
@@ -2147,7 +2142,7 @@ public class IModelImplTests {
     assertEquals(0, model.getMaxY());
     assertEquals(new ArrayList<IModelShape>(), model.getShapes());
     this.builder.declareShape("R", "rectangle");
-    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0 ,0,10, 40, 40, 40, 40, 0, 0, 0);
+    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0, 0, 10, 40, 40, 40, 40, 0, 0, 0);
     model = this.builder.build();
     IMotion motionAdded = model.getShapes().get(0).getMotions().get(0);
     assertEquals(0, model.getX());
@@ -2163,12 +2158,12 @@ public class IModelImplTests {
     assertEquals(20, motionAdded.getStartY(), .001);
     assertEquals(30, motionAdded.getStartWidth(), .001);
     assertEquals(40, motionAdded.getStartHeight(), .001);
-    assertEquals(new Color(255, 0 ,0), motionAdded.getStartColor());
+    assertEquals(new Color(255, 0, 0), motionAdded.getStartColor());
   }
 
   /**
    * Tests that multiple motions can be added to an existing shape in the model builder successfully
-   * (ie added and max x and y coordinates updated)
+   * (ie added and max x and y coordinates updated).
    */
   @Test
   public void testAddMotionBuilder2() {
@@ -2181,8 +2176,8 @@ public class IModelImplTests {
     assertEquals(0, model.getMaxY());
     assertEquals(new ArrayList<IModelShape>(), model.getShapes());
     this.builder.declareShape("R", "rectangle");
-    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0 ,0,1, 20, 20, 30, 40, 255, 0 ,0);
-    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0 ,0,10, 40, 40, 40, 40, 0, 0, 0);
+    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0, 0, 1, 20, 20, 30, 40, 255, 0, 0);
+    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0, 0, 10, 40, 40, 40, 40, 0, 0, 0);
     model = this.builder.build();
     IMotion motionAdded = model.getShapes().get(0).getMotions().get(0);
     IMotion motionAdded2 = model.getShapes().get(0).getMotions().get(1);
@@ -2199,17 +2194,17 @@ public class IModelImplTests {
     assertEquals(20, motionAdded.getStartY(), .001);
     assertEquals(30, motionAdded.getStartWidth(), .001);
     assertEquals(40, motionAdded.getStartHeight(), .001);
-    assertEquals(new Color(255, 0 ,0), motionAdded.getStartColor());
+    assertEquals(new Color(255, 0, 0), motionAdded.getStartColor());
     assertEquals(1, motionAdded2.getStartTick());
     assertEquals(20, motionAdded2.getStartX(), .001);
     assertEquals(20, motionAdded2.getStartY(), .001);
     assertEquals(30, motionAdded2.getStartWidth(), .001);
     assertEquals(40, motionAdded2.getStartHeight(), .001);
-    assertEquals(new Color(255, 0 ,0), motionAdded2.getStartColor());
+    assertEquals(new Color(255, 0, 0), motionAdded2.getStartColor());
   }
 
   /**
-   * Tests that motions can be added to different shapes in the model
+   * Tests that motions can be added to different shapes in the model.
    */
   @Test
   public void testAddMotionBuilder3() {
@@ -2223,8 +2218,8 @@ public class IModelImplTests {
     assertEquals(new ArrayList<IModelShape>(), model.getShapes());
     this.builder.declareShape("R", "rectangle");
     this.builder.declareShape("E", "ellipse");
-    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0 ,0,1, 20, 20, 30, 40, 255, 0 ,0);
-    this.builder.addMotion("E", 1, 20, 20, 30, 40, 255, 0 ,0,10, 40, 40, 40, 40, 0, 0, 0);
+    this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0, 0, 1, 20, 20, 30, 40, 255, 0, 0);
+    this.builder.addMotion("E", 1, 20, 20, 30, 40, 255, 0, 0, 10, 40, 40, 40, 40, 0, 0, 0);
     model = this.builder.build();
     IMotion motionAdded = model.getShapes().get(0).getMotions().get(0);
     IMotion motionAdded2 = model.getShapes().get(1).getMotions().get(0);
@@ -2241,12 +2236,12 @@ public class IModelImplTests {
     assertEquals(20, motionAdded.getStartY(), .001);
     assertEquals(30, motionAdded.getStartWidth(), .001);
     assertEquals(40, motionAdded.getStartHeight(), .001);
-    assertEquals(new Color(255, 0 ,0), motionAdded.getStartColor());
+    assertEquals(new Color(255, 0, 0), motionAdded.getStartColor());
     assertEquals(1, motionAdded2.getStartTick());
     assertEquals(20, motionAdded2.getStartX(), .001);
     assertEquals(20, motionAdded2.getStartY(), .001);
     assertEquals(30, motionAdded2.getStartWidth(), .001);
     assertEquals(40, motionAdded2.getStartHeight(), .001);
-    assertEquals(new Color(255, 0 ,0), motionAdded2.getStartColor());
+    assertEquals(new Color(255, 0, 0), motionAdded2.getStartColor());
   }
 }

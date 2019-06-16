@@ -41,16 +41,16 @@ public class IMotionImpl implements IMotion {
    * @throws IllegalArgumentException if any arguments are null, or if ticks are negative
    */
   public IMotionImpl(
-      int startTick, double startWidth, double startHeight, double startX, double startY,
-      Color startColor,
-      int endTick, double endWidth, double endHeight, double endX, double endY, Color endColor)
-      throws IllegalArgumentException {
+          int startTick, double startWidth, double startHeight, double startX, double startY,
+          Color startColor,
+          int endTick, double endWidth, double endHeight, double endX, double endY, Color endColor)
+          throws IllegalArgumentException {
     if (startColor == null || endColor == null) {
       throw new IllegalArgumentException("Arguments for IMotionImpl cannot be null.");
     }
 
     if (startTick < 0 || endTick < 0 || startWidth < 0 || startHeight < 0
-        || endWidth < 0 || endHeight < 0) {
+            || endWidth < 0 || endHeight < 0) {
       throw new IllegalArgumentException("Ticks and sizes cannot be negative.");
     }
 
@@ -73,11 +73,10 @@ public class IMotionImpl implements IMotion {
   }
 
   /**
-   * Prints this motion's fields in the following order: start tick, start x, start y, start
-   * width, start height, start color R value, start color G value, start color B value, end tick,
-   * end x, end y, end width, end height, end color R value, end color G value, end color B
-   * value. Spaces are placed in between each field, and start and end parameters are separated
-   * by a tab.
+   * Prints this motion's fields in the following order: start tick, start x, start y, start width,
+   * start height, start color R value, start color G value, start color B value, end tick, end x,
+   * end y, end width, end height, end color R value, end color G value, end color B value. Spaces
+   * are placed in between each field, and start and end parameters are separated by a tab.
    *
    * @return the motion's parameters in the above specified format
    */
@@ -86,37 +85,37 @@ public class IMotionImpl implements IMotion {
     StringBuilder builder = new StringBuilder();
 
     builder.append(this.startTick)
-        .append(" ")
-        .append((int) this.startX)
-        .append(" ")
-        .append((int) this.startY)
-        .append(" ")
-        .append((int) this.startWidth)
-        .append(" ")
-        .append((int) this.startHeight)
-        .append(" ")
-        .append(this.startColor.getRed())
-        .append(" ")
-        .append(this.startColor.getGreen())
-        .append(" ")
-        .append(this.startColor.getBlue())
-        .append("\t")
+            .append(" ")
+            .append((int) this.startX)
+            .append(" ")
+            .append((int) this.startY)
+            .append(" ")
+            .append((int) this.startWidth)
+            .append(" ")
+            .append((int) this.startHeight)
+            .append(" ")
+            .append(this.startColor.getRed())
+            .append(" ")
+            .append(this.startColor.getGreen())
+            .append(" ")
+            .append(this.startColor.getBlue())
+            .append("\t")
 
-        .append(this.endTick)
-        .append(" ")
-        .append((int) this.endX)
-        .append(" ")
-        .append((int) this.endY)
-        .append(" ")
-        .append((int) this.endWidth)
-        .append(" ")
-        .append((int) this.endHeight)
-        .append(" ")
-        .append(this.endColor.getRed())
-        .append(" ")
-        .append(this.endColor.getGreen())
-        .append(" ")
-        .append(this.endColor.getBlue());
+            .append(this.endTick)
+            .append(" ")
+            .append((int) this.endX)
+            .append(" ")
+            .append((int) this.endY)
+            .append(" ")
+            .append((int) this.endWidth)
+            .append(" ")
+            .append((int) this.endHeight)
+            .append(" ")
+            .append(this.endColor.getRed())
+            .append(" ")
+            .append(this.endColor.getGreen())
+            .append(" ")
+            .append(this.endColor.getBlue());
 
     return builder.toString();
   }

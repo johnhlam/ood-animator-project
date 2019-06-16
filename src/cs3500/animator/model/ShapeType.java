@@ -7,8 +7,8 @@ public enum ShapeType {
   RECTANGLE, ELLIPSE;
 
   /**
-   * Returns the string representing what kind of shape the enum represents. (e.g. RECTANGLE
-   * equates to "rectangle.")
+   * Returns the string representing what kind of shape the enum represents. (e.g. RECTANGLE equates
+   * to "rectangle.")
    *
    * @param type the type of shape
    * @return the string name for it
@@ -31,13 +31,13 @@ public enum ShapeType {
   }
 
   /**
-   * Converts the given String to a ShapeType. "rectangle" corresponds to ShapeType.RECTANGLE,
-   * and "ellipse" corresponds to ShapeType.ELLIPSE.
+   * Converts the given String to a ShapeType. "rectangle" corresponds to ShapeType.RECTANGLE, and
+   * "ellipse" corresponds to ShapeType.ELLIPSE.
    *
    * @param name is the String to be converted into a ShapeType.
    * @return the ShapeType that the given String corresponds to.
-   * @throws IllegalArgumentException if the given String is null, or if is not one of
-   *                                  "rectangle" or "ellipse"
+   * @throws IllegalArgumentException if the given String is null, or if is not one of "rectangle"
+   *                                  or "ellipse"
    */
   public static ShapeType stringToType(String name) throws IllegalArgumentException {
     if (name == null) {
@@ -51,7 +51,7 @@ public enum ShapeType {
         return ShapeType.ELLIPSE;
       default:
         throw new IllegalArgumentException("Given name for shape type, " + name
-            + ", is not supported.");
+                + ", is not supported.");
     }
   }
 }

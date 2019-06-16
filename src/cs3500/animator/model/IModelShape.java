@@ -4,8 +4,7 @@ package cs3500.animator.model;
  * Represents a shape in an animation. Each shape holds directions for its own animations. Shapes
  * can have animations added to them that affect their fields. Each shape should have a ShapeType,
  * location (x,y), size (width, height), and color. An IModelShape object represents its ShapeType
- * with
- * attributes given by its own fields.
+ * with attributes given by its own fields.
  */
 public interface IModelShape extends IReadOnlyShape {
 
@@ -30,8 +29,8 @@ public interface IModelShape extends IReadOnlyShape {
   void addMotion(IMotion motion) throws IllegalArgumentException;
 
   /**
-   * Removes the motion with the given start tick from this shape's motions. If no motion is
-   * found for the start tick, nothing is done.
+   * Removes the motion with the given start tick from this shape's motions. If no motion is found
+   * for the start tick, nothing is done.
    *
    * @param startTick the starting tick of the motion
    */

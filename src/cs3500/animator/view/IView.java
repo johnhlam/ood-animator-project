@@ -1,19 +1,19 @@
 package cs3500.animator.view;
 
 import cs3500.animator.model.IReadOnlyShape;
+
 import java.util.List;
 
 /**
  * IView is an interface representing an view for animating shapes (not necessarily visual
- * animation). It contains operations that can be offered by implementing classes. Each view
- * should be able to process a list of shapes into some kind of "view" (e.g. a visual or
- * text-based view).
+ * animation). It contains operations that can be offered by implementing classes. Each view should
+ * be able to process a list of shapes into some kind of "view" (e.g. a visual or text-based view).
  */
 public interface IView {
 
   /**
-   * Sets the view's canvas size and starting x and y position. These values represent the window
-   * in which an animation can be depicted (whether textual or visual).
+   * Sets the view's canvas size and starting x and y position. These values represent the window in
+   * which an animation can be depicted (whether textual or visual).
    *
    * @param x      the lowest x value for the animation
    * @param y      the lowest y value for the animation

@@ -29,11 +29,10 @@ public interface AnimationBuilder<Doc> {
   /**
    * Adds a new shape to the growing document.
    *
-   * @param name The unique name of the shape to be added.
-   *             No shape with this name should already exist.
-   * @param type The type of shape (e.g. "ellipse", "rectangle") to be added.
-   *             The set of supported shapes is unspecified, but should
-   *             include "ellipse" and "rectangle" as a minimum.
+   * @param name The unique name of the shape to be added. No shape with this name should already
+   *             exist.
+   * @param type The type of shape (e.g. "ellipse", "rectangle") to be added. The set of supported
+   *             shapes is unspecified, but should include "ellipse" and "rectangle" as a minimum.
    * @return This {@link AnimationBuilder}
    */
   AnimationBuilder<Doc> declareShape(String name, String type);
@@ -61,8 +60,8 @@ public interface AnimationBuilder<Doc> {
    * @return This {@link AnimationBuilder}
    */
   AnimationBuilder<Doc> addMotion(String name,
-      int t1, int x1, int y1, int w1, int h1, int r1, int g1, int b1,
-      int t2, int x2, int y2, int w2, int h2, int r2, int g2, int b2);
+                                  int t1, int x1, int y1, int w1, int h1, int r1, int g1, int b1,
+                                  int t2, int x2, int y2, int w2, int h2, int r2, int g2, int b2);
 
   /**
    * Adds an individual keyframe to the growing document.
@@ -79,5 +78,5 @@ public interface AnimationBuilder<Doc> {
    * @return This {@link AnimationBuilder}
    */
   AnimationBuilder<Doc> addKeyframe(String name,
-      int t, int x, int y, int w, int h, int r, int g, int b);
+                                    int t, int x, int y, int w, int h, int r, int g, int b);
 }

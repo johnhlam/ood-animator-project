@@ -10,11 +10,11 @@ import javax.swing.JScrollPane;
 import cs3500.animator.model.IReadOnlyShape;
 
 /**
- * VisualView is a class that extends JFrame and implements IView. It extends JFrame so that it
- * can create a visual animation that you can see on the screen by using various methods from the
- * class. When the constructor for this class is called, an empty window will pop-up, with scroll
- * bars. Calling the {@link VisualView#play(List)} method for this class will generate one frame
- * of the animation.
+ * VisualView is a class that extends JFrame and implements IView. It extends JFrame so that it can
+ * create a visual animation that you can see on the screen by using various methods from the class.
+ * When the constructor for this class is called, an empty window will pop-up, with scroll bars.
+ * Calling the {@link VisualView#play(List)} method for this class will generate one frame of the
+ * animation.
  */
 public class VisualView extends JFrame implements IView {
 
@@ -25,10 +25,10 @@ public class VisualView extends JFrame implements IView {
   private AnimationPanel panel;
 
   /**
-   * Constructs a VisualView with the given parameters, each of which affect the final window
-   * size in some way. Constructing an instance of this class will create a window with the
-   * specified dimension, and a scroll bar along the right and the bottom. The created window
-   * will be empty, until the {@link VisualView#play(List)} is called.
+   * Constructs a VisualView with the given parameters, each of which affect the final window size
+   * in some way. Constructing an instance of this class will create a window with the specified
+   * dimension, and a scroll bar along the right and the bottom. The created window will be empty,
+   * until the {@link VisualView#play(List)} is called.
    *
    * @param canvasWidth  is the width of the panel
    * @param canvasHeight is the height of the panel
@@ -37,7 +37,7 @@ public class VisualView extends JFrame implements IView {
    * @throws IllegalArgumentException if either the width or height are not positive
    */
   public VisualView(int canvasWidth, int canvasHeight, int maxX, int maxY)
-      throws IllegalArgumentException {
+          throws IllegalArgumentException {
 
     if (canvasWidth <= 0 || canvasHeight <= 0) {
       throw new IllegalArgumentException("Given width and/or height to VisualView is not positive");
@@ -78,16 +78,16 @@ public class VisualView extends JFrame implements IView {
   public void setCanvas(int x, int y, int width, int height) {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("Given width and height for VisualView#setCanvas(int, "
-          + "int) cannot be non-positive");
+              + "int) cannot be non-positive");
     }
     this.canvasWidth = width;
     this.canvasHeight = height;
   }
 
   /**
-   * Renders the given list of shapes on the panel (the window) that the animation is being
-   * played on. Details of how each shape is drawn is left to the panel. This method should be
-   * called on every tick/frame of the animation.
+   * Renders the given list of shapes on the panel (the window) that the animation is being played
+   * on. Details of how each shape is drawn is left to the panel. This method should be called on
+   * every tick/frame of the animation.
    *
    * @param shapes is the List of IReadOnlyShapes that this IView will display.
    * @throws RuntimeException if the given list of shapes is null, or the panel is null
@@ -110,7 +110,7 @@ public class VisualView extends JFrame implements IView {
   public void setMaxWindowSize(int width, int height) {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("Given width and height for VisualView#setWindowSize(int, "
-          + "int) cannot be non-positive");
+              + "int) cannot be non-positive");
     }
 
     this.maxX = width;

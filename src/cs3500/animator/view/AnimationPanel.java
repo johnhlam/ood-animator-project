@@ -2,15 +2,16 @@ package cs3500.animator.view;
 
 import java.util.List;
 import java.awt.Graphics;
+
 import javax.swing.JPanel;
 
 import cs3500.animator.model.IReadOnlyShape;
 
 
 /**
- * AnimationPanel is a class that implements JPanel and implements IAnimationPanel. Its purpose
- * is to render a given list of shapes onto the panel. It stores a list of shapes that represent
- * each shape's current state, and draws them as such.
+ * AnimationPanel is a class that implements JPanel and implements IAnimationPanel. Its purpose is
+ * to render a given list of shapes onto the panel. It stores a list of shapes that represent each
+ * shape's current state, and draws them as such.
  */
 public class AnimationPanel extends JPanel implements IAnimationPanel {
 
@@ -33,11 +34,11 @@ public class AnimationPanel extends JPanel implements IAnimationPanel {
         switch (shape.getType()) {
           case RECTANGLE:
             g.fillRect((int) shape.getX(), (int) shape.getY(), (int) shape.getWidth(),
-                (int) shape.getHeight());
+                    (int) shape.getHeight());
             break;
           case ELLIPSE:
             g.fillOval((int) shape.getX(), (int) shape.getY(), (int) shape.getWidth(),
-                (int) shape.getHeight());
+                    (int) shape.getHeight());
             break;
           default:
             // Does nothing, since you should never get here.

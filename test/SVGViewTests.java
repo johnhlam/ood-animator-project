@@ -1,7 +1,8 @@
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
+
+import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +23,15 @@ import static org.junit.Assert.assertEquals;
  * Tests for methods of SVGView.
  */
 public class SVGViewTests {
-  Appendable out;
-  IView svgView;
-  IModelShape rect1;
-  IModelShape ellipse1;
-  IMotion motion1 = new IMotionImpl(1, 10, 10, 0, 0, Color.BLACK, 10, 15, 15, 0, 0, Color.RED);
-  IMotion motion2 = new IMotionImpl(5, 15, 10, 20, 20, Color.BLACK, 10, 15, 15, 0, 0, Color.RED);
-  IMotion motion3 = new IMotionImpl(10, 15, 15, 0, 0, Color.RED, 20, 15, 15, 0, 0, Color.RED);
-  java.util.List<IReadOnlyShape> shapes;
+  private Appendable out;
+  private IView svgView;
+  private IMotion motion1 = new IMotionImpl(1, 10, 10, 0, 0, Color.BLACK, 10, 15, 15, 0, 0,
+          Color.RED);
+  private IMotion motion2 = new IMotionImpl(5, 15, 10, 20, 20, Color.BLACK, 10, 15, 15, 0, 0,
+          Color.RED);
+  private IMotion motion3 = new IMotionImpl(10, 15, 15, 0, 0, Color.RED, 20, 15, 15, 0, 0,
+          Color.RED);
+  private List<IReadOnlyShape> shapes;
 
   /**
    * Represents a mock Appendable class that throws exceptions on appending to test that an
@@ -55,17 +57,18 @@ public class SVGViewTests {
 
   @Before
   public void setUp() {
-    rect1 = new IModelShapeImpl("R1", ShapeType.RECTANGLE, 10, 10, 0, 0, Color.RED);
+    IModelShape rect1 = new IModelShapeImpl("R1", ShapeType.RECTANGLE, 10, 10, 0, 0, Color.RED);
 
-    ellipse1 = new IModelShapeImpl("E1", ShapeType.ELLIPSE, 12, 12, 10, 12, Color.WHITE);
+    IModelShape ellipse1 =
+            new IModelShapeImpl("E1", ShapeType.ELLIPSE, 12, 12, 10, 12, Color.WHITE);
 
     out = new StringBuilder();
     this.svgView = new SVGView(out, 10);
-    this.rect1.addMotion(motion1);
-    this.rect1.addMotion(motion3);
+    rect1.addMotion(motion1);
+    rect1.addMotion(motion3);
 
-    this.ellipse1.addMotion(motion2);
-    this.ellipse1.addMotion(motion3);
+    ellipse1.addMotion(motion2);
+    ellipse1.addMotion(motion3);
 
     shapes = new ArrayList<>();
     shapes.add(rect1);
@@ -73,7 +76,7 @@ public class SVGViewTests {
   }
 
   /**
-   * Tests that passing a null appendable throws an exception
+   * Tests that passing a null appendable throws an exception.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testNullTextView() {
@@ -81,7 +84,7 @@ public class SVGViewTests {
   }
 
   /**
-   * Tests that passing a negative tick rate throws an exception
+   * Tests that passing a negative tick rate throws an exception.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testNegSpeed() {
@@ -89,7 +92,7 @@ public class SVGViewTests {
   }
 
   /**
-   * Tests that setting the text view's max window sizes throws an unsupported operation exception
+   * Tests that setting the text view's max window sizes throws an unsupported operation exception.
    */
   @Test(expected = UnsupportedOperationException.class)
   public void testSetMaxWindowSize() {
@@ -97,7 +100,7 @@ public class SVGViewTests {
   }
 
   /**
-   * Tests setting bad canvas sizes (negative or 0) throws an exception
+   * Tests setting bad canvas sizes (negative or 0) throws an exception.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testBadCanvas1() {
@@ -105,7 +108,7 @@ public class SVGViewTests {
   }
 
   /**
-   * Tests setting bad canvas sizes (negative or 0) throws an exception
+   * Tests setting bad canvas sizes (negative or 0) throws an exception.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testBadCanvas2() {
@@ -113,7 +116,7 @@ public class SVGViewTests {
   }
 
   /**
-   * Tests setting bad canvas sizes (negative or 0) throws an exception
+   * Tests setting bad canvas sizes (negative or 0) throws an exception.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testBadCanvas3() {
@@ -121,7 +124,7 @@ public class SVGViewTests {
   }
 
   /**
-   * Tests setting the canvas changes the canvas fields
+   * Tests setting the canvas changes the canvas fields.
    */
   @Test
   public void testSetCanvas() {
@@ -132,7 +135,7 @@ public class SVGViewTests {
   }
 
   /**
-   * Tests playing a null input throws exception
+   * Tests playing a null input throws exception.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testPlayingNull() {
@@ -140,7 +143,7 @@ public class SVGViewTests {
   }
 
   /**
-   * Tests appending throwing an IOException
+   * Tests appending throwing an IOException.
    */
   @Test(expected = IllegalStateException.class)
   public void testAppendableException() {
@@ -149,7 +152,7 @@ public class SVGViewTests {
   }
 
   /**
-   * Tests printing an empty animation
+   * Tests printing an empty animation.
    */
   @Test
   public void testPrintEmptyAnimation() {
@@ -159,7 +162,7 @@ public class SVGViewTests {
   }
 
   /**
-   * Tests printing an animation with only shapes
+   * Tests printing an animation with only shapes.
    */
   @Test
   public void testPrintShapeNoMotion() {
@@ -184,7 +187,7 @@ public class SVGViewTests {
   }
 
   /**
-   * Tests printing one shape
+   * Tests printing one shape.
    */
   @Test
   public void testPrintShape1() {
@@ -202,7 +205,7 @@ public class SVGViewTests {
   }
 
   /**
-   * Tests printing an animation with shapes and motions
+   * Tests printing an animation with shapes and motions.
    */
   @Test
   public void testPrintShapesAndMotions() {
@@ -267,7 +270,7 @@ public class SVGViewTests {
   }
 
   /**
-   * Tests that modifying the tick rate will change the SVG accordingly
+   * Tests that modifying the tick rate will change the SVG accordingly.
    */
   @Test
   public void testPrintShapesAndMotionsDiffTick() {

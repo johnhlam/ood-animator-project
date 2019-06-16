@@ -7,13 +7,14 @@ import cs3500.animator.model.IReadOnlyShape;
 import cs3500.animator.model.ShapeType;
 
 /**
- * SVGView is a class that extends the abstract class ATextualView. It provides a way to convert
- * a list of shapes into a textual representation, formatted based on the popular SVG file format
- * (See <a>href="https://www.w3.org/TR/SVG11/"</a> for details).
- * SVGView stores an integer tickRate along with the fields in ATextualView for reference when
- * converting ticks to milliseconds (as the SVG format requires).
+ * SVGView is a class that extends the abstract class ATextualView. It provides a way to convert a
+ * list of shapes into a textual representation, formatted based on the popular SVG file format (See
+ * <a>href="https://www.w3.org/TR/SVG11/"</a> for details). SVGView stores an integer tickRate along
+ * with the fields in ATextualView for reference when converting ticks to milliseconds (as the SVG
+ * format requires).
  *
- * <p>The SVGView class currently does not support loopback, and animations will freeze on their end
+ * <p>The SVGView class currently does not support loopback, and animations will freeze on their
+ * end
  * states upon completion.</p>
  */
 public class SVGView extends ATextualView {
@@ -25,8 +26,8 @@ public class SVGView extends ATextualView {
    *
    * @param ap       is the Appendable that the text output will be appended to.
    * @param tickRate is the tickRate that the animation runs at
-   * @throws IllegalArgumentException if the given Appendable is null, or if the given tickRate
-   *                                  is not positive
+   * @throws IllegalArgumentException if the given Appendable is null, or if the given tickRate is
+   *                                  not positive
    */
   public SVGView(Appendable ap, int tickRate) throws IllegalArgumentException {
     super(ap);
@@ -39,8 +40,8 @@ public class SVGView extends ATextualView {
   }
 
   /**
-   * Turns this view into a textual representation and appends the textual output to this.ap.
-   * The textual representation is formatted based on the SVG file format documentation.
+   * Turns this view into a textual representation and appends the textual output to this.ap. The
+   * textual representation is formatted based on the SVG file format documentation.
    *
    * @param shapes is the List of IReadOnlyShapes that this IView will display.
    * @throws IllegalArgumentException if the given list is null
@@ -57,7 +58,7 @@ public class SVGView extends ATextualView {
     String heightAttribute = null;
 
     this.attemptAppend("<svg width=\"" + (width + x) + "\" height=\"" + (height + y)
-        + "\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n");
+            + "\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n");
 
     for (IReadOnlyShape shape : shapes) {
 
@@ -83,14 +84,14 @@ public class SVGView extends ATextualView {
       String shapeName = this.convertTypeToSVGName(shape.getType());
       StringBuilder shapeHeading = new StringBuilder();
       shapeHeading
-          .append("<").append(shapeName).append(" id=\"").append(shape.getID()).append("\" ")
-          .append(xCoordinate).append("=\"").append(shape.getX()).append("\" ")
-          .append(yCoordinate).append("=\"").append(shape.getY()).append("\" ")
-          .append(widthAttribute).append("=\"").append(shape.getWidth()).append("\" ")
-          .append(heightAttribute).append("=\"").append(shape.getHeight()).append("\" ")
-          .append("fill=\"rgb(").append(shape.getColor().getRed()).append(",")
-          .append(shape.getColor().getGreen()).append(",").append(shape.getColor().getBlue())
-          .append(")\" ").append("visibility=\"visible\" >\n");
+              .append("<").append(shapeName).append(" id=\"").append(shape.getID()).append("\" ")
+              .append(xCoordinate).append("=\"").append(shape.getX()).append("\" ")
+              .append(yCoordinate).append("=\"").append(shape.getY()).append("\" ")
+              .append(widthAttribute).append("=\"").append(shape.getWidth()).append("\" ")
+              .append(heightAttribute).append("=\"").append(shape.getHeight()).append("\" ")
+              .append("fill=\"rgb(").append(shape.getColor().getRed()).append(",")
+              .append(shape.getColor().getGreen()).append(",").append(shape.getColor().getBlue())
+              .append(")\" ").append("visibility=\"visible\" >\n");
 
       this.attemptAppend(shapeHeading.toString());
 
@@ -112,36 +113,37 @@ public class SVGView extends ATextualView {
    * @param height      is the attribute name of the height of the shape
    */
   private void printShapeMotionsSVG(IReadOnlyShape shape, String xCoordinate, String yCoordinate,
-      String width, String height) {
+                                    String width, String height) {
 
     for (IMotion motion : shape.getMotions()) {
       String startTime = Integer.toString(this.tickToMS(motion.getStartTick()));
       String duration =
-          Integer.toString(this.tickToMS(motion.getEndTick() - motion.getStartTick()));
+              Integer.toString(this.tickToMS(motion.getEndTick() - motion.getStartTick()));
 
       // Adds the 'animate' element for each attribute of the shape
       this.svgAnimationText(xCoordinate, startTime,
-          duration, Double.toString(motion.getStartX()), Double.toString(motion.getEndX()));
+              duration, Double.toString(motion.getStartX()), Double.toString(motion.getEndX()));
       this.svgAnimationText(yCoordinate, startTime,
-          duration, Double.toString(motion.getStartY()), Double.toString(motion.getEndY()));
+              duration, Double.toString(motion.getStartY()), Double.toString(motion.getEndY()));
       this.svgAnimationText(width, startTime,
-          duration, Double.toString(motion.getStartWidth()), Double.toString(motion.getEndWidth()));
+              duration, Double.toString(motion.getStartWidth()),
+              Double.toString(motion.getEndWidth()));
       this.svgAnimationText(height, startTime,
-          duration, Double.toString(motion.getStartHeight()),
-          Double.toString(motion.getEndHeight()));
+              duration, Double.toString(motion.getStartHeight()),
+              Double.toString(motion.getEndHeight()));
 
       StringBuilder colorStart = new StringBuilder();
       colorStart.append("rgb(").append(motion.getStartColor().getRed()).append(
-          ",").append(motion.getStartColor().getGreen()).append(
-          ",").append(motion.getStartColor().getBlue()).append(")");
+              ",").append(motion.getStartColor().getGreen()).append(
+              ",").append(motion.getStartColor().getBlue()).append(")");
 
       StringBuilder colorEnd = new StringBuilder();
       colorEnd.append("rgb(").append(motion.getEndColor().getRed()).append(
-          ",").append(motion.getEndColor().getGreen()).append(
-          ",").append(motion.getEndColor().getBlue()).append(")");
+              ",").append(motion.getEndColor().getGreen()).append(
+              ",").append(motion.getEndColor().getBlue()).append(")");
 
       this.svgAnimationText("fill", startTime,
-          duration, colorStart.toString(), colorEnd.toString());
+              duration, colorStart.toString(), colorEnd.toString());
       this.attemptAppend("\n");
     }
   }
@@ -149,8 +151,8 @@ public class SVGView extends ATextualView {
   /**
    * Converts a series of Strings into an SVG animate element. It is formatted as the following:
    * <br>
-   * &lt;animate attributeType="xml" begin="{@code startTime}" dur="{@code duration}" from="
-   * {@code fromVal}" to="{@code toVal}" fill="freeze" /&gt;
+   * &lt;animate attributeType="xml" begin="{@code startTime}" dur="{@code duration}" from=" {@code
+   * fromVal}" to="{@code toVal}" fill="freeze" /&gt;
    *
    * @param attributeName is the attribute name of the animation.
    * @param startTime     is the start time (in milliseconds) of the animation.
@@ -161,14 +163,14 @@ public class SVGView extends ATextualView {
    *                      the attribute at the end of the animation).
    */
   private void svgAnimationText(String attributeName, String startTime, String duration,
-      String fromVal, String toVal) {
+                                String fromVal, String toVal) {
     StringBuilder animationText = new StringBuilder();
     animationText.append("<animate attributeType=\"xml\" begin=\"").append(startTime)
-        .append("ms\" ")
-        .append("dur=\"").append(duration).append("ms\" ")
-        .append("attributeName=\"").append(attributeName).append("\" from=\"")
-        .append(fromVal).append("\" ").append("to=\"").append(toVal).append("\" fill=\"freeze" +
-        "\" />\n");
+            .append("ms\" ")
+            .append("dur=\"").append(duration).append("ms\" ")
+            .append("attributeName=\"").append(attributeName).append("\" from=\"")
+            .append(fromVal).append("\" ").append("to=\"").append(toVal).append("\" fill=\"freeze" +
+            "\" />\n");
     this.attemptAppend(animationText.toString());
   }
 
