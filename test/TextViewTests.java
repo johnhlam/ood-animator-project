@@ -17,7 +17,6 @@ import cs3500.animator.model.IMotionImpl;
 import cs3500.animator.model.IReadOnlyShape;
 import cs3500.animator.model.ShapeType;
 import cs3500.animator.view.IView;
-import cs3500.animator.view.SVGView;
 import cs3500.animator.view.TextView;
 
 import static org.junit.Assert.assertEquals;
