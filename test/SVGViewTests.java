@@ -3,9 +3,14 @@ import org.junit.Test;
 
 
 import java.awt.Color;
+import java.io.Closeable;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import cs3500.animator.model.IModelShape;
 import cs3500.animator.model.IModelShapeImpl;
@@ -331,5 +336,79 @@ public class SVGViewTests {
             "</ellipse>\n" +
             "\n" +
             "</svg>", out.toString());
+  }
+
+  /**
+   * Tests that outputting to a file works correctly.
+   */
+  @Test
+  public void testToFile() throws IOException {
+    Appendable writer = new FileWriter("test.txt");
+    IView toFile = new SVGView(writer, 10);
+    toFile.play(this.shapes);
+    ((Closeable) writer).close();
+    Scanner reader = new Scanner(new FileReader("test.txt"));
+    StringBuilder sb = new StringBuilder();
+    while(reader.hasNextLine()) {
+      sb.append(reader.nextLine() + "\n");
+    }
+    reader.close();
+    assertEquals("<svg width=\"0\" height=\"0\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1" +
+            ".1\">\n" +
+            "<rect id=\"R1\" x=\"0.0\" y=\"0.0\" width=\"10.0\" height=\"10.0\" fill=\"rgb(255,0," +
+            "0)\" visibility=\"visible\" >\n" +
+            "<animate attributeType=\"xml\" begin=\"100ms\" dur=\"900ms\" attributeName=\"x\" " +
+            "from=\"0.0\" to=\"0.0\" fill=\"freeze\" />\n" +
+            "<animate attributeType=\"xml\" begin=\"100ms\" dur=\"900ms\" attributeName=\"y\" " +
+            "from=\"0.0\" to=\"0.0\" fill=\"freeze\" />\n" +
+            "<animate attributeType=\"xml\" begin=\"100ms\" dur=\"900ms\" attributeName=\"width\"" +
+            " from=\"10.0\" to=\"15.0\" fill=\"freeze\" />\n" +
+            "<animate attributeType=\"xml\" begin=\"100ms\" dur=\"900ms\" " +
+            "attributeName=\"height\" from=\"10.0\" to=\"15.0\" fill=\"freeze\" />\n" +
+            "<animate attributeType=\"xml\" begin=\"100ms\" dur=\"900ms\" attributeName=\"fill\" " +
+            "from=\"rgb(0,0,0)\" to=\"rgb(255,0,0)\" fill=\"freeze\" />\n" +
+            "\n" +
+            "<animate attributeType=\"xml\" begin=\"1000ms\" dur=\"1000ms\" attributeName=\"x\" " +
+            "from=\"0.0\" to=\"0.0\" fill=\"freeze\" />\n" +
+            "<animate attributeType=\"xml\" begin=\"1000ms\" dur=\"1000ms\" attributeName=\"y\" " +
+            "from=\"0.0\" to=\"0.0\" fill=\"freeze\" />\n" +
+            "<animate attributeType=\"xml\" begin=\"1000ms\" dur=\"1000ms\" " +
+            "attributeName=\"width\" from=\"15.0\" to=\"15.0\" fill=\"freeze\" />\n" +
+            "<animate attributeType=\"xml\" begin=\"1000ms\" dur=\"1000ms\" " +
+            "attributeName=\"height\" from=\"15.0\" to=\"15.0\" fill=\"freeze\" />\n" +
+            "<animate attributeType=\"xml\" begin=\"1000ms\" dur=\"1000ms\" " +
+            "attributeName=\"fill\" from=\"rgb(255,0,0)\" to=\"rgb(255,0,0)\" fill=\"freeze\" " +
+            "/>\n" +
+            "\n" +
+            "</rect>\n" +
+            "\n" +
+            "<ellipse id=\"E1\" cx=\"10.0\" cy=\"12.0\" rx=\"12.0\" ry=\"12.0\" fill=\"rgb(255," +
+            "255,255)\" visibility=\"visible\" >\n" +
+            "<animate attributeType=\"xml\" begin=\"500ms\" dur=\"500ms\" attributeName=\"cx\" " +
+            "from=\"20.0\" to=\"0.0\" fill=\"freeze\" />\n" +
+            "<animate attributeType=\"xml\" begin=\"500ms\" dur=\"500ms\" attributeName=\"cy\" " +
+            "from=\"20.0\" to=\"0.0\" fill=\"freeze\" />\n" +
+            "<animate attributeType=\"xml\" begin=\"500ms\" dur=\"500ms\" attributeName=\"rx\" " +
+            "from=\"15.0\" to=\"15.0\" fill=\"freeze\" />\n" +
+            "<animate attributeType=\"xml\" begin=\"500ms\" dur=\"500ms\" attributeName=\"ry\" " +
+            "from=\"10.0\" to=\"15.0\" fill=\"freeze\" />\n" +
+            "<animate attributeType=\"xml\" begin=\"500ms\" dur=\"500ms\" attributeName=\"fill\" " +
+            "from=\"rgb(0,0,0)\" to=\"rgb(255,0,0)\" fill=\"freeze\" />\n" +
+            "\n" +
+            "<animate attributeType=\"xml\" begin=\"1000ms\" dur=\"1000ms\" attributeName=\"cx\" " +
+            "from=\"0.0\" to=\"0.0\" fill=\"freeze\" />\n" +
+            "<animate attributeType=\"xml\" begin=\"1000ms\" dur=\"1000ms\" attributeName=\"cy\" " +
+            "from=\"0.0\" to=\"0.0\" fill=\"freeze\" />\n" +
+            "<animate attributeType=\"xml\" begin=\"1000ms\" dur=\"1000ms\" attributeName=\"rx\" " +
+            "from=\"15.0\" to=\"15.0\" fill=\"freeze\" />\n" +
+            "<animate attributeType=\"xml\" begin=\"1000ms\" dur=\"1000ms\" attributeName=\"ry\" " +
+            "from=\"15.0\" to=\"15.0\" fill=\"freeze\" />\n" +
+            "<animate attributeType=\"xml\" begin=\"1000ms\" dur=\"1000ms\" " +
+            "attributeName=\"fill\" from=\"rgb(255,0,0)\" to=\"rgb(255,0,0)\" fill=\"freeze\" " +
+            "/>\n" +
+            "\n" +
+            "</ellipse>\n" +
+            "\n" +
+            "</svg>\n", sb.toString());
   }
 }
