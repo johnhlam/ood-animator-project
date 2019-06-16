@@ -338,7 +338,8 @@ public class SVGViewTests {
   }
 
   /**
-   * Tests that outputting to a file works correctly.
+   * Tests that outputting to a file works correctly. NOTE: Working directory must be set to
+   * resources, otherwise, test will most likely not be able to find file.
    */
   @Test
   public void testToFile() throws IOException {
