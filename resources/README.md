@@ -104,13 +104,13 @@ If, for whatever reason, an error occurs (such as invalid command-line arguments
 
 ## Changelog
 We have made a few changes since the previous assignment.
-*We added methods to IModel (and IModelImpl) that can return a list of motions occurring at a specific tick, and can remove a motion given a shape's id and the start tick of that motion, since we didn't do it before and the previous assignment actually required it.
-*We also added getter methods to the model that return different aspects of the canvas, since it became clear that it was required by the AnimationBuilder and some of the views.
-*We added a method that returns a read-only list of the model's shapes, without a tick, so that the text-based views would be able to access them without a tick.
-*We implemented a nested static Builder class in the model so that our model could be constructed with the given AnimationReader class.
-*We implemented the remaining tweening methods after being given details on the tweening function, Originally, we were going to have the IMotionImpl class calculate the tweening values, but we decided to place all of the calculations in the IModelShapeImpl class, because we realized we could just use the IMotion's getters and leave the calculations in the shape. If we left the calculations in the IMotionImpl class, we would have to create several extra helpers that all do very similar things with different numbers. Leaving it in the shape class meant that we could easily abstract out the formula and calculate the in-between values.
-*We enforced the invariant that there could be no gaps between motions, since the previous self-evaluation specified that we should have done so.
-*Finally, we added descriptions for all Controller and View related classes/interfaces, since they weren't required last assignment.
+* We added methods to IModel (and IModelImpl) that can return a list of motions occurring at a specific tick, and can remove a motion given a shape's id and the start tick of that motion, since we didn't do it before and the previous assignment actually required it.
+* We also added getter methods to the model that return different aspects of the canvas, since it became clear that it was required by the AnimationBuilder and some of the views.
+* We added a method that returns a read-only list of the model's shapes, without a tick, so that the text-based views would be able to access them without a tick.
+* We implemented a nested static Builder class in the model so that our model could be constructed with the given AnimationReader class.
+* We implemented the remaining tweening methods after being given details on the tweening function, Originally, we were going to have the IMotionImpl class calculate the tweening values, but we decided to place all of the calculations in the IModelShapeImpl class, because we realized we could just use the IMotion's getters and leave the calculations in the shape. If we left the calculations in the IMotionImpl class, we would have to create several extra helpers that all do very similar things with different numbers. Leaving it in the shape class meant that we could easily abstract out the formula and calculate the in-between values.
+* We enforced the invariant that there could be no gaps between motions, since the previous self-evaluation specified that we should have done so.
+* Finally, we added descriptions for all Controller and View related classes/interfaces, since they weren't required last assignment.
 
 ### Misc.
 More minute details of the implementation (rules for constructing models, shapes, controllers, views, when smaller exceptions are thrown, how processes are coded, etc.) are documented appropriately in the actual code.
