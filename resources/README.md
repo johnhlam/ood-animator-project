@@ -94,12 +94,16 @@ Excellence is a class that contains the main method. It serves as an entry point
 1. -in *input-file*
 2. -view *view-type*, which is one of "text", "svg", or "visual"
 3. -out *output-file*
-4. -speed *ticks per second*
-The first two options are mandatory, the latter two are optional.
+4. -speed *ticks-per-second*
+The first two options are mandatory, the latter two are optional. If -out isn't specified, it will automatically output to System.out (if the view requires an output location). If -speed isn't specified, then it will automatically default to 1 tick/second.
 
-To parse the arguments, the main method uses a nested static class, ArgsProcessor,
+To parse the arguments, the main method uses a nested static class, ArgsProcessor. ArgsProcessor reads through the String array of arguments, parses them into data, and then stores them as static constants in the class. -in options are stored as BufferedReaders, -view options are stored as Strings, -out options are stored as Appendables, and -speed options are stored as integers. The main method can then access these static variables, and use them to read in a model (using the AnimationReader and AnimationBuilder<IModelImpl>), and create an appropriate controller and view (based on the specified view type). After building the model, view, and controller (without error), the main method will then call run() on the controller, which will run the program and generate the appropriate output.
+If the given view type was either "text" or "svg", and an -out option was specified (meaning that it did not default to System.out), then the main method will close (and flush) the BufferedWriter so that any remaining data stored in the writer is written out to the appropriate file.
 
-** Talk about closing here **
+If, for whatever reason, an error occurs (such as invalid command-line arguments, or invalid file names), an error dialog will pop up with an informative message, and the program will terminate. See the Javadocs for details on when exactly a error dialog is created.
+
+## Changelog
+
 
 ### Misc.
-More minute details of the implementation (rules for constructing a shape or model, when smaller exceptions are thrown, how processes are coded, etc) are documented appropriately in the actual code.
+More minute details of the implementation (rules for constructing models, shapes, controllers, views, when smaller exceptions are thrown, how processes are coded, etc.) are documented appropriately in the actual code.
