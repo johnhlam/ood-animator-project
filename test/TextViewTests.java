@@ -2,9 +2,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.Color;
+import java.io.Closeable;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import cs3500.animator.model.IModelShape;
 import cs3500.animator.model.IModelShapeImpl;
@@ -179,6 +183,30 @@ public class TextViewTests {
             "shape E1 ellipse\n" +
             "motion E1 5 20 20 15 10 0 0 0\t10 0 0 15 15 255 0 0\n" +
             "motion E1 10 0 0 15 15 255 0 0\t20 0 0 15 15 255 0 0\n", out.toString());
+  }
+
+  /**
+   * Tests that outputting to a file works correctly.
+   */
+  @Test
+  public void testToFile() throws IOException {
+    Appendable writer = new FileWriter("test2.txt");
+    IView toFile = new TextView(writer);
+    toFile.play(this.shapes);
+    ((Closeable) writer).close();
+    Scanner reader = new Scanner(new FileReader("test2.txt"));
+    StringBuilder sb = new StringBuilder();
+    while (reader.hasNextLine()) {
+      sb.append(reader.nextLine() + "\n");
+    }
+    reader.close();
+    assertEquals("canvas 0 0 0 0\n" +
+            "shape R1 rectangle\n" +
+            "motion R1 1 0 0 10 10 0 0 0\t10 0 0 15 15 255 0 0\n" +
+            "motion R1 10 0 0 15 15 255 0 0\t20 0 0 15 15 255 0 0\n" +
+            "shape E1 ellipse\n" +
+            "motion E1 5 20 20 15 10 0 0 0\t10 0 0 15 15 255 0 0\n" +
+            "motion E1 10 0 0 15 15 255 0 0\t20 0 0 15 15 255 0 0\n", sb.toString());
   }
 
 
