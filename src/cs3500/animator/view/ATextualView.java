@@ -50,7 +50,7 @@ public abstract class ATextualView implements IView {
    *                               transmit output.
    */
   @Override
-  public abstract void play(List<IReadOnlyShape> shapes) throws RuntimeException;
+  public abstract void play(List<IReadOnlyShape> shapes) throws IllegalStateException;
 
   @Override
   public void setCanvas(int x, int y, int width, int height) {

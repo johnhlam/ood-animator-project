@@ -10,23 +10,14 @@ import cs3500.animator.model.IReadOnlyShape;
  * described in the {@link TextView#play} method.
  */
 public class TextView extends ATextualView {
-
-  // x and y represent the lowest x and y values respectively.
-  private int x;
-  private int y;
-
   /**
    * Constructs an instance of TextView with the given Appendable.
    *
    * @param ap is the Appendable that the text output will be appended to.
-   * @param x  is the lowest x value
-   * @param y  is the lowest y value
    * @throws IllegalArgumentException if the given Appendable is null.
    */
-  public TextView(Appendable ap, int x, int y) throws IllegalArgumentException {
+  public TextView(Appendable ap) throws IllegalArgumentException {
     super(ap);
-    this.x = x;
-    this.y = y;
   }
 
   /**

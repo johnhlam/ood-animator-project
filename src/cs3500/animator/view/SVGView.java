@@ -43,11 +43,14 @@ public class SVGView extends ATextualView {
    * The textual representation is formatted based on the SVG file format documentation.
    *
    * @param shapes is the List of IReadOnlyShapes that this IView will display.
-   * @throws IllegalStateException if this.ap is unable to be appended to, or is unable to
-   *                               transmit output.
+   * @throws IllegalArgumentException if the given list is null
    */
   @Override
-  public void play(List<IReadOnlyShape> shapes) throws IllegalStateException {
+  public void play(List<IReadOnlyShape> shapes) throws IllegalArgumentException,
+          IllegalStateException {
+    if (shapes == null) {
+      throw new IllegalArgumentException("Shapes cannot be null.");
+    }
     String xCoordinate = null;
     String yCoordinate = null;
     String widthAttribute = null;

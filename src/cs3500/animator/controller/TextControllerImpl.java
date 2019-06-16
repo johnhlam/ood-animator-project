@@ -35,7 +35,7 @@ public class TextControllerImpl implements IController {
 
     this.view = view;
     this.model = model;
-    this.view.setCanvas(model.getX(), model.getMaxY(), model.getWidth(), model.getHeight());
+    this.view.setCanvas(model.getX(), model.getY(), model.getWidth(), model.getHeight());
   }
 
   /**

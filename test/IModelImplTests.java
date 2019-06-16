@@ -34,6 +34,14 @@ public class IModelImplTests {
     builder = IModelImpl.builder();
   }
 
+  /**
+   * Tests that a model cannot be constructed with negative width and height
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testModelConstructorNegative() {
+    new IModelImpl(0,0,-20, -30, 0, 0, new ArrayList<>());
+  }
+
   // Tests for IModelImpl#printAnimations()
 
   /**
@@ -1864,6 +1872,39 @@ public class IModelImplTests {
   }
 
   /**
+   * Tests that tweening an animation with multiple shapes and motions functions as expected
+   */
+  @Test
+  public void testShapesDuringMotion5() {
+    this.builder.declareShape("R", "rectangle");
+    this.builder.declareShape("E", "ellipse");
+    this.builder.addMotion("E", 5, 100, 200, 30, 30, 200, 0, 3,
+            10, 0, 0, 15, 15, 255, 0, 0);
+    this.builder.addMotion("E",10, 0, 0, 15, 15, 255, 0, 0,
+            20, 15, 15, 0, 0, 255, 0 ,0);
+    this.builder.addMotion("R",10, -2, 3, 10, 30, 0, 255, 0,
+            40, 0, 0, 15, 15, 255, 0 ,0);
+    this.builder.addMotion("R",40, 0, 0, 15, 15, 255, 0 ,0,
+            40, 0, 0, 15, 15, 255, 0 ,0);
+    IModel model = this.builder.build();
+    List<IReadOnlyShape> shapes = model.getShapesAtTick(10);
+    IReadOnlyShape shape = shapes.get(1);
+    IReadOnlyShape shape2 = shapes.get(0);
+
+    assertEquals(15, shape.getWidth(), .001);
+    assertEquals(15, shape.getHeight(), .001);
+    assertEquals(0, shape.getX(), .001);
+    assertEquals(0, shape.getY(), .001);
+    assertEquals(new Color(255, 0, 0), shape.getColor());
+
+    assertEquals(10, shape2.getWidth(), .001);
+    assertEquals(30, shape2.getHeight(), .001);
+    assertEquals(-2, shape2.getX(), .001);
+    assertEquals(3, shape2.getY(), .001);
+    assertEquals(Color.green, shape2.getColor());
+  }
+
+  /**
    * Tests a builder constructs a model with default values when being called with build.
    */
   @Test
@@ -1876,6 +1917,15 @@ public class IModelImplTests {
     assertEquals(0, model.getMaxX());
     assertEquals(0, model.getMaxY());
     assertEquals(new ArrayList<IModelShape>(), model.getShapes());
+  }
+
+  /**
+   * Tests that building a model with negative width and height throws an error
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void buildNegModel() {
+    this.builder.setBounds(0, 0, -2, -3);
+    this.builder.build();
   }
 
   /**

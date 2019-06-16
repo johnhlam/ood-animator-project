@@ -83,7 +83,7 @@ public class Excellence {
     try {
       switch (ArgsProcessor.view) {
         case "text":
-          newView = new TextView(ArgsProcessor.out, model.getX(), model.getY());
+          newView = new TextView(ArgsProcessor.out);
           controller = new TextControllerImpl(newView, model);
           break;
         case "svg":
