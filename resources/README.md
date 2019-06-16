@@ -78,13 +78,27 @@ ATextualView is an abstract class that implements the IView abstract class. It r
 TextView is a class that extends the ATextualView abstract class. It stores no extra fields, and relies on the abstract class for storing information. It implements the play(List<IReadOnlyShape>) method (the method that generates output), by using each shape's print method (delegating to each shape), formats it according to the assignment's specifications, and appends it to the Appendable in the abstract class. See the assignment or Javadocs for details on how exactly the text is formatted.  
 
 ### SVGView
-SVGView is a class that extends the ATextualView abstract class. Along with the fields in the abstract class, it also stores a tick rate in ticks/second so that ticks for each animation can be converted into milliseconds, as the format requires. It implements the play(List<IReadOnlyShape>) using a few helper methods that ultimately format the text according to the [SVG documentation](https://www.w3.org/TR/SVG11/) and append it to the Appendable in the abstract class.
+SVGView is a class that extends the ATextualView abstract class. Along with the fields in the abstract class, it also stores a tick rate in ticks/second so that ticks for each animation can be converted into milliseconds, as the format requires. It implements the play(List<IReadOnlyShape>) using a few helper methods that ultimately format the text according to the [SVG documentation](https://www.w3.org/TR/SVG11/) and append it to the Appendable in the abstract class. The SVG output does not currently support loopback, so animations (and their shapes) will freeze upon completion.
 
 ### VisualView
+VisualView is a class that extends the JFrame class and implements the IView interface. Unlike the text-based views, the VisualView will create a window with scroll bars that will display the animation. It stores information about the canvas' width, height, maximum x-value, maximum y-value, as well as an AnimationPanel for drawing. When the constructor for this class is called, it creates a window that will pop up on the user's screen with the specified dimensions. However, the window will remain blank (without any animations or images) until the play(List<IReadOnlyShape>) is called. When the play method is called in this class, it will pass the given list of shapes into the AnimationPanel, where the shapes will actually be rendered. The play method is expected to be called on every tick, with a slightly different list of shapes, so that output will appear to be an animation. Additionally, this class also supports both adjusting the canvas size and setting the maximum window size (as specified by the IView interface).
+
 ### IAnimationPanel
+The IAnimationPanel is an interface that is used to represent the panel onto which images can be drawn. It contains one method, draw(List<IReadOnlyShape>) that renders the given list of shapes onto the panel.
+
 ### AnimationPanel
+AnimationPanel is a class that extends JPanel and implements the IAnimationPanel interface. It stores a list of shapes that represents what is currently being displayed on the panel. The draw method is implemented by storing the given list of shapes in the class, and by delegating the process to the repaint method inherited from the JPanel class. It overrides the paintComponent(Graphics) method from the JPanel class so that calling the method will draw the list of shapes stored in the class onto the panel. Currently, this class only supports rendering filled rectangles, and filled ellipses.
 
 ## The Excellence (main) class
+Excellence is a class that contains the main method. It serves as an entry point into the program, and takes in inputs as command line arguments. Currently, four different options are supported:
+1. -in *input-file*
+2. -view *view-type*, which is one of "text", "svg", or "visual"
+3. -out *output-file*
+4. -speed *ticks per second*
+The first two options are mandatory, the latter two are optional.
+
+To parse the arguments, the main method uses a nested static class, ArgsProcessor,
+
 ** Talk about closing here **
 
 ### Misc.
