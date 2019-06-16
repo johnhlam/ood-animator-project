@@ -7,7 +7,6 @@ import java.io.Closeable;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -349,7 +348,7 @@ public class SVGViewTests {
     ((Closeable) writer).close();
     Scanner reader = new Scanner(new FileReader("test.txt"));
     StringBuilder sb = new StringBuilder();
-    while(reader.hasNextLine()) {
+    while (reader.hasNextLine()) {
       sb.append(reader.nextLine() + "\n");
     }
     reader.close();

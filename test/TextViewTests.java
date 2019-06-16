@@ -196,7 +196,7 @@ public class TextViewTests {
     ((Closeable) writer).close();
     Scanner reader = new Scanner(new FileReader("test2.txt"));
     StringBuilder sb = new StringBuilder();
-    while(reader.hasNextLine()) {
+    while (reader.hasNextLine()) {
       sb.append(reader.nextLine() + "\n");
     }
     reader.close();
