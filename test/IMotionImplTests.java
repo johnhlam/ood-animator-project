@@ -13,10 +13,10 @@ import static junit.framework.TestCase.assertEquals;
 public class IMotionImplTests {
 
   private IMotion motion1 = new IMotionImpl(1, 20, 30, 15, 15,
-          Color.BLACK, 10, 20, 30, 15, 15, Color.RED);
+      Color.BLACK, 10, 20, 30, 15, 15, Color.RED);
   private IMotion motion2 = new IMotionImpl(20, 5.5, 3.7, -20.2,
-          100.5, Color.BLUE, 50, 20.7, 30.3, 100.1,
-          -5.1, Color.GREEN);
+      100.5, Color.BLUE, 50, 20.7, 30.3, 100.1,
+      -5.1, Color.GREEN);
 
   /**
    * Tests that passing in a null start color throws an exception.
@@ -96,7 +96,7 @@ public class IMotionImplTests {
   @Test
   public void motionConstructorTest() {
     assertEquals("1 15 15 20 30 0 0 0\t10 15 15 20 30 255 0 0",
-            this.motion1.printMotion());
+        this.motion1.printMotion());
   }
 
   /**
@@ -105,7 +105,7 @@ public class IMotionImplTests {
   @Test
   public void motionConstructorTest2() {
     assertEquals("20 -20 100 5 3 0 0 255\t50 100 -5 20 30 0 255 0",
-            this.motion2.printMotion());
+        this.motion2.printMotion());
   }
 
   /**
@@ -114,7 +114,7 @@ public class IMotionImplTests {
   @Test
   public void testPrintMotion() {
     assertEquals("1 15 15 20 30 0 0 0\t10 15 15 20 30 255 0 0",
-            this.motion1.printMotion());
+        this.motion1.printMotion());
   }
 
   /**
@@ -123,7 +123,7 @@ public class IMotionImplTests {
   @Test
   public void testPrintMotion2() {
     assertEquals("20 -20 100 5 3 0 0 255\t50 100 -5 20 30 0 255 0",
-            this.motion2.printMotion());
+        this.motion2.printMotion());
   }
 
   /**

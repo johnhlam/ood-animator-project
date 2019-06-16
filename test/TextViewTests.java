@@ -25,14 +25,15 @@ import static org.junit.Assert.assertEquals;
  * Tests for the methods of TextView.
  */
 public class TextViewTests {
+
   private Appendable out;
   private IView textView;
   private IMotion motion1 = new IMotionImpl(1, 10, 10, 0, 0, Color.BLACK, 10, 15, 15, 0, 0,
-          Color.RED);
+      Color.RED);
   private IMotion motion2 = new IMotionImpl(5, 15, 10, 20, 20, Color.BLACK, 10, 15, 15, 0, 0,
-          Color.RED);
+      Color.RED);
   private IMotion motion3 = new IMotionImpl(10, 15, 15, 0, 0, Color.RED, 20, 15, 15, 0, 0,
-          Color.RED);
+      Color.RED);
   private List<IReadOnlyShape> shapes;
 
   /**
@@ -62,7 +63,7 @@ public class TextViewTests {
     IModelShape rect1 = new IModelShapeImpl("R1", ShapeType.RECTANGLE, 10, 10, 0, 0, Color.RED);
 
     IModelShape ellipse1 = new IModelShapeImpl("E1", ShapeType.ELLIPSE, 12, 12, 10, 12,
-            Color.WHITE);
+        Color.WHITE);
 
     out = new StringBuilder();
     this.textView = new TextView(out);
@@ -161,13 +162,13 @@ public class TextViewTests {
     List<IReadOnlyShape> noMotions = new ArrayList<>();
     IModelShape rect1 = new IModelShapeImpl("R1", ShapeType.RECTANGLE, 10, 10, 0, 0, Color.RED);
     IModelShape ellipse1 = new IModelShapeImpl("E1", ShapeType.ELLIPSE, 12, 12, 10, 12,
-            Color.WHITE);
+        Color.WHITE);
     noMotions.add(rect1);
     noMotions.add(ellipse1);
     this.textView.play(noMotions);
     assertEquals("canvas 0 0 0 0\n" +
-            "shape R1 rectangle\n" +
-            "shape E1 ellipse\n", out.toString());
+        "shape R1 rectangle\n" +
+        "shape E1 ellipse\n", out.toString());
   }
 
   /**
@@ -177,12 +178,12 @@ public class TextViewTests {
   public void testPrintShapesAndMotions() {
     this.textView.play(this.shapes);
     assertEquals("canvas 0 0 0 0\n" +
-            "shape R1 rectangle\n" +
-            "motion R1 1 0 0 10 10 0 0 0\t10 0 0 15 15 255 0 0\n" +
-            "motion R1 10 0 0 15 15 255 0 0\t20 0 0 15 15 255 0 0\n" +
-            "shape E1 ellipse\n" +
-            "motion E1 5 20 20 15 10 0 0 0\t10 0 0 15 15 255 0 0\n" +
-            "motion E1 10 0 0 15 15 255 0 0\t20 0 0 15 15 255 0 0\n", out.toString());
+        "shape R1 rectangle\n" +
+        "motion R1 1 0 0 10 10 0 0 0\t10 0 0 15 15 255 0 0\n" +
+        "motion R1 10 0 0 15 15 255 0 0\t20 0 0 15 15 255 0 0\n" +
+        "shape E1 ellipse\n" +
+        "motion E1 5 20 20 15 10 0 0 0\t10 0 0 15 15 255 0 0\n" +
+        "motion E1 10 0 0 15 15 255 0 0\t20 0 0 15 15 255 0 0\n", out.toString());
   }
 
   /**
@@ -202,12 +203,12 @@ public class TextViewTests {
     }
     reader.close();
     assertEquals("canvas 0 0 0 0\n" +
-            "shape R1 rectangle\n" +
-            "motion R1 1 0 0 10 10 0 0 0\t10 0 0 15 15 255 0 0\n" +
-            "motion R1 10 0 0 15 15 255 0 0\t20 0 0 15 15 255 0 0\n" +
-            "shape E1 ellipse\n" +
-            "motion E1 5 20 20 15 10 0 0 0\t10 0 0 15 15 255 0 0\n" +
-            "motion E1 10 0 0 15 15 255 0 0\t20 0 0 15 15 255 0 0\n", sb.toString());
+        "shape R1 rectangle\n" +
+        "motion R1 1 0 0 10 10 0 0 0\t10 0 0 15 15 255 0 0\n" +
+        "motion R1 10 0 0 15 15 255 0 0\t20 0 0 15 15 255 0 0\n" +
+        "shape E1 ellipse\n" +
+        "motion E1 5 20 20 15 10 0 0 0\t10 0 0 15 15 255 0 0\n" +
+        "motion E1 10 0 0 15 15 255 0 0\t20 0 0 15 15 255 0 0\n", sb.toString());
   }
 
 

@@ -10,6 +10,7 @@ import cs3500.animator.model.IReadOnlyShape;
  * TextView#play} method.
  */
 public class TextView extends ATextualView {
+
   /**
    * Constructs an instance of TextView with the given Appendable.
    *
@@ -35,7 +36,7 @@ public class TextView extends ATextualView {
   public void play(List<IReadOnlyShape> shapes) throws RuntimeException {
     if (shapes == null) {
       throw new IllegalArgumentException(
-              "Given list of read-only shapes for setShapes cannot be null");
+          "Given list of read-only shapes for setShapes cannot be null");
     }
     this.attemptAppend("canvas ");
     this.attemptAppend(Integer.toString(x));

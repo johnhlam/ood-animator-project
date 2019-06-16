@@ -40,7 +40,7 @@ public class TimerControllerImpl implements IController, ActionListener {
    *                                  is not positive.
    */
   public TimerControllerImpl(IView view, IModel model, int tickRate)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     if (view == null || model == null) {
       throw new IllegalArgumentException("Given view and/or model cannot be null.");
     }

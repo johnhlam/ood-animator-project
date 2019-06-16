@@ -56,7 +56,7 @@ public abstract class ATextualView implements IView {
   public void setCanvas(int x, int y, int width, int height) {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("Given width and height to ATextualView#setCanvas(...) "
-              + "cannot be less than or equal to 0");
+          + "cannot be less than or equal to 0");
     }
 
     this.x = x;

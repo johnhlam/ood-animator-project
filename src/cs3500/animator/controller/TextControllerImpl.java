@@ -29,7 +29,7 @@ public class TextControllerImpl implements IController {
    *                                  rate is not positive
    */
   public TextControllerImpl(IView view, IModel model)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     if (view == null || model == null) {
       throw new IllegalArgumentException("Given view and/or model cannot be null");
     }
@@ -49,7 +49,7 @@ public class TextControllerImpl implements IController {
   @Override
   public void setTickRate(int tickRate) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Tick rate of a text-based animation should not be " +
-            "changed.");
+        "changed.");
   }
 
   /**

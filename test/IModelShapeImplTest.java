@@ -22,19 +22,19 @@ public class IModelShapeImplTest {
   private IModelShape ellipse1;
   private IModelShape ellipse2;
   private IMotion motion1 = new IMotionImpl(1, 10, 10, 0, 0, Color.BLACK, 10, 15, 15, 0, 0,
-          Color.RED);
+      Color.RED);
   private IMotion motion2 = new IMotionImpl(5, 15, 10, 20, 20, Color.BLACK, 10, 15, 15, 0, 0,
-          Color.RED);
+      Color.RED);
   private IMotion motion3 = new IMotionImpl(10, 15, 15, 0, 0, Color.RED, 20, 15, 15, 0, 0,
-          Color.RED);
+      Color.RED);
   private IMotion motion4 = new IMotionImpl(30, 15, 15, 0, 0, Color.RED, 40, 15, 15, 0, 0,
-          Color.RED);
+      Color.RED);
   private IMotion motion5 = new IMotionImpl(50, 15.3, 15.6, 58.4, 34.2, Color.ORANGE, 100, 18.34,
-          30.2,
-          100.2, 200, Color.RED);
+      30.2,
+      100.2, 200, Color.RED);
   private IMotion motionBadOverlap = new IMotionImpl(10, 10, 30, -2, 3, Color.GREEN, 40, 15, 15, 0
-          , 0,
-          Color.RED);
+      , 0,
+      Color.RED);
 
   @Before
   public void setUp() {
@@ -42,7 +42,7 @@ public class IModelShapeImplTest {
 
     ellipse1 = new IModelShapeImpl("E1", ShapeType.ELLIPSE, 12, 12, 10, 12, Color.WHITE);
     ellipse2 = new IModelShapeImpl("E2", ShapeType.ELLIPSE, 3.5, 6.6, 20.2, -40.5,
-            Color.GREEN);
+        Color.GREEN);
   }
 
   /**
@@ -173,13 +173,13 @@ public class IModelShapeImplTest {
     // does not throw exception
     this.rect1.addMotion(this.motion1);
     assertEquals("shape R1 rectangle\nmotion R1 1 0 0 10 10 0 0 0\t10 0 0 " +
-            "15 15 255 0 0", this.rect1.printMotions());
+        "15 15 255 0 0", this.rect1.printMotions());
     // throws exception
     this.rect1.addMotion(this.motion4);
     assertEquals("shape R1 rectangle\nmotion R1 1 0 0 10 10 0 0 0\t10 0 0 " +
-                    "15 15 255 0 0\nmotion R1 10 0 0 15 15 255 0 0\t20 0 0 15 " +
-                    "15 255 0 0\nmotion R1 30 0 0 15 15 255 0 0\t40 0 0 15 15 255 0 0",
-            this.rect1.printMotions());
+            "15 15 255 0 0\nmotion R1 10 0 0 15 15 255 0 0\t20 0 0 15 " +
+            "15 255 0 0\nmotion R1 30 0 0 15 15 255 0 0\t40 0 0 15 15 255 0 0",
+        this.rect1.printMotions());
   }
 
   /**
@@ -190,7 +190,7 @@ public class IModelShapeImplTest {
     assertEquals("shape R1 rectangle", this.rect1.printMotions());
     this.rect1.addMotion(this.motion1);
     assertEquals("shape R1 rectangle\nmotion R1 1 0 0 10 10 0 0 0\t10 0 0 " +
-            "15 15 255 0 0", this.rect1.printMotions());
+        "15 15 255 0 0", this.rect1.printMotions());
   }
 
   /**
@@ -201,11 +201,11 @@ public class IModelShapeImplTest {
     assertEquals("shape R1 rectangle", this.rect1.printMotions());
     this.rect1.addMotion(this.motion1);
     assertEquals("shape R1 rectangle\nmotion R1 1 0 0 10 10 0 0 0\t10 0 0 " +
-            "15 15 255 0 0", this.rect1.printMotions());
+        "15 15 255 0 0", this.rect1.printMotions());
     this.rect1.addMotion(this.motion3);
     assertEquals("shape R1 rectangle\nmotion R1 1 0 0 10 10 0 0 0\t10 0 0 " +
-            "15 15 255 0 0\nmotion R1 10 0 0 15 15 255 0 0\t20 0 0 15 " +
-            "15 255 0 0", this.rect1.printMotions());
+        "15 15 255 0 0\nmotion R1 10 0 0 15 15 255 0 0\t20 0 0 15 " +
+        "15 255 0 0", this.rect1.printMotions());
   }
 
   @Test
@@ -218,7 +218,7 @@ public class IModelShapeImplTest {
     assertEquals("shape E1 ellipse", this.ellipse1.printMotions());
     this.ellipse1.addMotion(this.motion1);
     assertEquals("shape E1 ellipse\nmotion E1 1 0 0 10 10 0 0 0\t10 0 0 " +
-            "15 15 255 0 0", this.ellipse1.printMotions());
+        "15 15 255 0 0", this.ellipse1.printMotions());
   }
 
   @Test
@@ -421,7 +421,7 @@ public class IModelShapeImplTest {
     ellipse1.addMotion(this.motionBadOverlap);
     IReadOnlyShape shape = ellipse1.getShapeAtTick(15);
     new IMotionImpl(10, 10, 30, -2, 3, Color.GREEN, 40, 15, 15, 0, 0,
-            Color.RED);
+        Color.RED);
     assertEquals(11, shape.getWidth(), .001);
     assertEquals(28, shape.getHeight(), .001);
     assertEquals(-2, shape.getX(), .001);

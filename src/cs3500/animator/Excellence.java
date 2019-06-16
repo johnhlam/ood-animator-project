@@ -71,8 +71,8 @@ public class Excellence {
       // If an exception is thrown while parseFile is called (for whatever reason), an error
       // popup will occur
       Excellence.errorPopup("Error: Model was unable to be built.\n"
-              + "Error message:\n"
-              + e.getMessage());
+          + "Error message:\n"
+          + e.getMessage());
       return;
     }
 
@@ -92,12 +92,12 @@ public class Excellence {
           break;
         case "visual":
           newView = new VisualView(
-                  model.getWidth(), model.getHeight(), model.getMaxX(), model.getMaxY());
+              model.getWidth(), model.getHeight(), model.getMaxX(), model.getMaxY());
           controller = new TimerControllerImpl(newView, model, ArgsProcessor.speed);
           break;
         default:
           Excellence.errorPopup("Error: Given view parameter: " + ArgsProcessor.view
-                  + " is not supported.");
+              + " is not supported.");
           return;
       }
     } catch (Exception e) {
@@ -105,20 +105,20 @@ public class Excellence {
       // an appropriate message. Examples of exceptions that might occur are negative tick rates
       // (speed), or null arguments.
       Excellence.errorPopup("Error: View and/or controller were unable to be constructed.\n"
-              + "Error message:\n"
-              + e.getMessage());
+          + "Error message:\n"
+          + e.getMessage());
       return;
     }
 
     controller.run();
 
     if ((ArgsProcessor.view.equals("text") || ArgsProcessor.view.equals("svg"))
-            && ArgsProcessor.outFlag) {
+        && ArgsProcessor.outFlag) {
       try {
         ((Closeable) (ArgsProcessor.out)).close();
       } catch (IOException e) {
         Excellence.errorPopup(
-                "Error occurred upon attempting to close the file writer for text based views.");
+            "Error occurred upon attempting to close the file writer for text based views.");
       }
     }
   }
@@ -152,7 +152,7 @@ public class Excellence {
      *
      * @param args is the String[] of arguments to be parsed into data
      * @return true if processArgs successfully parsed args into data (i.e. no error message popped
-     *         up), false otherwise.
+     *     up), false otherwise.
      */
     private static boolean processArgs(String[] args) {
       // Increments by 2 because options and arguments come in pairs
@@ -166,7 +166,7 @@ public class Excellence {
           // Creates a popup in the case that an option is called without an argument directly
           // after it
           Excellence.errorPopup("Error: Attempted to call " + args[i]
-                  + " without an argument.");
+              + " without an argument.");
           return false;
 
         }
@@ -194,8 +194,8 @@ public class Excellence {
      * @param option is the command line option that determines what {@code param} should represent
      * @param param  is the command line parameter that represents what will be stored in the class
      * @return true if the method is successfully able to convert the given String {@code option}
-     *         and a String {@code param} into data stored in the class (i.e. no error popups are
-     *         generated), false otherwise.
+     *     and a String {@code param} into data stored in the class (i.e. no error popups are
+     *     generated), false otherwise.
      */
     private static boolean storeArgs(String option, String param) {
       try {
@@ -231,23 +231,23 @@ public class Excellence {
             break;
           default:
             Excellence.errorPopup("Error: Attempted to call invalid command-line option, "
-                    + option + ".");
+                + option + ".");
         }
       } catch (FileNotFoundException e) {
         // Creates a popup in the case that creating a FileReader throws a FileNotFoundException
         Excellence.errorPopup("Error: Attempted to call " + option
-                + " with unknown file, " + param + ".");
+            + " with unknown file, " + param + ".");
 
       } catch (IOException e) {
         // Creates a popup in the case that creating a FileWriter throws a IOException
         Excellence.errorPopup("Error: Attempted to call: " + option +
-                " with file name, " + param + ", that could not be created.");
+            " with file name, " + param + ", that could not be created.");
 
       } catch (NumberFormatException e) {
         // Creates a popup in the case that creating a parsing the speed as an Integer throws a
         // NumberFormatException
         Excellence.errorPopup("Error: Attempted to call: " + option
-                + "with invalid number, " + param);
+            + "with invalid number, " + param);
       }
 
       // If you get here, an error was thrown, and/or a error popup was generated, meaning that

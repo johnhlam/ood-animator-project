@@ -37,7 +37,7 @@ public class VisualView extends JFrame implements IView {
    * @throws IllegalArgumentException if either the width or height are not positive
    */
   public VisualView(int canvasWidth, int canvasHeight, int maxX, int maxY)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
 
     if (canvasWidth <= 0 || canvasHeight <= 0) {
       throw new IllegalArgumentException("Given width and/or height to VisualView is not positive");
@@ -78,7 +78,7 @@ public class VisualView extends JFrame implements IView {
   public void setCanvas(int x, int y, int width, int height) {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("Given width and height for VisualView#setCanvas(int, "
-              + "int) cannot be non-positive");
+          + "int) cannot be non-positive");
     }
     this.canvasWidth = width;
     this.canvasHeight = height;
@@ -110,7 +110,7 @@ public class VisualView extends JFrame implements IView {
   public void setMaxWindowSize(int width, int height) {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("Given width and height for VisualView#setWindowSize(int, "
-              + "int) cannot be non-positive");
+          + "int) cannot be non-positive");
     }
 
     this.maxX = width;
