@@ -20,22 +20,27 @@ import static org.junit.Assert.assertEquals;
 public class ControllerTests {
   private IController textController;
   private IController textController2;
+  private IController emptyTextController;
+  private IController emptyTextController2;
   private AnimationBuilder<IModelImpl> builder = IModelImpl.builder();
+  private AnimationBuilder<IModelImpl> emptyBuilder = IModelImpl.builder();
   private Appendable out;
   private IView svgView;
 
   @Before
   public void init() {
-    out = new StringBuilder();
-    svgView = new SVGView(out, 10);
+    this.out = new StringBuilder();
+    this.svgView = new SVGView(out, 10);
     IView textView = new TextView(out);
     this.builder.declareShape("R", "rectangle");
     this.builder.declareShape("E", "ellipse");
     this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0, 0, 1, 20, 20, 30, 40, 255, 0, 0);
     this.builder.addMotion("E", 1, 20, 20, 30, 40, 255, 0, 0, 10, 40, 40, 40, 40, 0, 0, 0);
     IModel model = this.builder.build();
-    textController = new TextControllerImpl(svgView, model);
-    textController2 = new TextControllerImpl(textView, model);
+    this.textController = new TextControllerImpl(svgView, model);
+    this.textController2 = new TextControllerImpl(textView, model);
+    this.emptyTextController = new TextControllerImpl(svgView, emptyBuilder.build());
+    this.emptyTextController2 = new TextControllerImpl(textView, emptyBuilder.build());
   }
 
   /**
@@ -154,5 +159,25 @@ public class ControllerTests {
             "motion R 1 20 20 30 40 255 0 0\t1 20 20 30 40 255 0 0\n" +
             "shape E ellipse\n" +
             "motion E 1 20 20 30 40 255 0 0\t10 40 40 40 40 0 0 0\n", out.toString());
+  }
+
+  /**
+   * Tests that controller can make an svg view with an empty model.
+   */
+  @Test
+  public void testSVGViewControllerEmpty() {
+    this.emptyTextController.run();
+    assertEquals("<svg width=\"200\" height=\"200\" xmlns=\"http://www.w3.org/2000/svg\" "
+        + "version=\"1.1\">\n"
+        + "</svg>", this.out.toString());
+  }
+
+  /**
+   * Tests that controller can make a text view with an empty model.
+   */
+  @Test
+  public void testTextViewControllerEmpty() {
+    this.emptyTextController2.run();
+    assertEquals("canvas 0 0 200 200\n", this.out.toString());
   }
 }
