@@ -398,6 +398,8 @@ public class IModelShapeImpl implements IModelShape {
     // NEW STUFF
 
     // TODO: Note that this method means that the list of keyframes will always be sorted by tick
+  // TODO: Add functionality where keyframes are not added if they have the same tick and fields
+    // TODO: as existing keyframes
     @Override
     public void addKeyframe (IKeyframe keyframe) throws IllegalArgumentException {
       if (keyframe == null) {
