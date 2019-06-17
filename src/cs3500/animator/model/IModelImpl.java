@@ -5,6 +5,7 @@ import cs3500.animator.util.AnimationBuilder;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.animation.KeyFrame;
 
 /**
  * An implementation of IModel. Holds all the shapes needed to be drawn in the animation as an
@@ -230,6 +231,66 @@ public class IModelImpl implements IModel {
     throw new IllegalArgumentException("ID could not be found");
   }
 
+  /**
+   * Adds a keyframe to the shape corresponding with the given ID. Keyframes can be given in any
+   * order, and the shape will insert them in such a way that keyframes are sorted based on tick.
+   * Throws an exception if the given keyframe's tick overlap with pre-existing keyframes. The
+   * model will also update the largest x and y values seen based on the values of
+   * the keyframe.
+   * INVARIANT: All existing keyframes in the shapes will be chronologically ordered,
+   * with no overlap in ticks.
+   *
+   * @param id     is the id of the shape the keyframe will be added to
+   * @param tick   is the tick value of the keyframe
+   * @param x      is the x value of the keyframe
+   * @param y      is the y value of the keyframe
+   * @param width  is the width value of the keyframe
+   * @param height is the height value of the keyframe
+   * @param color  is the color of the keyframe
+   * @throws IllegalArgumentException if the given id is null, if the given tick, width, or height
+   *                                  is negative, or if adding the keyframe conflicts with an
+   *                                  existing keyframe (i.e. they have the same tick)
+   *                                  TODO: Change this if necessary
+   */
+  @Override
+  public void addKeyframe(String id, int tick, double x, double y, double width, double height,
+      Color color) throws IllegalArgumentException {
+    if (id == null) {
+      throw new IllegalArgumentException("Given id to addKeyframe is null");
+    }
+    if (tick < 0 || width < 0 || height < 0) {
+      throw new IllegalArgumentException("Given tick, width, and/or height to add keyframe cannot"
+          + " be negative");
+    }
+
+    for (IModelShape cur : this.shapes) {
+      if (cur.getID().equals(id)) {
+        cur.addKeyframe(new IKeyframeImpl(tick, x, y, width, height, color));
+        // Returns to exit the loop and the method
+        return;
+      }
+    }
+
+    // throw an exception if it reaches here, meaning the ID was not in the list
+    throw new IllegalArgumentException("ID could not be found in addKeyframe");
+  }
+
+  @Override
+  public void removeKeyframe(String id, int tick) throws IllegalArgumentException {
+    if (id == null) {
+      throw new IllegalArgumentException("Given id to removeKeyframe cannot be null");
+    }
+    if(tick < 0) {
+      throw new IllegalArgumentException("Given tick to removeKeyframe cannot be negative");
+    }
+
+    for (IModelShape shape : this.shapes) {
+      if (shape.getID().equals(id)) {
+        shape.removeKeyframe(tick);
+      }
+    }
+  }
+
   @Override
   public void addShape(String id, ShapeType type, double width, double height, double x, double y,
       Color color) throws IllegalArgumentException {
@@ -284,7 +345,8 @@ public class IModelImpl implements IModel {
   }
 
   /**
-   * Represents an implementation of the AnimationBuilder that can construct instances of this model
+   * Represents an implementation of the AnimationBuilder that can construct instances of this
+   * model
    * implementation by setting parameters and adding motions/shapes. The model is constructed with
    * the build method.
    */
@@ -350,16 +412,21 @@ public class IModelImpl implements IModel {
     }
 
     /**
-     * In this implementation, this method also updates the builder to keep track of the max x and y
+     * In this implementation, this method also updates the builder to keep track of the max x
+     * and y
      * coordinates of the animation.
      */
     @Override
     public AnimationBuilder<IModelImpl> addMotion(String name, int t1, int x1, int y1, int w1,
         int h1, int r1, int g1, int b1, int t2, int x2,
         int y2, int w2, int h2, int r2, int g2,
-        int b2) {
+        int b2) throws IllegalArgumentException {
       if (name == null) {
         throw new IllegalArgumentException("Arguments for addMotion cannot be null");
+      }
+      if (t1 < 0 || t2 < 0 || w1 < 0 || w2 < 0 || h1 < 0 || h2 < 0) {
+        throw new IllegalArgumentException("Ticks, widths, and/or heights for add motion cannot "
+            + "be negative");
       }
 
       maxX = Math.max(maxX, x1 + w1);
@@ -369,10 +436,43 @@ public class IModelImpl implements IModel {
 
       for (IModelShape cur : this.shapes) {
         if (cur.getID().equals(name)) {
-          cur.addMotion(
-              new IMotionImpl(
-                  t1, w1, h1, x1, y1, new Color(r1, g1, b1),
-                  t2, w2, h2, x2, y2, new Color(r2, g2, b2)));
+          cur.addKeyframe(new IKeyframeImpl(t1, w1, h1, x1, y1, new Color(r1, g1, b1)));
+          cur.addKeyframe(new IKeyframeImpl(t2, w2, h2, x2, y2, new Color(r2, g2, b2)));
+          // Does not need to iterate through the rest of the list if a shape with the given id
+          // has
+          // been found
+          return this;
+        }
+      }
+
+      // throw an exception if it reaches here, meaning the ID was not in the list
+      throw new IllegalArgumentException("Given ID could not be found for addMotion");
+    }
+
+    /**
+     * In this implementation, this method also updates the builder to keep track of the max x
+     * and y
+     * coordinates of the animation.
+     */
+    @Override
+    public AnimationBuilder<IModelImpl> addKeyframe(String name, int t, int x, int y, int w,
+        int h,
+        int r, int g, int b) throws IllegalArgumentException {
+
+      if (name == null) {
+        throw new IllegalArgumentException("Arguments for addKeyframe cannot be null");
+      }
+      if (t < 0 || w < 0 || h < 0) {
+        throw new IllegalArgumentException("Tick, width, and/or height for addKeyframe cannot be "
+            + "negative");
+      }
+
+      maxX = Math.max(maxX, x + w);
+      maxY = Math.max(maxY, y + h);
+
+      for (IModelShape cur : this.shapes) {
+        if (cur.getID().equals(name)) {
+          cur.addKeyframe(new IKeyframeImpl(t, w, h, x, y, new Color(r, g, b)));
 
           // Does not need to iterate through the rest of the list if a shape with the given id has
           // been found
@@ -381,16 +481,7 @@ public class IModelImpl implements IModel {
       }
 
       // throw an exception if it reaches here, meaning the ID was not in the list
-      throw new IllegalArgumentException("Given ID could not be found");
-    }
-
-    /**
-     * Left blank as instructed by professors and TAs.
-     */
-    @Override
-    public AnimationBuilder<IModelImpl> addKeyframe(String name, int t, int x, int y, int w, int h,
-        int r, int g, int b) {
-      return this;
+      throw new IllegalArgumentException("Given ID could not be found for addKeyframe");
     }
   }
 }
