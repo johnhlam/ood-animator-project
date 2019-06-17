@@ -19,35 +19,17 @@ import cs3500.animator.model.ShapeType;
  */
 public class SVGView extends ATextualView {
 
-  private int tickRate;
-
-  /**
-   * Constructs an instance of SVGView with the given Appendable and tickRate.
-   *
-   * @param ap       is the Appendable that the text output will be appended to.
-   * @param tickRate is the tickRate that the animation runs at
-   * @throws IllegalArgumentException if the given Appendable is null, or if the given tickRate is
-   *                                  not positive
-   */
-  public SVGView(Appendable ap, int tickRate) throws IllegalArgumentException {
-    super(ap);
-
-    if (tickRate <= 0) {
-      throw new IllegalArgumentException("Given tickRate to SVGView is negative.");
-    }
-
-    this.tickRate = tickRate;
-  }
-
   /**
    * Turns this view into a textual representation and appends the textual output to this.ap. The
    * textual representation is formatted based on the SVG file format documentation.
    *
    * @param shapes is the List of IReadOnlyShapes that this IView will display.
+   * @param ap is the Appendable to output to
+   * @param tickRate is the tick rate of the animation
    * @throws IllegalArgumentException if the given list is null
    */
   @Override
-  public void play(List<IReadOnlyShape> shapes) throws IllegalArgumentException,
+  public void toOutput(List<IReadOnlyShape> shapes, Appendable ap, int tickRate) throws IllegalArgumentException,
       IllegalStateException {
     if (shapes == null) {
       throw new IllegalArgumentException("Shapes cannot be null.");
@@ -58,7 +40,7 @@ public class SVGView extends ATextualView {
     String heightAttribute = null;
 
     this.attemptAppend("<svg width=\"" + (width + x) + "\" height=\"" + (height + y)
-        + "\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n");
+        + "\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n", ap);
 
     for (IReadOnlyShape shape : shapes) {
 
@@ -93,14 +75,15 @@ public class SVGView extends ATextualView {
           .append(shape.getColor().getGreen()).append(",").append(shape.getColor().getBlue())
           .append(")\" ").append("visibility=\"visible\" >\n");
 
-      this.attemptAppend(shapeHeading.toString());
+      this.attemptAppend(shapeHeading.toString(), ap);
 
       // Converts shape's motions into 'animate' elements
-      this.printShapeMotionsSVG(shape, xCoordinate, yCoordinate, widthAttribute, heightAttribute);
-      this.attemptAppend("</" + shapeName + ">\n\n");
+      this.printShapeMotionsSVG(shape, xCoordinate, yCoordinate, widthAttribute, heightAttribute,
+              tickRate, ap);
+      this.attemptAppend("</" + shapeName + ">\n\n", ap);
     }
 
-    this.attemptAppend("</svg>");
+    this.attemptAppend("</svg>", ap);
   }
 
   /**
@@ -111,26 +94,28 @@ public class SVGView extends ATextualView {
    * @param yCoordinate is the attribute name of the y value of the shape
    * @param width       is the attribute name of the width of the shape
    * @param height      is the attribute name of the height of the shape
+   * @param tickRate    is the tick rate of the SVG animation
+   * @param ap is the Appendable to output to
    */
   private void printShapeMotionsSVG(IReadOnlyShape shape, String xCoordinate, String yCoordinate,
-      String width, String height) {
+      String width, String height, int tickRate, Appendable ap) {
 
     for (IMotion motion : shape.getMotions()) {
-      String startTime = Integer.toString(this.tickToMS(motion.getStartTick()));
+      String startTime = Integer.toString(this.tickToMS(motion.getStartTick(), tickRate));
       String duration =
-          Integer.toString(this.tickToMS(motion.getEndTick() - motion.getStartTick()));
+          Integer.toString(this.tickToMS(motion.getEndTick() - motion.getStartTick(), tickRate));
 
       // Adds the 'animate' element for each attribute of the shape
       this.svgAnimationText(xCoordinate, startTime,
-          duration, Double.toString(motion.getStartX()), Double.toString(motion.getEndX()));
+          duration, Double.toString(motion.getStartX()), Double.toString(motion.getEndX()), ap);
       this.svgAnimationText(yCoordinate, startTime,
-          duration, Double.toString(motion.getStartY()), Double.toString(motion.getEndY()));
+          duration, Double.toString(motion.getStartY()), Double.toString(motion.getEndY()), ap);
       this.svgAnimationText(width, startTime,
           duration, Double.toString(motion.getStartWidth()),
-          Double.toString(motion.getEndWidth()));
+          Double.toString(motion.getEndWidth()), ap);
       this.svgAnimationText(height, startTime,
           duration, Double.toString(motion.getStartHeight()),
-          Double.toString(motion.getEndHeight()));
+          Double.toString(motion.getEndHeight()), ap);
 
       StringBuilder colorStart = new StringBuilder();
       colorStart.append("rgb(").append(motion.getStartColor().getRed()).append(
@@ -143,8 +128,8 @@ public class SVGView extends ATextualView {
           ",").append(motion.getEndColor().getBlue()).append(")");
 
       this.svgAnimationText("fill", startTime,
-          duration, colorStart.toString(), colorEnd.toString());
-      this.attemptAppend("\n");
+          duration, colorStart.toString(), colorEnd.toString(), ap);
+      this.attemptAppend("\n", ap);
     }
   }
 
@@ -161,9 +146,10 @@ public class SVGView extends ATextualView {
    *                      of the attribute at startTime).
    * @param toVal         is the final value of the attributeName to be animated (as in the value of
    *                      the attribute at the end of the animation).
+   * @param ap is the Appendable to output to
    */
   private void svgAnimationText(String attributeName, String startTime, String duration,
-      String fromVal, String toVal) {
+      String fromVal, String toVal, Appendable ap) {
     StringBuilder animationText = new StringBuilder();
     animationText.append("<animate attributeType=\"xml\" begin=\"").append(startTime)
         .append("ms\" ")
@@ -171,17 +157,18 @@ public class SVGView extends ATextualView {
         .append("attributeName=\"").append(attributeName).append("\" from=\"")
         .append(fromVal).append("\" ").append("to=\"").append(toVal).append("\" fill=\"freeze" +
         "\" />\n");
-    this.attemptAppend(animationText.toString());
+    this.attemptAppend(animationText.toString(), ap);
   }
 
   /**
    * Converts an integer tick value in to milliseconds using this.tickRate.
    *
    * @param tick is the tick value to be converted into milliseconds.
+   * @param tickRate is the tick rate of the SVG animation
    * @return is the given tick value in milliseconds.
    */
-  private int tickToMS(int tick) {
-    return (int) (((double) tick / this.tickRate) * 1000);
+  private int tickToMS(int tick, int tickRate) {
+    return (int) (((double) tick / tickRate) * 1000);
   }
 
   /**

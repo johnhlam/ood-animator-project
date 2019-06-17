@@ -22,41 +22,39 @@ public abstract class ATextualView implements IView {
   protected int width;
   // height is the height of the canvas
   protected int height;
-  protected final Appendable ap;
-
-  /**
-   * Constructs an instance of ATextualView with the given Appendable, and an empty ArrayList of
-   * IReadOnlyShapes. Once the Appendable is initialized, it cannot be changed. Concrete classes
-   * calling this super constructor may choose to keep track of other information within
-   * themselves.
-   *
-   * @param ap is the Appendable that text will be added to
-   * @throws IllegalArgumentException if the given Appendable is null
-   */
-  protected ATextualView(Appendable ap) throws IllegalArgumentException {
-    if (ap == null) {
-      throw new IllegalArgumentException("Cannot pass in a null appendable for ATextualView");
-    }
-
-    this.ap = ap;
-  }
 
   /**
    * Turns this view into a textual representation. Subclasses implementing this method should
    * append the textual output to this.ap.
    *
    * @param shapes is the List of IReadOnlyShapes that this IView will display.
+   * @param ap is the Appendable to output to
+   * @param tickRate is the tick rate of the animation
    * @throws IllegalStateException if this.ap is unable to be appended to, or is unable to transmit
    *                               output.
    */
   @Override
-  public abstract void play(List<IReadOnlyShape> shapes) throws IllegalStateException;
+  public abstract void toOutput(List<IReadOnlyShape> shapes, Appendable ap, int tickRate) throws IllegalStateException;
+
+  /**
+   * Since textual views cannot render an animation visually, this throws an
+   * UnsupportedOperationException.
+   *
+   * @throws UnsupportedOperationException due to not being able to render images
+   */
+  @Override
+  public void render(List<IReadOnlyShape> shapes) throws UnsupportedOperationException {
+    throw new UnsupportedOperationException("Textual views cannot render images.");
+  }
 
   @Override
-  public void setCanvas(int x, int y, int width, int height) {
+  public void setCanvas(int x, int y, int width, int height, int maxX, int maxY) {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("Given width and height to ATextualView#setCanvas(...) "
           + "cannot be less than or equal to 0");
+    }
+    if (maxX < 0 || maxY < 0) {
+      throw new IllegalArgumentException("Max x and max y coordinates cannot be negative");
     }
 
     this.x = x;
@@ -72,18 +70,12 @@ public abstract class ATextualView implements IView {
    * @throws IllegalStateException if the given String could not be appended to this.ap (i.e. an
    *                               IOException was thrown).
    */
-  protected void attemptAppend(String toBeAppended) throws IllegalStateException {
+  protected void attemptAppend(String toBeAppended, Appendable ap) throws IllegalStateException {
     try {
-      this.ap.append(toBeAppended);
+      ap.append(toBeAppended);
     } catch (IOException e) {
       throw new IllegalStateException("Could not append String to Appendable.");
     }
   }
-
-  @Override
-  public void setMaxWindowSize(int width, int height) throws UnsupportedOperationException {
-    throw new UnsupportedOperationException("Textual views do not have max window sizes.");
-  }
-
 
 }

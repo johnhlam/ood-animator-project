@@ -6,8 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 import cs3500.animator.controller.IController;
-import cs3500.animator.controller.TextControllerImpl;
-import cs3500.animator.controller.TimerControllerImpl;
 import cs3500.animator.model.IModel;
 import cs3500.animator.model.IModelImpl;
 import cs3500.animator.util.AnimationBuilder;

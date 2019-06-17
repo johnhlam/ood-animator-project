@@ -1,16 +1,13 @@
 package cs3500.animator;
 
+import cs3500.animator.controller.ControllerImpl;
 import cs3500.animator.controller.IController;
-import cs3500.animator.controller.TextControllerImpl;
-import cs3500.animator.controller.TimerControllerImpl;
 import cs3500.animator.model.IModel;
 import cs3500.animator.model.IModelImpl;
 import cs3500.animator.util.AnimationBuilder;
 import cs3500.animator.util.AnimationReader;
 import cs3500.animator.view.IView;
-import cs3500.animator.view.SVGView;
-import cs3500.animator.view.TextView;
-import cs3500.animator.view.VisualView;
+import cs3500.animator.view.ViewFactory;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -76,30 +73,11 @@ public class Excellence {
       return;
     }
 
-    // Constructs the controller and view based on the given view type
-    IController controller;
+    // Constructs the view based on the given view type
     IView newView;
 
     try {
-      switch (ArgsProcessor.view) {
-        case "text":
-          newView = new TextView(ArgsProcessor.out);
-          controller = new TextControllerImpl(newView, model);
-          break;
-        case "svg":
-          newView = new SVGView(ArgsProcessor.out, ArgsProcessor.speed);
-          controller = new TextControllerImpl(newView, model);
-          break;
-        case "visual":
-          newView = new VisualView(
-              model.getWidth(), model.getHeight(), model.getMaxX(), model.getMaxY());
-          controller = new TimerControllerImpl(newView, model, ArgsProcessor.speed);
-          break;
-        default:
-          Excellence.errorPopup("Error: Given view parameter: " + ArgsProcessor.view
-              + " is not supported.");
-          return;
-      }
+      newView = ViewFactory.makeView(ArgsProcessor.view);
     } catch (Exception e) {
       // Catches any exceptions thrown by any of the view or controller constructors, and prints
       // an appropriate message. Examples of exceptions that might occur are negative tick rates
@@ -109,16 +87,27 @@ public class Excellence {
           + e.getMessage());
       return;
     }
-    controller.run();
+    IController controller = new ControllerImpl(newView, model,  ArgsProcessor.speed,
+            ArgsProcessor.out);
 
-    if ((ArgsProcessor.view.equals("text") || ArgsProcessor.view.equals("svg"))
-        && ArgsProcessor.outFlag) {
+    if ((ArgsProcessor.view.equals("text") || ArgsProcessor.view.equals("svg"))) {
       try {
-        ((Closeable) (ArgsProcessor.out)).close();
+        controller.outputText();
+        if (ArgsProcessor.outFlag) {
+          ((Closeable) (ArgsProcessor.out)).close();
+        }
       } catch (IOException e) {
         Excellence.errorPopup(
             "Error occurred upon attempting to close the file writer for text based views.");
       }
+    }
+    else {
+      try {
+        controller.renderAnimation();
+      } catch (UnsupportedOperationException e) {
+        Excellence.errorPopup(e.getMessage());
+      }
+
     }
   }
 

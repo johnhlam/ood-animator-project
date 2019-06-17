@@ -19,29 +19,29 @@ public interface IView {
    * @param y      the lowest y value for the animation
    * @param width  the width of the animation canvas
    * @param height the width of the animation canvas
+   * @param maxX   the max x coordinate that the animation reaches
+   * @param maxY   the max y coordinate that the animation reaches
    * @throws IllegalArgumentException if the given width and/or height are negative
    */
-  void setCanvas(int x, int y, int width, int height) throws IllegalArgumentException;
+  void setCanvas(int x, int y, int width, int height, int maxX, int maxY) throws IllegalArgumentException;
 
   /**
-   * Outputs however this view represents an animation. It could be textual in the form of SVG or
-   * plain text, or visual in the form of drawn images. Details of how it is shown is left to be
-   * defined by the implementing classes.
+   * Outputs a textual representation of the animation to the given Appendable object. The animation
+   * to represent is given as a list of shapes. Some views may not support this operation, in which
+   * case it should be specified by implementing classes.
+   *
+   * @param shapes   is the list of shapes to output to the Appendable
+   * @param ap       the Appendable to output to
+   * @param tickRate the tick rate of the animation
+   */
+  void toOutput(List<IReadOnlyShape> shapes, Appendable ap, int tickRate) throws UnsupportedOperationException;
+
+  /**
+   * Plays the animation visually by drawing the given shapes. Some views may not support this
+   * operation, in which case it should be specified by implementing classes.
    *
    * @param shapes is the List of IReadOnlyShapes that this IView will display.
    * @throws IllegalArgumentException if the given List is null.
    */
-  void play(List<IReadOnlyShape> shapes) throws RuntimeException;
-
-  /**
-   * Sets the maximum window size to the given width and height. Some implementations may not
-   * support this operation, and thus may throw an exception if this method is called.
-   *
-   * @param width  is the maximum width of the window
-   * @param height is the maximum height of the window
-   * @throws UnsupportedOperationException if the implementing class chooses not to support this
-   *                                       operation
-   */
-  void setMaxWindowSize(int width, int height) throws UnsupportedOperationException;
-
+  void render(List<IReadOnlyShape> shapes) throws UnsupportedOperationException;
 }

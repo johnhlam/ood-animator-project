@@ -7,19 +7,9 @@ import cs3500.animator.model.IReadOnlyShape;
 /**
  * TextView is a class that extends ATextualView. It provides a way to convert a list of shapes into
  * a textual representation. Details on how exactly it is formatted is described in the {@link
- * TextView#play} method.
+ * TextView#toOutput(List, Appendable, int)} method.
  */
 public class TextView extends ATextualView {
-
-  /**
-   * Constructs an instance of TextView with the given Appendable.
-   *
-   * @param ap is the Appendable that the text output will be appended to.
-   * @throws IllegalArgumentException if the given Appendable is null.
-   */
-  public TextView(Appendable ap) throws IllegalArgumentException {
-    super(ap);
-  }
 
   /**
    * Turns this view into a textual representation and appends the textual output to this.ap. The
@@ -29,28 +19,30 @@ public class TextView extends ATextualView {
    * endRed endGreen endBlue} <br> ... <i>other motions</i>... <br> ... <i>other shapes</i>...
    *
    * @param shapes is the List of IReadOnlyShapes that this IView will display.
+   * @param ap is the Appendable to output to
+   * @param tickRate is the tick rate of the animation
    * @throws IllegalStateException if this.ap is unable to be appended to, or is unable to transmit
    *                               output.
    */
   @Override
-  public void play(List<IReadOnlyShape> shapes) throws RuntimeException {
+  public void toOutput(List<IReadOnlyShape> shapes, Appendable ap, int tickRate) throws RuntimeException {
     if (shapes == null) {
       throw new IllegalArgumentException(
           "Given list of read-only shapes for setShapes cannot be null");
     }
-    this.attemptAppend("canvas ");
-    this.attemptAppend(Integer.toString(x));
-    this.attemptAppend(" ");
-    this.attemptAppend(Integer.toString(y));
-    this.attemptAppend(" ");
-    this.attemptAppend(Integer.toString(width));
-    this.attemptAppend(" ");
-    this.attemptAppend(Integer.toString(height));
-    this.attemptAppend("\n");
+    this.attemptAppend("canvas ", ap);
+    this.attemptAppend(Integer.toString(x), ap);
+    this.attemptAppend(" ", ap);
+    this.attemptAppend(Integer.toString(y), ap);
+    this.attemptAppend(" ", ap);
+    this.attemptAppend(Integer.toString(width), ap);
+    this.attemptAppend(" ", ap);
+    this.attemptAppend(Integer.toString(height), ap);
+    this.attemptAppend("\n", ap);
 
     for (IReadOnlyShape s : shapes) {
-      this.attemptAppend(s.printMotions());
-      this.attemptAppend("\n");
+      this.attemptAppend(s.printMotions(), ap);
+      this.attemptAppend("\n", ap);
     }
   }
 

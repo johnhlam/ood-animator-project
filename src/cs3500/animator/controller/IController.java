@@ -12,19 +12,20 @@ public interface IController {
   /**
    * Sets the controller's tick rate the given value.
    *
-   * <p>NOTE: This method is not used in this assignment. It was created in anticipation for a
-   * future assignment, where such an operation may need to be supported.</p>
-   *
    * @param tickRate is the new tick rate
-   * @throws UnsupportedOperationException if the controller does not support changing tick rates
    */
-  void setTickRate(int tickRate) throws UnsupportedOperationException;
+  void setTickRate(int tickRate);
 
   /**
-   * Runs the program. Generally, this means relaying information between the model and the view,
-   * and producing some kind of output. Specific implementations may decide how exactly they want to
-   * relay this information, and what their output looks like.
+   * Outputs the animation as a string to an Appendable object. Specific implementations of the
+   * view may not support this functionality.
    */
-  void run();
+  void outputText();
+
+  /**
+   * Renders the animation that the controller's view represents. Specific implementations of the
+   * view may not support this functionality.
+   */
+  void renderAnimation();
 
 }
