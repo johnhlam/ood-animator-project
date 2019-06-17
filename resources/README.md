@@ -89,10 +89,15 @@ The IAnimationPanel is an interface that is used to represent the panel onto whi
 ### AnimationPanel
 AnimationPanel is a class that extends JPanel and implements the IAnimationPanel interface. It stores a list of shapes that represents what is currently being displayed on the panel. The draw method is implemented by storing the given list of shapes in the class, and by delegating the process to the repaint method inherited from the JPanel class. It overrides the paintComponent(Graphics) method from the JPanel class so that calling the method will draw the list of shapes stored in the class onto the panel. Currently, this class only supports rendering filled rectangles, and filled ellipses.
 
+### EditView (to be filled in)
+
+### ViewFactory
+ViewFactory is a class for generating one of the four concrete implementations of IView listed above. It contains a method that takes in a String (one of "text", "svg", "visual", or "edit"), and will output an IView of the corresponding type. Each view that the ViewFactory returns has to be configured externally by the controller (which takes in an IView) to add view-specific attributes to it (such as canvas size, or tick rates). 
+
 ## The Excellence (main) class
 Excellence is a class that contains the main method. It serves as an entry point into the program, and takes in inputs as command line arguments. Currently, four different options are supported:
 1. -in *input-file*
-2. -view *view-type*, which is one of "text", "svg", or "visual"
+2. -view *view-type*, which is one of "text", "svg", "visual", or "edit"
 3. -out *output-file*
 4. -speed *ticks-per-second*
 The first two options are mandatory, the latter two are optional. If -out isn't specified, it will automatically output to System.out (if the view requires an output location). If -speed isn't specified, then it will automatically default to 1 tick/second.
@@ -103,6 +108,11 @@ If the given view type was either "text" or "svg", and an -out option was specif
 If, for whatever reason, an error occurs (such as invalid command-line arguments, or invalid file names), an error dialog will pop up with an informative message, and the program will terminate. See the Javadocs for details on when exactly a error dialog is created.
 
 ## Changelog
+For Assignment 7:
+* We added a view factory class to help construct views for us.
+* **Other stuff to be added later**
+
+For Assignment 6:
 We have made a few changes since the previous assignment.
 * We added methods to IModel (and IModelImpl) that can return a list of motions occurring at a specific tick, and can remove a motion given a shape's id and the start tick of that motion, since we didn't do it before and the previous assignment actually required it.
 * We also added getter methods to the model that return different aspects of the canvas, since it became clear that it was required by the AnimationBuilder and some of the views.
