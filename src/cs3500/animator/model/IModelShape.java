@@ -26,6 +26,7 @@ public interface IModelShape extends IReadOnlyShape {
    * @param motion the motion for the shape to perform
    * @throws IllegalArgumentException if the argument is null
    */
+  @Deprecated
   void addMotion(IMotion motion) throws IllegalArgumentException;
 
   /**
@@ -35,4 +36,7 @@ public interface IModelShape extends IReadOnlyShape {
    * @param startTick the starting tick of the motion
    */
   void removeMotion(int startTick);
+
+  void addKeyframe(IKeyframe keyframe) throws IllegalArgumentException;
+  void removeKeyframe(int tick);
 }

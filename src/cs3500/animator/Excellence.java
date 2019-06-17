@@ -109,8 +109,7 @@ public class Excellence {
           + e.getMessage());
       return;
     }
-
-    controller.run(); 
+    controller.run();
 
     if ((ArgsProcessor.view.equals("text") || ArgsProcessor.view.equals("svg"))
         && ArgsProcessor.outFlag) {

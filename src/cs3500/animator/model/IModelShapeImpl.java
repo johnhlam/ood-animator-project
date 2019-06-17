@@ -16,7 +16,8 @@ public class IModelShapeImpl implements IModelShape {
   private final double x;
   private final double y;
   private final Color color;
-  private final List<IMotion> motionList;
+  private final List<IMotion> motionList; // TODO: Most likely will delete
+  private final List<IKeyframe> keyframeList;
   private final ShapeType type;
 
   /**
@@ -51,6 +52,7 @@ public class IModelShapeImpl implements IModelShape {
     this.y = y;
     this.color = color;
     this.motionList = new ArrayList<>();
+    this.keyframeList = new ArrayList<>();
   }
 
   /**
@@ -81,6 +83,8 @@ public class IModelShapeImpl implements IModelShape {
 
   }
 
+  // -----------------------------------------------------------------------------------------------
+  // Rewrote getShapesAtTick in terms of keyframes;; only thing left is printMotions
   /**
    * Creates the shape at the given tick based on this shape's motions. If no motion is found at the
    * given tick, the shape remains the same as its previous motion's final state.
@@ -97,23 +101,23 @@ public class IModelShapeImpl implements IModelShape {
     double yAtTick;
     double widthAtTick;
     double heightAtTick;
-    double redAtTick;
-    double greenAtTick;
-    double blueAtTick;
+
     IModelShape shapeToReturn = null;
 
-    // If the given tick is before any animations, or if there are no motions in the list,
-    // then returns the initial state of the shape.
-    if (this.motionList.isEmpty()) {
+    // If there are no keyframes in the list, then returns the initial state of the shape.
+    if (this.keyframeList.isEmpty()) {
       return this;
-    } else if (tick < this.motionList.get(0).getStartTick()) {
-      IMotion lastMotion = this.motionList.get(0);
 
-      xAtTick = lastMotion.getStartX();
-      yAtTick = lastMotion.getStartY();
-      widthAtTick = lastMotion.getStartWidth();
-      heightAtTick = lastMotion.getStartHeight();
-      Color startColor = lastMotion.getStartColor();
+      // If the given tick is before all keyframes, then returns the state of the shape at the 
+      // first keyframe
+    } else if (tick < this.keyframeList.get(0).getTick()) {
+      IKeyframe firstKeyframe = this.keyframeList.get(0);
+
+      xAtTick = firstKeyframe.getX();
+      yAtTick = firstKeyframe.getY();
+      widthAtTick = firstKeyframe.getWidth();
+      heightAtTick = firstKeyframe.getHeight();
+      Color startColor = firstKeyframe.getColor();
 
       shapeToReturn = new IModelShapeImpl(this.id,
           this.type,
@@ -122,17 +126,17 @@ public class IModelShapeImpl implements IModelShape {
           xAtTick,
           yAtTick,
           startColor);
-    } else if (tick > this.motionList.get(this.motionList.size() - 1).getEndTick()) {
-      // If the given tick is after all of the animations, then returns the last state of the shape
-      // (based on the last motion in the list)
 
-      IMotion lastMotion = this.motionList.get(this.motionList.size() - 1);
+      // If the given tick is after all keyframes, then returns the state of the shape at the 
+      // last keyframe
+    } else if (tick > this.keyframeList.get(this.keyframeList.size() - 1).getTick()) {
+      IKeyframe lastKeyframe = this.keyframeList.get(this.keyframeList.size() - 1);
 
-      xAtTick = lastMotion.getEndX();
-      yAtTick = lastMotion.getEndY();
-      widthAtTick = lastMotion.getEndWidth();
-      heightAtTick = lastMotion.getEndHeight();
-      Color lastColor = lastMotion.getEndColor();
+      xAtTick = lastKeyframe.getX();
+      yAtTick = lastKeyframe.getY();
+      widthAtTick = lastKeyframe.getWidth();
+      heightAtTick = lastKeyframe.getHeight();
+      Color startColor = lastKeyframe.getColor();
 
       shapeToReturn = new IModelShapeImpl(this.id,
           this.type,
@@ -140,40 +144,63 @@ public class IModelShapeImpl implements IModelShape {
           heightAtTick,
           xAtTick,
           yAtTick,
-          lastColor);
+          startColor);
+
+      // If the given tick is not before all of the keyframes, and isn't after all of the
+      // keyframes, then it must be during the keyframes
     } else {
+      shapeToReturn = this.getShapeBetweenFrames(tick);
+    }
 
-      // If the given tick is not before all of the animations, and isn't after all of the
-      // animations, then it must be during the animations
-      for (IMotion curMotion : this.motionList) {
-        if (tick >= curMotion.getStartTick() && tick <= curMotion.getEndTick()) {
-          int startTick = curMotion.getStartTick();
-          int endTick = curMotion.getEndTick();
+    return shapeToReturn;
+  }
 
-          xAtTick = this.calculateParamAtTick(curMotion.getStartX(), curMotion.getEndX(),
-              tick, startTick, endTick);
-          yAtTick = this.calculateParamAtTick(curMotion.getStartY(), curMotion.getEndY(),
-              tick, startTick, endTick);
-          widthAtTick = this
-              .calculateParamAtTick(curMotion.getStartWidth(), curMotion.getEndWidth(),
-                  tick, startTick, endTick);
-          heightAtTick = this
-              .calculateParamAtTick(curMotion.getStartHeight(), curMotion.getEndHeight(),
-                  tick, startTick, endTick);
-          redAtTick = this.calculateParamAtTick(curMotion.getStartColor().getRed(),
-              curMotion.getEndColor().getRed(), tick, startTick, endTick);
-          greenAtTick = this.calculateParamAtTick(curMotion.getStartColor().getGreen(),
-              curMotion.getEndColor().getGreen(), tick, startTick, endTick);
-          blueAtTick = this.calculateParamAtTick(curMotion.getStartColor().getBlue(),
-              curMotion.getEndColor().getBlue(), tick, startTick, endTick);
-          shapeToReturn = new IModelShapeImpl(this.id,
-              this.type,
-              widthAtTick,
-              heightAtTick,
-              xAtTick,
-              yAtTick,
-              new Color((int) redAtTick, (int) greenAtTick, (int) blueAtTick));
-        }
+  private IModelShape getShapeBetweenFrames(int tick) {
+    double xAtTick;
+    double yAtTick;
+    double widthAtTick;
+    double heightAtTick;
+    double redAtTick;
+    double greenAtTick;
+    double blueAtTick;
+    IModelShape shapeToReturn = null;
+
+    for (int i = 0; i < this.keyframeList.size() - 1; i++) {
+      IKeyframe curKeyframe = this.keyframeList.get(i);
+      IKeyframe nextKeyframe = this.keyframeList.get(i + 1);
+
+      if (curKeyframe.getTick() < tick && nextKeyframe.getTick() > tick) {
+        int startTick = curKeyframe.getTick();
+        int endTick = nextKeyframe.getTick();
+
+        xAtTick = this.calculateParamAtTick(curKeyframe.getX(), nextKeyframe.getX(),
+            tick, startTick, endTick);
+        yAtTick = this.calculateParamAtTick(curKeyframe.getY(), nextKeyframe.getY(),
+            tick, startTick, endTick);
+        widthAtTick = this
+            .calculateParamAtTick(curKeyframe.getWidth(), nextKeyframe.getWidth(),
+                tick, startTick, endTick);
+        heightAtTick = this
+            .calculateParamAtTick(curKeyframe.getHeight(), nextKeyframe.getHeight(),
+                tick, startTick, endTick);
+
+        Color colorAtStart = curKeyframe.getColor();
+        Color colorAtEnd = curKeyframe.getColor();
+
+        redAtTick = this.calculateParamAtTick(colorAtStart.getRed(),
+            colorAtEnd.getRed(), tick, startTick, endTick);
+        greenAtTick = this.calculateParamAtTick(colorAtStart.getGreen(),
+            colorAtEnd.getGreen(), tick, startTick, endTick);
+        blueAtTick = this.calculateParamAtTick(colorAtStart.getBlue(),
+            colorAtEnd.getBlue(), tick, startTick, endTick);
+
+        shapeToReturn = new IModelShapeImpl(this.id,
+            this.type,
+            widthAtTick,
+            heightAtTick,
+            xAtTick,
+            yAtTick,
+            new Color((int) redAtTick, (int) greenAtTick, (int) blueAtTick));
       }
     }
 
@@ -191,7 +218,8 @@ public class IModelShapeImpl implements IModelShape {
    * @param endTick    end tick of a motion
    * @return the calculated value of the parameter
    */
-  private double calculateParamAtTick(double startParam, double endParam, int tick, int startTick,
+  private double calculateParamAtTick(double startParam, double endParam, int tick,
+      int startTick,
       int endTick) {
     double frac1 = ((double) (endTick - tick)) / (endTick - startTick);
     double frac2 = ((double) (tick - startTick)) / (endTick - startTick);
@@ -218,6 +246,16 @@ public class IModelShapeImpl implements IModelShape {
 
     this.insertMotion(motion);
 
+    // TODO: Delete the method body above to commit fully to keyframes, and make the method take
+    //  in raw parameters;; Not entirely sure if this method is necessary anymore
+    IKeyframe startFrame = new IKeyframeImpl(motion.getStartTick(), motion.getStartWidth(),
+        motion.getStartHeight(), motion.getStartX(), motion.getStartY(), motion.getStartColor());
+    IKeyframe endFrame = new IKeyframeImpl(motion.getStartTick(), motion.getStartWidth(),
+        motion.getStartHeight(), motion.getStartX(), motion.getStartY(), motion.getStartColor());
+
+    this.addKeyframe(startFrame);
+    this.addKeyframe(endFrame);
+
   }
 
   @Override
@@ -232,7 +270,8 @@ public class IModelShapeImpl implements IModelShape {
 
   /**
    * Inserts the given motion into this shape's motions based on start tick time. If the given
-   * motion does not come before an existing motion, it is placed at the end of the list. INVARIANT:
+   * motion does not come before an existing motion, it is placed at the end of the list.
+   * INVARIANT:
    * Adjacent motions (two motions with same end tick and start tick) will always have the
    * corresponding states.
    *
@@ -252,7 +291,8 @@ public class IModelShapeImpl implements IModelShape {
   }
 
   /**
-   * Adds the given motion if the motion at the given index in the existing motion list has the same
+   * Adds the given motion if the motion at the given index in the existing motion list has the
+   * same
    * end state as this motion's start state. If they do not have overlapping ticks, then it is
    * added. Additionally, if the index is 0, it is added as well.
    *
@@ -304,7 +344,8 @@ public class IModelShapeImpl implements IModelShape {
   }
 
   /**
-   * Checks if two motions are overlapping in ticks. Note - kept in Shape class since the logic for
+   * Checks if two motions are overlapping in ticks. Note - kept in Shape class since the logic
+   * for
    * overlapping motions should be kept in the shape, not in the motion.
    *
    * @param motionToAdd    motion being added to the list
@@ -359,4 +400,61 @@ public class IModelShapeImpl implements IModelShape {
   public List<IMotion> getMotions() {
     return new ArrayList<>(this.motionList);
   }
+
+  // -----------------------------------------------------------------------------------------------
+  // NEW STUFF
+
+  // TODO: Note that this method means that the list of keyframes will always be sorted by tick
+  @Override
+  public void addKeyframe(IKeyframe keyframe) throws IllegalArgumentException {
+    if (keyframe == null) {
+      throw new IllegalArgumentException("Given keyFrame to addKeyframe is null");
+    }
+
+    if (keyframeList.isEmpty()
+        || (keyframe.getTick() > this.keyframeList.get(this.keyframeList.size() - 1).getTick())) {
+      this.keyframeList.add(keyframe);
+      return;
+    }
+
+    this.insertKeyframe(keyframe);
+  }
+
+  private void insertKeyframe(IKeyframe keyframe) throws IllegalArgumentException {
+    // Checks for any coinciding keyframes (i.e. keyframes for the same tick)
+    // Subtracts one from the loop termination condition because the loop checks the current
+    // keyframe and the next keyframe
+    for (int i = 0; i < this.keyframeList.size() - 1; i++) {
+      if (this.keyframeList.get(i).getTick() == keyframe.getTick()) {
+        throw new IllegalArgumentException("Given keyFrame to addKeyframe coincides with another "
+            + "existing keyframe");
+        // TODO: If the ticks are equal, maybe we should modify it instead of throwing an error.
+        //  If changed, remove throws statement in the method header
+        //If the given keyframe is between the current keyframe and the next keyframe, adds it in
+      } else if (this.keyframeList.get(i).getTick() < keyframe.getTick()
+          && this.keyframeList.get(i + 1).getTick() > keyframe.getTick()) {
+        // Adds the keyframe in between the current and the next keyframe
+        this.keyframeList.add(i + 1, keyframe);
+        // Returns to exit the loop
+        return;
+      }
+    }
+
+  }
+
+  @Override
+  public void removeKeyframe(int tick) {
+    for (int i = 0; i < this.keyframeList.size(); i++) {
+      if (this.keyframeList.get(i).getTick() == tick) {
+        this.keyframeList.remove(i);
+        return;
+      }
+    }
+  }
+
+  @Override
+  public List<IKeyframe> getKeyframes() {
+    return new ArrayList<>(this.keyframeList);
+  }
 }
+
