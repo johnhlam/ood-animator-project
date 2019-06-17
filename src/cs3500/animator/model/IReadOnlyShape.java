@@ -74,4 +74,6 @@ public interface IReadOnlyShape {
    * @return the string representation of the animation
    */
   String printMotions();
+
+  List<IKeyframe> getKeyframes();
 }

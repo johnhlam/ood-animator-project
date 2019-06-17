@@ -7,19 +7,20 @@ import java.awt.Color;
  * fields (with the exception of the color and the ticks, which are Color and ints respectively).
  * Represents the start and end of a shape's animation.
  */
+@Deprecated
 public class IMotionImpl implements IMotion {
 
   private final int startTick;
-  private final double startX;
-  private final double startY;
   private final double startWidth;
   private final double startHeight;
+  private final double startX;
+  private final double startY;
   private final Color startColor;
   private final int endTick;
-  private final double endX;
-  private final double endY;
   private final double endWidth;
   private final double endHeight;
+  private final double endX;
+  private final double endY;
   private final Color endColor;
 
   /**

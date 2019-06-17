@@ -8,6 +8,7 @@ import java.awt.Color;
  * this interface is a representation of the start and end of an animation. Each motion should be
  * able to return the appropriate fields based on a given tick during its animation.
  */
+@Deprecated
 public interface IMotion {
 
   /**
