@@ -117,27 +117,8 @@ public class IModelShapeImpl implements IModelShape {
       IModelShape shapeToReturn = null;
 
       // If there are no keyframes in the list, then returns the initial state of the shape.
-      if (this.keyframeList.isEmpty()) {
+      if (this.keyframeList.isEmpty() || tick < this.keyframeList.get(0).getTick()) {
         return this;
-
-        // If the given tick is before all keyframes, then returns the state of the shape at the
-        // first keyframe
-      } else if (tick < this.keyframeList.get(0).getTick()) {
-        IKeyframe firstKeyframe = this.keyframeList.get(0);
-
-        xAtTick = firstKeyframe.getX();
-        yAtTick = firstKeyframe.getY();
-        widthAtTick = firstKeyframe.getWidth();
-        heightAtTick = firstKeyframe.getHeight();
-        Color startColor = firstKeyframe.getColor();
-
-        shapeToReturn = new IModelShapeImpl(this.id,
-            this.type,
-            widthAtTick,
-            heightAtTick,
-            xAtTick,
-            yAtTick,
-            startColor);
 
         // If the given tick is after all keyframes, then returns the state of the shape at the
         // last keyframe
@@ -167,7 +148,7 @@ public class IModelShapeImpl implements IModelShape {
       return shapeToReturn;
     }
 
-    private IModelShape getShapeBetweenFrames ( int tick){
+    private IModelShape getShapeBetweenFrames (int tick){
       double xAtTick;
       double yAtTick;
       double widthAtTick;
@@ -181,7 +162,7 @@ public class IModelShapeImpl implements IModelShape {
         IKeyframe curKeyframe = this.keyframeList.get(i);
         IKeyframe nextKeyframe = this.keyframeList.get(i + 1);
 
-        if (curKeyframe.getTick() < tick && nextKeyframe.getTick() > tick) {
+        if (curKeyframe.getTick() <= tick && nextKeyframe.getTick() >= tick) {
           int startTick = curKeyframe.getTick();
           int endTick = nextKeyframe.getTick();
 
@@ -197,7 +178,7 @@ public class IModelShapeImpl implements IModelShape {
                   tick, startTick, endTick);
 
           Color colorAtStart = curKeyframe.getColor();
-          Color colorAtEnd = curKeyframe.getColor();
+          Color colorAtEnd = nextKeyframe.getColor();
 
           redAtTick = this.calculateParamAtTick(colorAtStart.getRed(),
               colorAtEnd.getRed(), tick, startTick, endTick);

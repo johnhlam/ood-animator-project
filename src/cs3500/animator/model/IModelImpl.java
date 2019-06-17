@@ -265,7 +265,7 @@ public class IModelImpl implements IModel {
 
     for (IModelShape cur : this.shapes) {
       if (cur.getID().equals(id)) {
-        cur.addKeyframe(new IKeyframeImpl(tick, x, y, width, height, color));
+        cur.addKeyframe(new IKeyframeImpl(tick, width, height, x, y, color));
         // Returns to exit the loop and the method
         return;
       }

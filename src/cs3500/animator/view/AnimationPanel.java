@@ -30,7 +30,6 @@ public class AnimationPanel extends JPanel implements IAnimationPanel {
     if (shapes != null) {
       for (IReadOnlyShape shape : shapes) {
         g.setColor(shape.getColor());
-
         switch (shape.getType()) {
           case RECTANGLE:
             g.fillRect((int) shape.getX(), (int) shape.getY(), (int) shape.getWidth(),
