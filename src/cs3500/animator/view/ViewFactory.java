@@ -29,6 +29,9 @@ public class ViewFactory {
       case "visual":
         res = new VisualView();
         break;
+      case "edit":
+        res = new EditorView();
+        break;
       default:
         throw new IllegalArgumentException("Given view type is not supported");
     }
