@@ -43,8 +43,7 @@ public class VisualView extends JFrame implements IView {
       throw new IllegalArgumentException("Max x and max y coordinates cannot be negative");
     }
 
-    this.panel.setMinimumSize(new Dimension(width, height));
-    this.panel.setPreferredSize(new Dimension(maxX, maxY));
+    this.panel.setDrawPanelSize(width, height, maxX, maxY);
 
     super.setSize(width, height);
     super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -1,7 +1,7 @@
 package cs3500.animator.view;
 
+import java.awt.*;
 import java.util.List;
-import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
@@ -46,7 +46,6 @@ public class AnimationPanel extends JPanel implements IAnimationPanel {
     }
   }
 
-
   /**
    * Stores the given list of shapes in the class, and delegates drawing to super.repaint().
    *
@@ -61,5 +60,11 @@ public class AnimationPanel extends JPanel implements IAnimationPanel {
 
     this.shapes = toDraw;
     super.repaint();
+  }
+
+  @Override
+  public void setDrawPanelSize(int width, int height, int preferredX, int preferredY) {
+    this.setMinimumSize(new Dimension(width, height));
+    this.setPreferredSize(new Dimension(preferredX, preferredY));
   }
 }

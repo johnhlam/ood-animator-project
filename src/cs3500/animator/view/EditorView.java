@@ -5,7 +5,7 @@ import java.util.List;
 import cs3500.animator.model.IReadOnlyShape;
 
 public class EditorView implements IView {
-  IView animationView = new VisualView();
+  IAnimationPanel animationPanel = new AnimationPanel();
 
 
   @Override

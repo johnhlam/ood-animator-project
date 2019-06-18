@@ -19,4 +19,15 @@ public interface IAnimationPanel {
    * @throws IllegalArgumentException if the given list of shapes is null
    */
   void draw(List<IReadOnlyShape> toDraw) throws IllegalArgumentException;
+
+  /**
+   * Sets this animation panel's minimum size to the given width and height, and the preferred
+   * size to the given max x and y.
+   *
+   * @param width the minimum width
+   * @param height the minimum height
+   * @param preferredX the maximum width
+   * @param preferredY the maximum height
+   */
+  void setDrawPanelSize(int width, int height, int preferredX, int preferredY);
 }
