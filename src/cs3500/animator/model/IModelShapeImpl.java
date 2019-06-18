@@ -3,10 +3,12 @@ package cs3500.animator.model;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.animation.KeyFrame;
 
 /**
- * An implementation of IModelShape. Stores motions as a list of IMotions. Motions are added to this
- * shape in any order, but its list will invariably be ordered based on start tick.
+ * An implementation of IModelShape. Stores animations as a list of keyframes. Keyframes are added
+ * to this shape in any order, but its list of keyframes will invariably be ordered based on start
+ * tick.
  */
 public class IModelShapeImpl implements IModelShape {
 
@@ -77,7 +79,7 @@ public class IModelShapeImpl implements IModelShape {
           .append("motion ")
           .append(this.id)
           .append(" ")
-          .append(this.keyframeList.get(0))
+          .append(this.keyframeList.get(0).printKeyframe())
           .append("\t");
 
       // Starts at 1 to exclude the first keyframe, and ends at size - 1 to exclude the last
@@ -85,7 +87,10 @@ public class IModelShapeImpl implements IModelShape {
       for (int i = 1; i < keyframeList.size() - 1; i++) {
         builder.append(this.keyframeList.get(i).printKeyframe())
             .append("\n")
-            .append(this.keyframeList.get(i + 1))
+            .append("motion ")
+            .append(this.id)
+            .append(" ")
+            .append(this.keyframeList.get(i + 1).printKeyframe())
             .append("\t");
       }
 
@@ -241,13 +246,14 @@ public class IModelShapeImpl implements IModelShape {
 
       // TODO: Delete the method body above to commit fully to keyframes, and make the method take
       //  in raw parameters;; Not entirely sure if this method is necessary anymore
-      IKeyframe startFrame = new IKeyframeImpl(motion.getStartTick(), motion.getStartWidth(),
-          motion.getStartHeight(), motion.getStartX(), motion.getStartY(), motion.getStartColor());
-      IKeyframe endFrame = new IKeyframeImpl(motion.getStartTick(), motion.getStartWidth(),
+
+      // Adds the start keyframe
+      this.addKeyframe(motion.getStartTick(), motion.getStartWidth(),
           motion.getStartHeight(), motion.getStartX(), motion.getStartY(), motion.getStartColor());
 
-      this.addKeyframe(startFrame);
-      this.addKeyframe(endFrame);
+      // Adds the end keyframe
+      this.addKeyframe(motion.getEndTick(), motion.getEndWidth(),
+          motion.getEndHeight(), motion.getEndX(), motion.getEndY(), motion.getEndColor());
 
     }
 
@@ -338,8 +344,7 @@ public class IModelShapeImpl implements IModelShape {
 
     /**
      * Checks if two motions are overlapping in ticks. Note - kept in Shape class since the logic
-     * for
-     * overlapping motions should be kept in the shape, not in the motion.
+     * for overlapping motions should be kept in the shape, not in the motion.
      *
      * @param motionToAdd    motion being added to the list
      * @param existingMotion an existing motion already in the list
@@ -398,38 +403,64 @@ public class IModelShapeImpl implements IModelShape {
     // NEW STUFF
 
     // TODO: Note that this method means that the list of keyframes will always be sorted by tick
-  // TODO: Add functionality where keyframes are not added if they have the same tick and fields
-    // TODO: as existing keyframes
+    // TODO: Add functionality where keyframes are not added if they have the same tick and fields
+    //   as existing keyframes -- Added for now
     @Override
-    public void addKeyframe (IKeyframe keyframe) throws IllegalArgumentException {
-      if (keyframe == null) {
-        throw new IllegalArgumentException("Given keyFrame to addKeyframe is null");
+    public void addKeyframe (int tick, double width, double height, double x, double y, Color color)
+        throws IllegalArgumentException {
+      if (color == null) {
+        throw new IllegalArgumentException("Given Color to addKeyframe is null");
+      }
+      if (tick < 0 || width < 0 || height < 0) {
+        throw new IllegalArgumentException("Given tick, width, and/or height to addKeyframe "
+            + "cannot be negative");
       }
 
       if (keyframeList.isEmpty()
-          || (keyframe.getTick() > this.keyframeList.get(this.keyframeList.size() - 1).getTick())) {
-        this.keyframeList.add(keyframe);
+          || (tick > this.keyframeList.get(this.keyframeList.size() - 1).getTick())) {
+        this.keyframeList.add(new IKeyframeImpl(tick, width, height, x, y, color));
         return;
       }
 
-      this.insertKeyframe(keyframe);
+      this.insertKeyframe(tick, width, height, x, y, color);
     }
 
-    private void insertKeyframe (IKeyframe keyframe) throws IllegalArgumentException {
+  /**
+   * Inserts the given keyframe into the the list of keyframes, such that the list of keyframes
+   * remains sorted by tick. If a keyframe exists with the same tick as the given keyframe,
+   * instead modifies that keyframe to contain the values of the given keyframe.
+   *
+   * @param tick   is the tick of the keyframe to be added
+   * @param width  is the width of the keyframe to be added
+   * @param height is the height of the keyframe to be added
+   * @param x      is the x value of the keyframe to be added
+   * @param y      is the y value of the keyframe to be added
+   * @param color  is the color of the keyframe to be added
+   *
+   */
+  private void insertKeyframe(int tick, double width, double height,
+      double x, double y, Color color) {
+
       // Checks for any coinciding keyframes (i.e. keyframes for the same tick)
       // Subtracts one from the loop termination condition because the loop checks the current
       // keyframe and the next keyframe
       for (int i = 0; i < this.keyframeList.size() - 1; i++) {
-        if (this.keyframeList.get(i).getTick() == keyframe.getTick()) {
-          throw new IllegalArgumentException("Given keyFrame to addKeyframe coincides with another "
-              + "existing keyframe");
-          // TODO: If the ticks are equal, maybe we should modify it instead of throwing an error.
-          //  If changed, remove throws statement in the method header
+        if (this.keyframeList.get(i).getTick() == tick) {
+          IKeyframe keyframeToChange = this.keyframeList.get(i);
+
+          keyframeToChange.setWidth(width);
+          keyframeToChange.setHeight(height);
+          keyframeToChange.setX(x);
+          keyframeToChange.setY(y);
+          keyframeToChange.setColor(color);
+          // TODO: Could also be done without setters, and by add/remove
+
           //If the given keyframe is between the current keyframe and the next keyframe, adds it in
-        } else if (this.keyframeList.get(i).getTick() < keyframe.getTick()
-            && this.keyframeList.get(i + 1).getTick() > keyframe.getTick()) {
+        } else if (this.keyframeList.get(i).getTick() < tick
+            && this.keyframeList.get(i + 1).getTick() > tick) {
           // Adds the keyframe in between the current and the next keyframe
-          this.keyframeList.add(i + 1, keyframe);
+          this.keyframeList.add(i + 1,
+              new IKeyframeImpl(tick, width, height, x, y, color));
           // Returns to exit the loop
           return;
         }
@@ -448,7 +479,7 @@ public class IModelShapeImpl implements IModelShape {
     }
 
     @Override
-    public List<IKeyframe> getKeyframes () {
+    public List<IReadOnlyKeyframe> getKeyframes () {
       return new ArrayList<>(this.keyframeList);
     }
   }

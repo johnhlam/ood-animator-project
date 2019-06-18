@@ -46,11 +46,12 @@ public interface IModel {
    */
   void addMotion(String id, int startTick, double startX, double startY, double startWidth,
       double startHeight, Color startColor, int endTick, double endX, double endY,
-      double endWidth,
-      double endHeight, Color endColor) throws IllegalArgumentException;
+      double endWidth, double endHeight, Color endColor) throws IllegalArgumentException;
 
   /**
-   * Adds a keyframe to the shape in the model with the given ID.
+   * Adds a keyframe to the shape in the model with the given ID. If there is an already existing
+   * keyframe at the given tick, modifies that keyframe to contain the given parameters.
+   *
    * @param id is the id of the shape the keyframe will be added to
    * @param tick is the tick value of the keyframe
    * @param x is the x value of the keyframe
@@ -58,10 +59,8 @@ public interface IModel {
    * @param width is the width value of the keyframe
    * @param height is the height value of the keyframe
    * @param color is the color of the keyframe
-   * @throws IllegalArgumentException if the given id is null, if the given tick is negative, or if
-   * adding the keyframe conflicts with an existing keyframe (i.e. they have the same tick)
-   * TODO: May end up changing the conditions of the exception depending how we decide to modify
-   *   keyframes
+   * @throws IllegalArgumentException if the given id is null, if the given tick, width, or height
+   * is negative
    */
   void addKeyframe(String id, int tick, double x, double y, double width, double height,
       Color color) throws IllegalArgumentException;

@@ -5,7 +5,6 @@ import cs3500.animator.util.AnimationBuilder;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.animation.KeyFrame;
 
 /**
  * An implementation of IModel. Holds all the shapes needed to be drawn in the animation as an
@@ -234,7 +233,8 @@ public class IModelImpl implements IModel {
   /**
    * Adds a keyframe to the shape corresponding with the given ID. Keyframes can be given in any
    * order, and the shape will insert them in such a way that keyframes are sorted based on tick.
-   * Throws an exception if the given keyframe's tick overlap with pre-existing keyframes. The
+   * If there is an already existing keyframe for the given tick, for the shape with the given
+   * id, the existing keyframe will be modified to contain the given parameters.  The
    * model will also update the largest x and y values seen based on the values of
    * the keyframe.
    * INVARIANT: All existing keyframes in the shapes will be chronologically ordered,
@@ -247,10 +247,8 @@ public class IModelImpl implements IModel {
    * @param width  is the width value of the keyframe
    * @param height is the height value of the keyframe
    * @param color  is the color of the keyframe
-   * @throws IllegalArgumentException if the given id is null, if the given tick, width, or height
-   *                                  is negative, or if adding the keyframe conflicts with an
-   *                                  existing keyframe (i.e. they have the same tick)
-   *                                  TODO: Change this if necessary
+   * @throws IllegalArgumentException if the given id is null, or if the given tick, width, or
+   *                                  height is negative
    */
   @Override
   public void addKeyframe(String id, int tick, double x, double y, double width, double height,
@@ -265,7 +263,7 @@ public class IModelImpl implements IModel {
 
     for (IModelShape cur : this.shapes) {
       if (cur.getID().equals(id)) {
-        cur.addKeyframe(new IKeyframeImpl(tick, width, height, x, y, color));
+        cur.addKeyframe(tick, width, height, x, y, color);
         // Returns to exit the loop and the method
         return;
       }
@@ -274,13 +272,15 @@ public class IModelImpl implements IModel {
     // throw an exception if it reaches here, meaning the ID was not in the list
     throw new IllegalArgumentException("ID could not be found in addKeyframe");
   }
+  // TODO: If we end up modifying a keyframe, do we have to take into account if changing it will
+  //  change the maxX and maxY?
 
   @Override
   public void removeKeyframe(String id, int tick) throws IllegalArgumentException {
     if (id == null) {
       throw new IllegalArgumentException("Given id to removeKeyframe cannot be null");
     }
-    if(tick < 0) {
+    if (tick < 0) {
       throw new IllegalArgumentException("Given tick to removeKeyframe cannot be negative");
     }
 
@@ -436,8 +436,8 @@ public class IModelImpl implements IModel {
 
       for (IModelShape cur : this.shapes) {
         if (cur.getID().equals(name)) {
-          cur.addKeyframe(new IKeyframeImpl(t1, w1, h1, x1, y1, new Color(r1, g1, b1)));
-          cur.addKeyframe(new IKeyframeImpl(t2, w2, h2, x2, y2, new Color(r2, g2, b2)));
+          cur.addKeyframe(t1, w1, h1, x1, y1, new Color(r1, g1, b1));
+          cur.addKeyframe(t2, w2, h2, x2, y2, new Color(r2, g2, b2));
           // Does not need to iterate through the rest of the list if a shape with the given id
           // has
           // been found
@@ -451,8 +451,7 @@ public class IModelImpl implements IModel {
 
     /**
      * In this implementation, this method also updates the builder to keep track of the max x
-     * and y
-     * coordinates of the animation.
+     * and y coordinates of the animation.
      */
     @Override
     public AnimationBuilder<IModelImpl> addKeyframe(String name, int t, int x, int y, int w,
@@ -472,7 +471,7 @@ public class IModelImpl implements IModel {
 
       for (IModelShape cur : this.shapes) {
         if (cur.getID().equals(name)) {
-          cur.addKeyframe(new IKeyframeImpl(t, w, h, x, y, new Color(r, g, b)));
+          cur.addKeyframe(t, w, h, x, y, new Color(r, g, b));
 
           // Does not need to iterate through the rest of the list if a shape with the given id has
           // been found
@@ -485,3 +484,5 @@ public class IModelImpl implements IModel {
     }
   }
 }
+
+

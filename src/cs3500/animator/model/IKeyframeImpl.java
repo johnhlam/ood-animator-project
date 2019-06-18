@@ -1,8 +1,12 @@
 package cs3500.animator.model;
 
-import com.sun.org.apache.bcel.internal.generic.ILOAD;
 import java.awt.Color;
 
+/**
+ * This class represents an individual keyframe for a shape. Each keyframe (each instance of
+ * this class) contains fields that describe a shape at a certain tick. This class contains a
+ * series of getters and setters to read from and mutate the keyframe.
+ */
 public class IKeyframeImpl implements IKeyframe {
 
   private int tick;
@@ -76,6 +80,11 @@ public class IKeyframeImpl implements IKeyframe {
   @Override
   public Color getColor() {
     return color;
+  }
+
+  @Override
+  public void setTick(int tick) {
+    this.tick = tick;
   }
 
   @Override

@@ -1,5 +1,6 @@
 package cs3500.animator.view;
 
+import cs3500.animator.model.IReadOnlyKeyframe;
 import java.util.List;
 
 import cs3500.animator.model.IMotion;
@@ -97,40 +98,81 @@ public class SVGView extends ATextualView {
    * @param tickRate    is the tick rate of the SVG animation
    * @param ap is the Appendable to output to
    */
+  // TODO: Maybe rename this method
   private void printShapeMotionsSVG(IReadOnlyShape shape, String xCoordinate, String yCoordinate,
       String width, String height, int tickRate, Appendable ap) {
+    
+    List<IReadOnlyKeyframe> keyframesList = shape.getKeyframes();
 
-    for (IMotion motion : shape.getMotions()) {
-      String startTime = Integer.toString(this.tickToMS(motion.getStartTick(), tickRate));
-      String duration =
-          Integer.toString(this.tickToMS(motion.getEndTick() - motion.getStartTick(), tickRate));
-
+    // Subtracts one from the loop termination condition because the loop checks the current
+    // keyframe and the next keyframe
+    for (int i = 0; i < keyframesList.size() - 1; i++) {
+      IReadOnlyKeyframe startKeyframe = keyframesList.get(i);
+      IReadOnlyKeyframe endKeyframe = keyframesList.get(i + 1);
+      
+      String startTime = Integer.toString(this.tickToMS(startKeyframe.getTick(), tickRate));
+      String duration = 
+          Integer.toString(this.tickToMS(endKeyframe.getTick() - startKeyframe.getTick(), tickRate));
       // Adds the 'animate' element for each attribute of the shape
       this.svgAnimationText(xCoordinate, startTime,
-          duration, Double.toString(motion.getStartX()), Double.toString(motion.getEndX()), ap);
+          duration, Double.toString(startKeyframe.getX()), Double.toString(endKeyframe.getX()), ap);
       this.svgAnimationText(yCoordinate, startTime,
-          duration, Double.toString(motion.getStartY()), Double.toString(motion.getEndY()), ap);
+          duration, Double.toString(startKeyframe.getY()), Double.toString(endKeyframe.getY()), ap);
       this.svgAnimationText(width, startTime,
-          duration, Double.toString(motion.getStartWidth()),
-          Double.toString(motion.getEndWidth()), ap);
+          duration, Double.toString(startKeyframe.getWidth()),
+          Double.toString(endKeyframe.getWidth()), ap);
       this.svgAnimationText(height, startTime,
-          duration, Double.toString(motion.getStartHeight()),
-          Double.toString(motion.getEndHeight()), ap);
+          duration, Double.toString(startKeyframe.getHeight()),
+          Double.toString(endKeyframe.getHeight()), ap);
 
       StringBuilder colorStart = new StringBuilder();
-      colorStart.append("rgb(").append(motion.getStartColor().getRed()).append(
-          ",").append(motion.getStartColor().getGreen()).append(
-          ",").append(motion.getStartColor().getBlue()).append(")");
+      colorStart.append("rgb(").append(startKeyframe.getColor().getRed()).append(
+          ",").append(startKeyframe.getColor().getGreen()).append(
+          ",").append(startKeyframe.getColor().getBlue()).append(")");
 
       StringBuilder colorEnd = new StringBuilder();
-      colorEnd.append("rgb(").append(motion.getEndColor().getRed()).append(
-          ",").append(motion.getEndColor().getGreen()).append(
-          ",").append(motion.getEndColor().getBlue()).append(")");
+      colorEnd.append("rgb(").append(endKeyframe.getColor().getRed()).append(
+          ",").append(endKeyframe.getColor().getGreen()).append(
+          ",").append(endKeyframe.getColor().getBlue()).append(")");
 
       this.svgAnimationText("fill", startTime,
           duration, colorStart.toString(), colorEnd.toString(), ap);
       this.attemptAppend("\n", ap);
+    
+    
     }
+    
+//    for (IMotion motion : shape.getMotions()) {
+//      String startTime = Integer.toString(this.tickToMS(motion.getStartTick(), tickRate));
+//      String duration =
+//          Integer.toString(this.tickToMS(motion.getEndTick() - motion.getStartTick(), tickRate));
+//
+//      // Adds the 'animate' element for each attribute of the shape
+//      this.svgAnimationText(xCoordinate, startTime,
+//          duration, Double.toString(motion.getStartX()), Double.toString(motion.getEndX()), ap);
+//      this.svgAnimationText(yCoordinate, startTime,
+//          duration, Double.toString(motion.getStartY()), Double.toString(motion.getEndY()), ap);
+//      this.svgAnimationText(width, startTime,
+//          duration, Double.toString(motion.getStartWidth()),
+//          Double.toString(motion.getEndWidth()), ap);
+//      this.svgAnimationText(height, startTime,
+//          duration, Double.toString(motion.getStartHeight()),
+//          Double.toString(motion.getEndHeight()), ap);
+//
+//      StringBuilder colorStart = new StringBuilder();
+//      colorStart.append("rgb(").append(motion.getStartColor().getRed()).append(
+//          ",").append(motion.getStartColor().getGreen()).append(
+//          ",").append(motion.getStartColor().getBlue()).append(")");
+//
+//      StringBuilder colorEnd = new StringBuilder();
+//      colorEnd.append("rgb(").append(motion.getEndColor().getRed()).append(
+//          ",").append(motion.getEndColor().getGreen()).append(
+//          ",").append(motion.getEndColor().getBlue()).append(")");
+//
+//      this.svgAnimationText("fill", startTime,
+//          duration, colorStart.toString(), colorEnd.toString(), ap);
+//      this.attemptAppend("\n", ap);
+//    }
   }
 
   /**

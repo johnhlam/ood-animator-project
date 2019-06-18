@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.List;
 
 /**
- * Represents a shape for the model, but only has the functionality to read from its field. An
+ * Represents a shape for the model, but only has the functionality to read from its fields. An
  * IModelShape interface will extend from this one with further methods that a complete shape should
  * be able to complete. This ReadOnly shape will be passed to the controller and view.
  */
@@ -75,5 +75,10 @@ public interface IReadOnlyShape {
    */
   String printMotions();
 
-  List<IKeyframe> getKeyframes();
+  /**
+   * Returns a read-only version of the shape's keyframes
+   *
+   * @return the shape's keyframes
+   */
+  List<IReadOnlyKeyframe> getKeyframes();
 }

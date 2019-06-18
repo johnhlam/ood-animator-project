@@ -1,5 +1,7 @@
 package cs3500.animator.model;
 
+import java.awt.Color;
+
 /**
  * Represents a shape in an animation. Each shape holds directions for its own animations. Shapes
  * can have animations added to them that affect their fields. Each shape should have a ShapeType,
@@ -37,6 +39,28 @@ public interface IModelShape extends IReadOnlyShape {
    */
   void removeMotion(int startTick);
 
-  void addKeyframe(IKeyframe keyframe) throws IllegalArgumentException;
+  /**
+   * Adds a keyframe with the given parameters to this shape. If there is already an existing
+   * keyframe at the given tick, then that keyframe will be modified to contain the given
+   * parameters. How each keyframe is represented/stored is left for the implementation.
+   *
+   * @param tick   is the tick of the keyframe to be added
+   * @param width  is the width of the keyframe to be added
+   * @param height is the height of the keyframe to be added
+   * @param x      is the x value of the keyframe to be added
+   * @param y      is the y value of the keyframe to be added
+   * @param color  is the color of the keyframe to be added
+   * @throws IllegalArgumentException if the given Color is null, or if the tick, width, and/or
+   *                                  height are negative.
+   */
+  void addKeyframe(int tick, double width, double height, double x, double y, Color color)
+      throws IllegalArgumentException;
+
+  /**
+   * Removes the keyframe with the given tick from this shape's keyframes. If no keyframe is
+   * found with the given tick, this method has no effect.
+   *
+   * @param tick is the tick of the keyframe to be removed
+   */
   void removeKeyframe(int tick);
 }

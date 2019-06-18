@@ -2,64 +2,54 @@ package cs3500.animator.model;
 
 import java.awt.Color;
 
-public interface IKeyframe {
-  /**
-   * Prints the parameters of this motion in one line. Each implementation should specify how this
-   * information is represented.
-   *
-   * @return the string representation of the start and end parameters of the motion
-   */
-  String printKeyframe();
+/**
+ * Represents a Keyframe for a shape. Each keyframe represents the state of the shape it
+ * is in at a given tick. Besides the read-only functionalities that the IReadOnlyKeyframe
+ * interface provides, this interface also provides a series of setters to modify the keyframe.
+ * This version of the keyframe is meant to work closely with the model itself, while the
+ * read-only version is meant to work with controllers and views.
+ */
+public interface IKeyframe extends IReadOnlyKeyframe {
 
   /**
-   * Return the tick of the motion.
+   * Sets the keyframe's tick to the given value.
    *
-   * @return the tick
+   * @param tick is the tick value to set
    */
-  int getTick();
+  void setTick(int tick);
 
   /**
-   * Return the x coordinate.
+   * Sets the keyframe's x to the given value.
    *
-   * @return the x coordinate
+   * @param x is the x value to set
    */
-  double getX();
-
-  /**
-   * Return the y coordinate.
-   *
-   * @return the y coordinate
-   */
-  double getY();
-
-  /**
-   * Return the width.
-   *
-   * @return the width
-   */
-  double getWidth();
-
-  /**
-   * Return the height.
-   *
-   * @return the height
-   */
-  double getHeight();
-
-  /**
-   * Return the color.
-   *
-   * @return the color
-   */
-  Color getColor();
-
   void setX(double x);
 
+  /**
+   * Sets the keyframe's y to the given value.
+   *
+   * @param y is the y value to set
+   */
   void setY(double y);
 
+  /**
+   * Sets the keyframe's width to the given value.
+   *
+   * @param width is the width value to set
+   */
   void setWidth(double width);
 
+  /**
+   * Sets the keyframe's height to the given value.
+   *
+   * @param height is the height value to set
+   */
   void setHeight(double height);
 
+  /**
+   * Sets the keyframe's Color to the given value.
+   *
+   * @param color is the x value to set
+   */
   void setColor(Color color);
 }
