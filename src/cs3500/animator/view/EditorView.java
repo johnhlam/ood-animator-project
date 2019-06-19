@@ -78,18 +78,34 @@ public class EditorView extends JFrame implements IView, ActionListener {
     shapePanel = new JPanel();
     shapeList = new JList<>();
     // FIXME: Need a way to get shapes from the model
-    shapeList.setPreferredSize(new Dimension(300, 750));
     // TODO: Make this scale with dimensions of canvas
     shapeList.setFixedCellWidth(250);
-    shapePanel.add(shapeList);
+    JScrollPane scrolledShapeList = new JScrollPane(shapeList);
+//    scrolledShapeList.setMinimumSize(new Dimension(200, 500));
+//    scrolledShapeList.setPreferredSize(new Dimension(shapeList.getWidth(), 500));
+
+    JLabel shapeListHeader = new JLabel("Shapes");
+
+    shapePanel.setLayout(new BoxLayout(shapePanel, BoxLayout.Y_AXIS));
+    shapePanel.setPreferredSize(new Dimension(200, 500));
+    shapePanel.add(shapeListHeader);
+    shapePanel.add(scrolledShapeList);
 
     keyframePanel = new JPanel();
     keyframeList = new JList<>();
     // FIXME: Need a way to get shapes from the model
-    keyframeList.setPreferredSize(new Dimension(300, 750));
     // TODO: Make this scale with dimensions of canvas
     keyframeList.setFixedCellWidth(250);
-    keyframePanel.add(keyframeList);
+    JScrollPane scrolledKeyframeList = new JScrollPane(keyframeList);
+//    scrolledKeyframeList.setMinimumSize(new Dimension(200, 500));
+//    scrolledKeyframeList.setPreferredSize(new Dimension(keyframeList.getWidth(), 500));
+
+    JLabel keyframeListHeader = new JLabel("Keyframes");
+
+    keyframePanel.setLayout(new BoxLayout(keyframePanel, BoxLayout.Y_AXIS));
+    keyframePanel.setPreferredSize(new Dimension(200, 500));
+    keyframePanel.add(keyframeListHeader);
+    keyframePanel.add(scrolledKeyframeList);
 
     this.setLayout(new BoxLayout(getContentPane(), BoxLayout.LINE_AXIS));
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
