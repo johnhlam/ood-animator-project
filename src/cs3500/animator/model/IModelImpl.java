@@ -253,16 +253,16 @@ public class IModelImpl implements IModel {
    *
    * @param id     is the id of the shape the keyframe will be added to
    * @param tick   is the tick value of the keyframe
-   * @param x      is the x value of the keyframe
-   * @param y      is the y value of the keyframe
    * @param width  is the width value of the keyframe
    * @param height is the height value of the keyframe
+   * @param x      is the x value of the keyframe
+   * @param y      is the y value of the keyframe
    * @param color  is the color of the keyframe
    * @throws IllegalArgumentException if the given id is null, or if the given tick, width, or
    *                                  height is negative
    */
   @Override
-  public void addKeyframe(String id, int tick, double x, double y, double width, double height,
+  public void addKeyframe(String id, int tick, double width, double height, double x, double y,
       Color color) throws IllegalArgumentException {
     if (id == null) {
       throw new IllegalArgumentException("Given id to addKeyframe is null");
@@ -466,8 +466,7 @@ public class IModelImpl implements IModel {
      */
     @Override
     public AnimationBuilder<IModelImpl> addKeyframe(String name, int t, int x, int y, int w,
-        int h,
-        int r, int g, int b) throws IllegalArgumentException {
+        int h, int r, int g, int b) throws IllegalArgumentException {
 
       if (name == null) {
         throw new IllegalArgumentException("Arguments for addKeyframe cannot be null");

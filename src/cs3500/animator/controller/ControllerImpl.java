@@ -1,5 +1,7 @@
 package cs3500.animator.controller;
 
+import cs3500.animator.model.ShapeType;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -33,14 +35,14 @@ public class ControllerImpl implements IController, Features {
    * animation. It initializes a timer to the given tick rate, as well as initializes the view to
    * carry the proper information about the animation, such as the size and max x and y values.
    *
-   * @param view the view to view the animation
-   * @param model the model that holds the animation logic
+   * @param view     the view to view the animation
+   * @param model    the model that holds the animation logic
    * @param tickRate the tick rate of the animation
-   * @param ap the Appendable to output to
+   * @param ap       the Appendable to output to
    * @throws IllegalArgumentException if arguments are null or tick rate is negative
    */
   public ControllerImpl(IView view, IModel model, int tickRate, Appendable ap)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     if (view == null || model == null) {
       throw new IllegalArgumentException("Given view and/or model cannot be null.");
     }
@@ -59,18 +61,17 @@ public class ControllerImpl implements IController, Features {
       if (this.tick > this.model.getFinalTick() && this.loopbackToggle) {
         this.tick = 0;
       }
-        List<IReadOnlyShape> toRender = this.model.getShapesAtTick(tick++);
-        this.view.render(toRender);
+      List<IReadOnlyShape> toRender = this.model.getShapesAtTick(tick++);
+      this.view.render(toRender);
 
     });
 
     this.view.setCanvas(model.getX(), model.getY(), model.getWidth(), model.getHeight(),
-            model.getMaxX(), model.getMaxY());
+        model.getMaxX(), model.getMaxY());
 
     try {
       this.view.setFeatures(this);
-    }
-    catch (UnsupportedOperationException e) {
+    } catch (UnsupportedOperationException e) {
 
     }
   }
@@ -97,7 +98,7 @@ public class ControllerImpl implements IController, Features {
 
   @Override
   public void renderAnimation() {
-    timer.start();
+//    timer.start();
   }
 
   @Override
@@ -132,5 +133,48 @@ public class ControllerImpl implements IController, Features {
   @Override
   public void toggleLoopback() {
     this.loopbackToggle = !this.loopbackToggle;
+  }
+
+  @Override
+  public void addShape(String id, ShapeType type, double width, double height, double x, double y,
+      Color color) throws IllegalArgumentException {
+    if (id == null || type == null || color == null) {
+      throw new IllegalArgumentException("Given id, ShapeType, and/or Color in addShape are null");
+    }
+    if (width < 0 || height < 0) {
+      throw new IllegalArgumentException("Given width and/or height in addShape are negative");
+    }
+
+    this.model.addShape(id, type, width, height, x, y, color);
+    // TODO: Vido had a tick field in class????
+  }
+
+  @Override
+  public void removeShape(String id) throws IllegalArgumentException {
+    if (id == null) {
+      throw new IllegalArgumentException("Given id to removeShape is null");
+    }
+
+    this.model.removeShape(id);
+  }
+
+  @Override
+  public void addKeyframe(String id, int tick, double width, double height, double x, double y,
+      Color color) throws IllegalArgumentException {
+    this.model.addKeyframe(id, tick, x, y, width, height, color);
+  }
+
+  @Override
+  public void removeKeyframe(String id, int tick) throws IllegalArgumentException {
+    this.model.removeKeyframe(id, tick);
+  }
+
+  @Override
+  public void modifyKeyframe(String id, int tick, double width, double height,  double x, double y,
+      Color color) throws IllegalArgumentException {
+    this.model.addKeyframe(id, tick, width, height, x, y, color);
+    // FIXME!!!
+    //  Note: should separate adding and modifying keyframes in the model as separate methods
+    //  (because they are one method right now).
   }
 }
