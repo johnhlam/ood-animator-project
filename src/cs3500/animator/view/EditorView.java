@@ -15,8 +15,10 @@ public class EditorView extends JFrame implements IView, ActionListener {
   private final AnimationPanel animationPanel;
   private final JPanel videoPanel;
   private final JPanel buttonPanel;
-  //private final JPanel shapePanel;
-  //private final JPanel keyframePanel;
+  private final JPanel shapePanel;
+  private final JList<String> shapeList;
+  private final JPanel keyframePanel;
+  private final JList<String> keyframeList;
   private final JButton stop;
   private final JButton play;
   private final JButton restart;
@@ -27,33 +29,38 @@ public class EditorView extends JFrame implements IView, ActionListener {
 
   public EditorView() {
     animationPanel = new AnimationPanel();
-    this.setLayout(new BoxLayout(getContentPane(), BoxLayout.LINE_AXIS));
-    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     videoPanel = new JPanel();
     videoPanel.setLayout(new BoxLayout(videoPanel, BoxLayout.PAGE_AXIS));
 
     //TODO: Put these in helpers
     buttonPanel = new JPanel();
     buttonPanel.setLayout(new FlowLayout());
+
     stop = new JButton("Stop");
     stop.setActionCommand("stop");
     stop.addActionListener(this);
+
     play = new JButton("Play");
     play.setActionCommand("play");
     play.addActionListener(this);
+
     restart = new JButton("Restart");
     restart.setActionCommand("restart");
     restart.addActionListener(this);
+
     loopback = new JCheckBox("Loopback Enabled:");
     loopback.setSelected(false);
     loopback.setActionCommand("loop");
     loopback.addActionListener(this);
+
     faster = new JButton("Speed up");
     faster.setActionCommand("fast");
     faster.addActionListener(this);
+
     slower = new JButton("Slow down");
     slower.setActionCommand("slow");
     slower.addActionListener(this);
+
     buttonPanel.add(stop);
     buttonPanel.add(play);
     buttonPanel.add(restart);
@@ -67,9 +74,30 @@ public class EditorView extends JFrame implements IView, ActionListener {
 
     videoPanel.add(scrolledAnimation);
     videoPanel.add(buttonPanel);
-    this.add(videoPanel);
-    this.setVisible(true);
 
+    shapePanel = new JPanel();
+    shapeList = new JList<>();
+    // FIXME: Need a way to get shapes from the model
+    shapeList.setPreferredSize(new Dimension(300, 750));
+    // TODO: Make this scale with dimensions of canvas
+    shapeList.setFixedCellWidth(250);
+    shapePanel.add(shapeList);
+
+    keyframePanel = new JPanel();
+    keyframeList = new JList<>();
+    // FIXME: Need a way to get shapes from the model
+    keyframeList.setPreferredSize(new Dimension(300, 750));
+    // TODO: Make this scale with dimensions of canvas
+    keyframeList.setFixedCellWidth(250);
+    keyframePanel.add(keyframeList);
+
+    this.setLayout(new BoxLayout(getContentPane(), BoxLayout.LINE_AXIS));
+    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    this.add(shapePanel, BorderLayout.WEST);
+    this.add(videoPanel, BorderLayout.CENTER);
+    this.add(keyframePanel, BorderLayout.EAST);
+
+    this.setVisible(true);
 
     this.pack();
   }
