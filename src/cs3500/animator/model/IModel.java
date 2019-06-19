@@ -183,4 +183,11 @@ public interface IModel {
    * @return a list of the model's shapes, in read-only form
    */
   List<IReadOnlyShape> getShapes();
+
+  /**
+   * Returns the tick of the last animation being played.
+   *
+   * @return the final tick
+   */
+  int getFinalTick();
 }

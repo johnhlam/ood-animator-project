@@ -2,12 +2,15 @@ package cs3500.animator.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.*;
 
 import cs3500.animator.model.IModel;
 import cs3500.animator.model.IReadOnlyShape;
+import cs3500.animator.view.EditorView;
 import cs3500.animator.view.IView;
 
 /**
@@ -15,7 +18,7 @@ import cs3500.animator.view.IView;
  * as well as the Appendable for textual views. It relays information back and forth between the
  * model and the view. It also acts as a listener to user events and handles them accordingly.
  */
-public class ControllerImpl implements IController, ActionListener {
+public class ControllerImpl implements IController, Features {
 
   private final IView view;
   private final IModel model;
@@ -23,6 +26,7 @@ public class ControllerImpl implements IController, ActionListener {
   private int tickRate;
   private Timer timer;
   private int tick;
+  private boolean loopbackToggle = false;
 
   /**
    * Constructs a controller that holds all the information needed for the view to represent an
@@ -51,11 +55,25 @@ public class ControllerImpl implements IController, ActionListener {
     this.tickRate = tickRate;
 
     this.tick = 0; // Starts the tick count at 0
-    this.timer = new Timer(1000 / this.tickRate, this);
+    this.timer = new Timer(1000 / this.tickRate, (ActionEvent e) -> {
+      if (this.tick > this.model.getFinalTick() && this.loopbackToggle) {
+        this.tick = 0;
+      }
+        List<IReadOnlyShape> toRender = this.model.getShapesAtTick(tick++);
+        this.view.render(toRender);
+
+    });
+
     this.view.setCanvas(model.getX(), model.getY(), model.getWidth(), model.getHeight(),
             model.getMaxX(), model.getMaxY());
-  }
 
+    try {
+      this.view.setFeatures(this);
+    }
+    catch (UnsupportedOperationException e) {
+
+    }
+  }
 
 
   /**
@@ -83,8 +101,36 @@ public class ControllerImpl implements IController, ActionListener {
   }
 
   @Override
-  public void actionPerformed(ActionEvent e) {
-    List<IReadOnlyShape> toRender = this.model.getShapesAtTick(tick++);
-    this.view.render(toRender);
+  public void play() {
+    this.timer.start();
+  }
+
+  @Override
+  public void stop() {
+    this.timer.stop();
+  }
+
+  @Override
+  public void restart() {
+    this.tick = 0;
+  }
+
+  @Override
+  public void faster() {
+    this.tickRate += 5;
+    this.timer.setDelay(1000 / this.tickRate);
+  }
+
+  @Override
+  public void slower() {
+    if (this.tickRate > 5) {
+      this.tickRate -= 5;
+      this.timer.setDelay(1000 / this.tickRate);
+    }
+  }
+
+  @Override
+  public void toggleLoopback() {
+    this.loopbackToggle = !this.loopbackToggle;
   }
 }

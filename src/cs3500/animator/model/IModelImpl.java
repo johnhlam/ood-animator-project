@@ -155,6 +155,17 @@ public class IModelImpl implements IModel {
     return new ArrayList<IReadOnlyShape>(this.shapes);
   }
 
+  @Override
+  public int getFinalTick() {
+    int res = 0;
+    for (IModelShape shape : this.shapes) {
+      if (!shape.getKeyframes().isEmpty()) {
+        res = Math.max(res, shape.getKeyframes().get(shape.getKeyframes().size() - 1).getTick());
+      }
+    }
+    return res;
+  }
+
 
   /**
    * Prints out each shape in this model with its ID followed by the motions it contains. Each

@@ -3,6 +3,7 @@ package cs3500.animator.view;
 import java.io.IOException;
 import java.util.List;
 
+import cs3500.animator.controller.Features;
 import cs3500.animator.model.IReadOnlyShape;
 
 /**
@@ -76,6 +77,16 @@ public abstract class ATextualView implements IView {
     } catch (IOException e) {
       throw new IllegalStateException("Could not append String to Appendable.");
     }
+  }
+
+  /**
+   * Throws an exception due to text-based views not supporting GUI features.
+   *
+   * @throws UnsupportedOperationException due to text-based views not supporting features
+   */
+  @Override
+  public void setFeatures(Features features) throws UnsupportedOperationException {
+    throw new UnsupportedOperationException("Text-based views do not have features");
   }
 
 }
