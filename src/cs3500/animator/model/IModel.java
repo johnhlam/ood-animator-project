@@ -183,12 +183,4 @@ public interface IModel {
    * @return a list of the model's shapes, in read-only form
    */
   List<IReadOnlyShape> getShapes();
-
-  /**
-   * Returns a copy of all of the keyframes in the model (for all shapes), in a read-only format.
-   * The returned list may not be sorted in any particular order.
-   *
-   * @return a list of the model's keyframes
-   */
-  List<IReadOnlyKeyframe> getKeyframes();
 }

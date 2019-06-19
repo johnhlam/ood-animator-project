@@ -155,17 +155,6 @@ public class IModelImpl implements IModel {
     return new ArrayList<IReadOnlyShape>(this.shapes);
   }
 
-  @Override
-  public List<IReadOnlyKeyframe> getKeyframes() {
-    List<IReadOnlyKeyframe> keyframes = new ArrayList<>();
-
-    for (IModelShape shape : this.shapes) {
-      keyframes.addAll(shape.getKeyframes());
-    }
-
-    return keyframes;
-  }
-
 
   /**
    * Prints out each shape in this model with its ID followed by the motions it contains. Each
