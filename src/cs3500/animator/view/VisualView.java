@@ -2,11 +2,13 @@ package cs3500.animator.view;
 
 import java.awt.Dimension;
 
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
+import cs3500.animator.controller.Features;
 import cs3500.animator.model.IReadOnlyShape;
 
 /**
@@ -86,5 +88,15 @@ public class VisualView extends JFrame implements IView {
     }
 
     this.panel.draw(shapes);
+  }
+
+  /**
+   * Throws an exception due to Visual view not supporting GUI features.
+   *
+   * @throws UnsupportedOperationException due to Visual views not supporting features
+   */
+  @Override
+  public void setFeatures(Features features) throws UnsupportedOperationException {
+    throw new UnsupportedOperationException("Visual view does not have features");
   }
 }

@@ -1,7 +1,9 @@
 package cs3500.animator.view;
 
+import cs3500.animator.controller.Features;
 import cs3500.animator.model.IReadOnlyShape;
 
+import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
@@ -44,4 +46,6 @@ public interface IView {
    * @throws IllegalArgumentException if the given List is null.
    */
   void render(List<IReadOnlyShape> shapes) throws UnsupportedOperationException;
+
+  void setFeatures(Features features) throws UnsupportedOperationException;
 }
