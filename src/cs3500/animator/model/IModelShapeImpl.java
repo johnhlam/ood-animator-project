@@ -108,7 +108,7 @@ public class IModelShapeImpl implements IModelShape {
      * @throws IllegalArgumentException if the given tick is negative
      */
     @Override
-    public IReadOnlyShape getShapeAtTick ( int tick) throws IllegalArgumentException {
+    public IReadOnlyShape getShapeAtTick (int tick) throws IllegalArgumentException {
       if (tick < 0) {
         throw new IllegalArgumentException("Given tick to getShapeAtTick is negative");
       }
@@ -121,30 +121,17 @@ public class IModelShapeImpl implements IModelShape {
       IModelShape shapeToReturn = null;
 
       // If there are no keyframes in the list, then returns the initial state of the shape.
-      if (this.keyframeList.isEmpty() || tick < this.keyframeList.get(0).getTick()) {
+      if (this.keyframeList.isEmpty() || tick < this.keyframeList.get(0).getTick()
+      || tick > this.keyframeList.get(this.keyframeList.size() - 1).getTick()) {
         return this;
 
         // If the given tick is after all keyframes, then returns the state of the shape at the
         // last keyframe
-      } else if (tick > this.keyframeList.get(this.keyframeList.size() - 1).getTick()) {
-        IKeyframe lastKeyframe = this.keyframeList.get(this.keyframeList.size() - 1);
-
-        xAtTick = lastKeyframe.getX();
-        yAtTick = lastKeyframe.getY();
-        widthAtTick = lastKeyframe.getWidth();
-        heightAtTick = lastKeyframe.getHeight();
-        Color startColor = lastKeyframe.getColor();
-
-        shapeToReturn = new IModelShapeImpl(this.id,
-            this.type,
-            widthAtTick,
-            heightAtTick,
-            xAtTick,
-            yAtTick,
-            startColor);
-
-        // If the given tick is not before all of the keyframes, and isn't after all of the
-        // keyframes, then it must be during the keyframes
+      }
+      else if (this.keyframeList.size() == 1) {
+        IKeyframe keyframe = this.keyframeList.get(0);
+        shapeToReturn = new IModelShapeImpl(this.id, this.type, keyframe.getWidth(),
+                keyframe.getHeight(), keyframe.getX(), keyframe.getY(), keyframe.getColor());
       } else {
         shapeToReturn = this.getShapeBetweenFrames(tick);
       }

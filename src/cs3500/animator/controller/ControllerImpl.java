@@ -61,9 +61,14 @@ public class ControllerImpl implements IController, Features {
       if (this.tick > this.model.getFinalTick() && this.loopbackToggle) {
         this.tick = 1;
       }
-      List<IReadOnlyShape> toRender = this.model.getShapesAtTick(tick++);
-      this.view.render(toRender);
-
+      else if (this.tick >= this.model.getFinalTick()) {
+        List<IReadOnlyShape> toRender = this.model.getShapesAtTick(tick);
+        this.view.render(toRender);
+      }
+      else {
+        List<IReadOnlyShape> toRender = this.model.getShapesAtTick(tick++);
+        this.view.render(toRender);
+      }
     });
 
     this.view.setCanvas(model.getX(), model.getY(), model.getWidth(), model.getHeight(),
@@ -177,8 +182,14 @@ public class ControllerImpl implements IController, Features {
   @Override
   public void modifyKeyframe(String id, int tick, double width, double height,  double x, double y,
       Color color) throws IllegalArgumentException {
-    this.model.removeKeyframe(id, tick);
-    this.model.addKeyframe(id, tick, width, height, x, y, color);
-    this.view.setShapes(model.getShapes());
+    try {
+      this.model.removeKeyframe(id, tick);
+      this.model.addKeyframe(id, tick, width, height, x, y, color);
+      this.view.setShapes(model.getShapes());
+    }
+    catch (Exception e) {
+      throw new IllegalArgumentException("Modifcation unsuccessful. Please modify the currently " +
+              "selected keyframe.");
+    }
   }
 }

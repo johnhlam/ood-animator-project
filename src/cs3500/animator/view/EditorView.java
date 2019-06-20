@@ -72,6 +72,8 @@ public class EditorView extends JFrame implements IView, ActionListener {
     this.add(videoPanel, BorderLayout.CENTER);
     this.add(keyframePanel, BorderLayout.EAST);
 
+    // arbitrary minimum size so the animation can still be seen
+    this.setMinimumSize(new Dimension(750, 400));
     this.setVisible(true);
 
     this.pack();
