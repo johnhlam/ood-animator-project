@@ -54,21 +54,19 @@ public class EditorView extends JFrame implements IView, ActionListener {
 
 
 
-  // TODO: Sometimes, the window starts up with empty lists
   public EditorView() {
 
     animationPanel = new AnimationPanel();
-    videoPanel = new JPanel();
-    videoPanel.setLayout(new BorderLayout());
-
     JScrollPane scrolledAnimation = new JScrollPane(animationPanel);
 
     this.configureButtons();
-
     scrolledAnimation.setPreferredSize(new Dimension(buttonPanel.getWidth(), 500));
 
+    videoPanel = new JPanel();
+    videoPanel.setLayout(new BorderLayout());
     videoPanel.add(scrolledAnimation, BorderLayout.CENTER);
     videoPanel.add(buttonPanel, BorderLayout.SOUTH);
+//    videoPanel.setPreferredSize(new Dimension(300, 300));
 
     this.configureShapePanel();
     this.configureKeyframePanel();

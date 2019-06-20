@@ -60,7 +60,7 @@ public interface IModel {
    * @param height is the height value of the keyframe
    * @param color is the color of the keyframe
    * @throws IllegalArgumentException if the given id is null, if the given tick, width, or height
-   * is negative
+   * is negative, or if the given keyframe already exists.
    */
   void addKeyframe(String id, int tick, double x, double y, double width, double height,
       Color color) throws IllegalArgumentException;

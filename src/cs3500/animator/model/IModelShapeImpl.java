@@ -436,24 +436,19 @@ public class IModelShapeImpl implements IModelShape {
    * @param x      is the x value of the keyframe to be added
    * @param y      is the y value of the keyframe to be added
    * @param color  is the color of the keyframe to be added
+   * @throws IllegalArgumentException if a keyframe at the given tick already exists for this shape
    *
    */
   private void insertKeyframe(int tick, double width, double height,
-      double x, double y, Color color) {
+      double x, double y, Color color) throws IllegalArgumentException {
 
       // Checks for any coinciding keyframes (i.e. keyframes for the same tick)
       // Subtracts one from the loop termination condition because the loop checks the current
       // keyframe and the next keyframe
       for (int i = 0; i < this.keyframeList.size() - 1; i++) {
         if (this.keyframeList.get(i).getTick() == tick) {
-          IKeyframe keyframeToChange = this.keyframeList.get(i);
-
-          keyframeToChange.setWidth(width);
-          keyframeToChange.setHeight(height);
-          keyframeToChange.setX(x);
-          keyframeToChange.setY(y);
-          keyframeToChange.setColor(color);
-          // TODO: Could also be done without setters, and by add/remove
+          throw new IllegalArgumentException("There is already a keyframe at the given tick:"
+              + tick + ", for shape " + this.id);
 
           //If the given keyframe is between the current keyframe and the next keyframe, adds it in
         } else if (this.keyframeList.get(i).getTick() < tick

@@ -177,10 +177,8 @@ public class ControllerImpl implements IController, Features {
   @Override
   public void modifyKeyframe(String id, int tick, double width, double height,  double x, double y,
       Color color) throws IllegalArgumentException {
+    this.model.removeKeyframe(id, tick);
     this.model.addKeyframe(id, tick, width, height, x, y, color);
     this.view.setShapes(model.getShapes());
-    // FIXME!!!
-    //  Note: should separate adding and modifying keyframes in the model as separate methods
-    //  (because they are one method right now).
   }
 }
