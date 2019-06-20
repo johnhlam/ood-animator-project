@@ -111,22 +111,37 @@ public class EditorView extends JFrame implements IView, ActionListener {
     scrolledKeyframeList.setPreferredSize(new Dimension(keyframePanel.getWidth(), 250));
 
     JLabel keyframeListHeader = new JLabel("Keyframes (in order)");
+    JLabel keyframeFormat = new JLabel("'Tick X Y Width Height R G B'");
+
+    JPanel keyframeText = new JPanel(new BorderLayout());
+    keyframeText.add(keyframeListHeader, BorderLayout.NORTH);
+    keyframeText.add(keyframeFormat, BorderLayout.CENTER);
 
     keyframePanel.setLayout(new BorderLayout());
-    keyframePanel.setPreferredSize(new Dimension(300, 500));
-    keyframePanel.add(keyframeListHeader, BorderLayout.NORTH);
+    keyframePanel.setPreferredSize(new Dimension(300, 550));
+    keyframePanel.add(keyframeText, BorderLayout.NORTH);
     keyframePanel.add(scrolledKeyframeList, BorderLayout.CENTER);
 
     // construct panel for adding/removing/editing keyframes
 
     JPanel keyframeInteraction = new JPanel();
-    keyframeInteraction.setPreferredSize(new Dimension(200, 250));
-    keyframeInteraction.setLayout(new BoxLayout(keyframeInteraction, BoxLayout.PAGE_AXIS));
+    keyframeInteraction.setPreferredSize(new Dimension(200, 300));
+    keyframeInteraction.setLayout(new BoxLayout(keyframeInteraction, BoxLayout.LINE_AXIS));
 
-    JPanel keyframeInputs = new JPanel(new FlowLayout());
+    JPanel keyframeInputs1 = new JPanel(new FlowLayout());
+    JPanel keyframeInputs2 = new JPanel(new FlowLayout());
+    JPanel keyframeInputs3 = new JPanel(new FlowLayout());
+    JPanel keyframeInputs4 = new JPanel(new FlowLayout());
+    JPanel keyframeInputs5 = new JPanel(new FlowLayout());
+    JPanel keyframeInputs6 = new JPanel(new FlowLayout());
+    JPanel keyframeInputs7 = new JPanel(new FlowLayout());
+    JPanel keyframeInputs8 = new JPanel(new FlowLayout());
+
+    JPanel keyframeInputs = new JPanel();
+    keyframeInputs.setLayout(new GridLayout(8,0));
     JLabel tickLabel = new JLabel("Tick:");
-    JLabel xLabel = new JLabel("X Coordinate:");
-    JLabel yLabel = new JLabel("Y Coordinate:");
+    JLabel xLabel = new JLabel("X-Coor:");
+    JLabel yLabel = new JLabel("Y-Coor:");
     JLabel widthLabel = new JLabel("Width:");
     JLabel heightLabel = new JLabel("Height:");
     JLabel rLabel = new JLabel("R Value:");
@@ -141,26 +156,35 @@ public class EditorView extends JFrame implements IView, ActionListener {
     gVal = new JTextField(3);
     bVal = new JTextField(3);
 
-    keyframeInputs.add(tickLabel);
-    keyframeInputs.add(tick);
-    keyframeInputs.add(xLabel);
-    keyframeInputs.add(xCoor);
-    keyframeInputs.add(yLabel);
-    keyframeInputs.add(yCoor);
-    keyframeInputs.add(widthLabel);
-    keyframeInputs.add(width);
-    keyframeInputs.add(heightLabel);
-    keyframeInputs.add(height);
-    keyframeInputs.add(rLabel);
-    keyframeInputs.add(rVal);
-    keyframeInputs.add(gLabel);
-    keyframeInputs.add(gVal);
-    keyframeInputs.add(bLabel);
-    keyframeInputs.add(bVal);
+    keyframeInputs1.add(tickLabel);
+    keyframeInputs1.add(tick);
+    keyframeInputs2.add(xLabel);
+    keyframeInputs2.add(xCoor);
+    keyframeInputs3.add(yLabel);
+    keyframeInputs3.add(yCoor);
+    keyframeInputs4.add(widthLabel);
+    keyframeInputs4.add(width);
+    keyframeInputs5.add(heightLabel);
+    keyframeInputs5.add(height);
+    keyframeInputs6.add(rLabel);
+    keyframeInputs6.add(rVal);
+    keyframeInputs7.add(gLabel);
+    keyframeInputs7.add(gVal);
+    keyframeInputs8.add(bLabel);
+    keyframeInputs8.add(bVal);
+    keyframeInputs.add(keyframeInputs1);
+    keyframeInputs.add(keyframeInputs2);
+    keyframeInputs.add(keyframeInputs3);
+    keyframeInputs.add(keyframeInputs4);
+    keyframeInputs.add(keyframeInputs5);
+    keyframeInputs.add(keyframeInputs6);
+    keyframeInputs.add(keyframeInputs7);
+    keyframeInputs.add(keyframeInputs8);
 
     keyframeInteraction.add(keyframeInputs);
 
-    JPanel keyframeButtons = new JPanel(new FlowLayout());
+    JPanel keyframeButtons = new JPanel();
+    keyframeButtons.setLayout(new BoxLayout(keyframeButtons, BoxLayout.Y_AXIS));
 
     JButton add = new JButton("Add");
     add.setActionCommand("addKeyframe");
