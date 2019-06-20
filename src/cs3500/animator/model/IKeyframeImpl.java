@@ -9,11 +9,11 @@ import java.awt.Color;
  */
 public class IKeyframeImpl implements IKeyframe {
 
-  private int tick;
-  private double width;
-  private double height;
-  private double x;
-  private double y;
+  private final int tick;
+  private final double width;
+  private final double height;
+  private final double x;
+  private final double y;
   private Color color;
 
   public IKeyframeImpl(int tick, double width, double height, double x, double y,  Color color)
@@ -80,35 +80,5 @@ public class IKeyframeImpl implements IKeyframe {
   @Override
   public Color getColor() {
     return color;
-  }
-
-  @Override
-  public void setTick(int tick) {
-    this.tick = tick;
-  }
-
-  @Override
-  public void setX(double x) {
-    this.x = x;
-  }
-
-  @Override
-  public void setY(double y) {
-    this.y = y;
-  }
-
-  @Override
-  public void setWidth(double width) {
-    this.width = width;
-  }
-
-  @Override
-  public void setHeight(double height) {
-    this.height = height;
-  }
-
-  @Override
-  public void setColor(Color color) {
-    this.color = color;
   }
 }

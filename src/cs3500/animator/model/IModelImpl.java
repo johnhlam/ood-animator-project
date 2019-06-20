@@ -259,7 +259,8 @@ public class IModelImpl implements IModel {
    * @param y      is the y value of the keyframe
    * @param color  is the color of the keyframe
    * @throws IllegalArgumentException if the given id is null, or if the given tick, width, or
-   *                                  height is negative
+   *                                  height is negative, or if there is already an existing
+   *                                  keyfram at the given tick.
    */
   @Override
   public void addKeyframe(String id, int tick, double width, double height, double x, double y,

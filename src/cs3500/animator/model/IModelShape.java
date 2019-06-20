@@ -51,7 +51,8 @@ public interface IModelShape extends IReadOnlyShape {
    * @param y      is the y value of the keyframe to be added
    * @param color  is the color of the keyframe to be added
    * @throws IllegalArgumentException if the given Color is null, or if the tick, width, and/or
-   *                                  height are negative.
+   *                                  height are negative, or if there is already an existing
+   *                                  keyframe at the given tick.
    */
   void addKeyframe(int tick, double width, double height, double x, double y, Color color)
       throws IllegalArgumentException;

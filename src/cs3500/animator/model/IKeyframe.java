@@ -4,52 +4,65 @@ import java.awt.Color;
 
 /**
  * Represents a Keyframe for a shape. Each keyframe represents the state of the shape it
- * is in at a given tick. Besides the read-only functionalities that the IReadOnlyKeyframe
+ * is in at a given tick. Besides the read-only functionalities that the IKeyframe
  * interface provides, this interface also provides a series of setters to modify the keyframe.
  * This version of the keyframe is meant to work closely with the model itself, while the
  * read-only version is meant to work with controllers and views.
  */
-public interface IKeyframe extends IReadOnlyKeyframe {
+/**
+ * Represents a keyframe for an shape. Each keyframe represents the state of the shape it
+ * is in at a given tick. This interface provides methods that can only read from the keyframe's
+ * fields. Other interfaces may extend this one to add further functionality. This read-only
+ * keyframe is meant to work with the controller and view.
+ */
+public interface IKeyframe {
+  /**
+   * Prints the parameters of this motion in one line. Each implementation should specify how this
+   * information is represented.
+   *
+   * @return the string representation of the start and end parameters of the motion
+   */
+  String printKeyframe();
 
   /**
-   * Sets the keyframe's tick to the given value.
+   * Return the tick of the motion.
    *
-   * @param tick is the tick value to set
+   * @return the tick
    */
-  void setTick(int tick);
+  int getTick();
 
   /**
-   * Sets the keyframe's x to the given value.
+   * Return the x coordinate.
    *
-   * @param x is the x value to set
+   * @return the x coordinate
    */
-  void setX(double x);
+  double getX();
 
   /**
-   * Sets the keyframe's y to the given value.
+   * Return the y coordinate.
    *
-   * @param y is the y value to set
+   * @return the y coordinate
    */
-  void setY(double y);
+  double getY();
 
   /**
-   * Sets the keyframe's width to the given value.
+   * Return the width.
    *
-   * @param width is the width value to set
+   * @return the width
    */
-  void setWidth(double width);
+  double getWidth();
 
   /**
-   * Sets the keyframe's height to the given value.
+   * Return the height.
    *
-   * @param height is the height value to set
+   * @return the height
    */
-  void setHeight(double height);
+  double getHeight();
 
   /**
-   * Sets the keyframe's Color to the given value.
+   * Return the color.
    *
-   * @param color is the x value to set
+   * @return the color
    */
-  void setColor(Color color);
+  Color getColor();
 }

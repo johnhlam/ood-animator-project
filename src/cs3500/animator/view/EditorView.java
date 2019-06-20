@@ -7,13 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import cs3500.animator.controller.Features;
 import cs3500.animator.model.IKeyframe;
-import cs3500.animator.model.IReadOnlyKeyframe;
 import cs3500.animator.model.IReadOnlyShape;
 import cs3500.animator.model.ShapeType;
 
@@ -54,19 +50,16 @@ public class EditorView extends JFrame implements IView, ActionListener {
 
 
 
-  // TODO: Sometimes, the window starts up with empty lists
   public EditorView() {
 
     animationPanel = new AnimationPanel();
-    videoPanel = new JPanel();
-    videoPanel.setLayout(new BorderLayout());
-
     JScrollPane scrolledAnimation = new JScrollPane(animationPanel);
 
     this.configureButtons();
-
     scrolledAnimation.setPreferredSize(new Dimension(buttonPanel.getWidth(), 500));
 
+    videoPanel = new JPanel();
+    videoPanel.setLayout(new BorderLayout());
     videoPanel.add(scrolledAnimation, BorderLayout.CENTER);
     videoPanel.add(buttonPanel, BorderLayout.SOUTH);
 
@@ -96,7 +89,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
         return;
       }
       IReadOnlyShape curShape = this.shapesToRender.get(shapeList.getSelectedIndex());
-      IReadOnlyKeyframe curFrame = curShape.getKeyframes().get(keyframeList.getSelectedIndex());
+      IKeyframe curFrame = curShape.getKeyframes().get(keyframeList.getSelectedIndex());
       tick.setText(Integer.toString(curFrame.getTick()));
       xCoor.setText(Integer.toString((int)curFrame.getX()));
       yCoor.setText(Integer.toString((int)curFrame.getY()));
@@ -217,7 +210,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
       }
       IReadOnlyShape shape = this.shapesToRender.get(shapeList.getSelectedIndex());
       keyframeListModel.clear();
-      for (IReadOnlyKeyframe keyframe : shape.getKeyframes()) {
+      for (IKeyframe keyframe : shape.getKeyframes()) {
         keyframeListModel.addElement(keyframe.printKeyframe());
       }
     }));
@@ -437,6 +430,8 @@ public class EditorView extends JFrame implements IView, ActionListener {
       this.errorPopup(e.getMessage());
       return;
     }
+
+    this.keyframeListModel.clear();
   }
 
   private void removeKeyframe() {
@@ -444,7 +439,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
       return;
     }
     IReadOnlyShape curShape = this.shapesToRender.get(shapeList.getSelectedIndex());
-    IReadOnlyKeyframe curFrame = curShape.getKeyframes().get(keyframeList.getSelectedIndex());
+    IKeyframe curFrame = curShape.getKeyframes().get(keyframeList.getSelectedIndex());
     try {
       this.keyframeListModel.remove(this.keyframeList.getSelectedIndex());
       this.features.removeKeyframe(curShape.getID(), curFrame.getTick());
@@ -453,6 +448,8 @@ public class EditorView extends JFrame implements IView, ActionListener {
       e.printStackTrace();
       return;
     }
+
+    this.keyframeListModel.clear();
   }
 
   private void addKeyframe() {
@@ -499,6 +496,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
       return;
     }
 
+    this.keyframeListModel.clear();
   }
 
   private void removeShape() {
@@ -545,15 +543,4 @@ public class EditorView extends JFrame implements IView, ActionListener {
   private void errorPopup(String errorMessage) {
     JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
   }
-
-// TODO: Make keyframe list refresh upon interacting with the keyframes
-  
-//  private void refreshKeyframeList() {
-//    IReadOnlyShape curShape = this.shapesToRender.get(this.shapeList.getSelectedIndex());
-//    keyframeListModel.clear();
-//    for (IReadOnlyKeyframe keyframe : curShape.getKeyframes()) {
-//      keyframeListModel.addElement(keyframe.printKeyframe());
-//    }
-//  }
-
 }
