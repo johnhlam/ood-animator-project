@@ -29,6 +29,7 @@ public class ControllerImpl implements IController, Features {
   private Timer timer;
   private int tick;
   private boolean loopbackToggle = false;
+  private boolean timerOnStart = true;
 
   /**
    * Constructs a controller that holds all the information needed for the view to represent an
@@ -77,6 +78,7 @@ public class ControllerImpl implements IController, Features {
     try {
       this.view.setFeatures(this);
       this.view.setShapes(model.getShapes());
+      this.timerOnStart = false;
     } catch (UnsupportedOperationException e) {
 
     }
@@ -104,9 +106,12 @@ public class ControllerImpl implements IController, Features {
 
   @Override
   public void renderAnimation() {
-    this.view.render(model.getShapesAtTick(1));
-//    timer.start();
-    // TODO: For a visual, the timer should start, but for the editor, the timer should not
+    if (timerOnStart) {
+      timer.start();
+    }
+    else {
+      this.view.render(model.getShapesAtTick(1));
+    }
   }
 
   @Override
