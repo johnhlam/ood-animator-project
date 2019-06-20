@@ -91,7 +91,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
     keyframeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     keyframeList.setFixedCellWidth(shapePanel.getWidth());
     keyframeList.addListSelectionListener((e -> {
-      if (keyframeList.getSelectedIndex() == -1) {
+      if (keyframeList.getSelectedIndex() == -1 || this.shapeList.getSelectedIndex() == -1) {
         return;
       }
       IReadOnlyShape curShape = this.shapesToRender.get(shapeList.getSelectedIndex());
@@ -442,6 +442,10 @@ public class EditorView extends JFrame implements IView, ActionListener {
     || gVal.getText().isEmpty() || bVal.getText().isEmpty()) {
       return;
     }
+
+    if (shapeList.isSelectionEmpty()) {
+      this.errorPopup("Select a shape to add the keyframe to!");
+    }
     try {
       tickVal = Integer.parseInt(this.tick.getText());
       x = Integer.parseInt(this.xCoor.getText());
@@ -461,6 +465,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
               new Color(r, g, b));
     } catch (Exception e) {
       this.errorPopup(e.getMessage());
+      e.printStackTrace();
     }
 
   }
