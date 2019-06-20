@@ -56,10 +56,10 @@ public class ControllerImpl implements IController, Features {
     this.model = model;
     this.tickRate = tickRate;
 
-    this.tick = 0; // Starts the tick count at 0
+    this.tick = 1; // Starts the tick count at 1
     this.timer = new Timer(1000 / this.tickRate, (ActionEvent e) -> {
       if (this.tick > this.model.getFinalTick() && this.loopbackToggle) {
-        this.tick = 0;
+        this.tick = 1;
       }
       List<IReadOnlyShape> toRender = this.model.getShapesAtTick(tick++);
       this.view.render(toRender);
@@ -99,6 +99,7 @@ public class ControllerImpl implements IController, Features {
 
   @Override
   public void renderAnimation() {
+    this.view.render(model.getShapesAtTick(1));
 //    timer.start();
     // TODO: For a visual, the timer should start, but for the editor, the timer should not
   }
@@ -115,8 +116,8 @@ public class ControllerImpl implements IController, Features {
 
   @Override
   public void restart() {
-    this.tick = 0;
-    this.view.render(model.getShapesAtTick(0));
+    this.tick = 1;
+    this.view.render(model.getShapesAtTick(1));
   }
 
   @Override

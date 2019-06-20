@@ -422,9 +422,11 @@ public class EditorView extends JFrame implements IView, ActionListener {
     IReadOnlyShape curShape = this.shapesToRender.get(shapeList.getSelectedIndex());
     IReadOnlyKeyframe curFrame = curShape.getKeyframes().get(keyframeList.getSelectedIndex());
     try {
+      this.keyframeListModel.remove(this.keyframeList.getSelectedIndex());
       this.features.removeKeyframe(curShape.getID(), curFrame.getTick());
     } catch (Exception e) {
       this.errorPopup(e.getMessage());
+      e.printStackTrace();
       return;
     }
   }
@@ -479,8 +481,10 @@ public class EditorView extends JFrame implements IView, ActionListener {
     if (shapeList.isSelectionEmpty()) {
       return;
     }
+    String id = shapeList.getSelectedValue();
     try {
-      this.features.removeShape(shapeList.getSelectedValue());
+      this.shapeListModel.remove(shapeList.getSelectedIndex());
+      this.features.removeShape(id);
     }
     catch (Exception e) {
       errorPopup(e.getMessage());
