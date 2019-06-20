@@ -3,7 +3,6 @@ package cs3500.animator.model;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.animation.KeyFrame;
 
 /**
  * An implementation of IModelShape. Stores animations as a list of keyframes. Keyframes are added
@@ -474,7 +473,7 @@ public class IModelShapeImpl implements IModelShape {
     }
 
     @Override
-    public List<IReadOnlyKeyframe> getKeyframes () {
+    public List<IKeyframe> getKeyframes () {
       return new ArrayList<>(this.keyframeList);
     }
   }

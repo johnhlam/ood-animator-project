@@ -80,5 +80,5 @@ public interface IReadOnlyShape {
    *
    * @return the shape's keyframes
    */
-  List<IReadOnlyKeyframe> getKeyframes();
+  List<IKeyframe> getKeyframes();
 }

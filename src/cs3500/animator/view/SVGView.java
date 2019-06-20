@@ -1,6 +1,6 @@
 package cs3500.animator.view;
 
-import cs3500.animator.model.IReadOnlyKeyframe;
+import cs3500.animator.model.IKeyframe;
 import java.util.List;
 
 import cs3500.animator.model.IMotion;
@@ -102,13 +102,13 @@ public class SVGView extends ATextualView {
   private void printShapeMotionsSVG(IReadOnlyShape shape, String xCoordinate, String yCoordinate,
       String width, String height, int tickRate, Appendable ap) {
     
-    List<IReadOnlyKeyframe> keyframesList = shape.getKeyframes();
+    List<IKeyframe> keyframesList = shape.getKeyframes();
 
     // Subtracts one from the loop termination condition because the loop checks the current
     // keyframe and the next keyframe
     for (int i = 0; i < keyframesList.size() - 1; i++) {
-      IReadOnlyKeyframe startKeyframe = keyframesList.get(i);
-      IReadOnlyKeyframe endKeyframe = keyframesList.get(i + 1);
+      IKeyframe startKeyframe = keyframesList.get(i);
+      IKeyframe endKeyframe = keyframesList.get(i + 1);
       
       String startTime = Integer.toString(this.tickToMS(startKeyframe.getTick(), tickRate));
       String duration = 
