@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -14,6 +15,7 @@ import cs3500.animator.controller.Features;
 import cs3500.animator.model.IKeyframe;
 import cs3500.animator.model.IReadOnlyKeyframe;
 import cs3500.animator.model.IReadOnlyShape;
+import cs3500.animator.model.ShapeType;
 
 public class EditorView extends JFrame implements IView, ActionListener {
   Features features;
@@ -56,7 +58,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
   public EditorView() {
     animationPanel = new AnimationPanel();
     videoPanel = new JPanel();
-    videoPanel.setLayout(new BoxLayout(videoPanel, BoxLayout.PAGE_AXIS));
+    videoPanel.setLayout(new BorderLayout());
 
     JScrollPane scrolledAnimation = new JScrollPane(animationPanel);
 
@@ -64,13 +66,13 @@ public class EditorView extends JFrame implements IView, ActionListener {
 
     scrolledAnimation.setPreferredSize(new Dimension(buttonPanel.getWidth(), 500));
 
-    videoPanel.add(scrolledAnimation);
-    videoPanel.add(buttonPanel);
+    videoPanel.add(scrolledAnimation, BorderLayout.CENTER);
+    videoPanel.add(buttonPanel, BorderLayout.SOUTH);
 
     this.configureShapePanel();
     this.configureKeyframePanel();
 
-    this.setLayout(new BoxLayout(getContentPane(), BoxLayout.LINE_AXIS));
+    this.setLayout(new BorderLayout());
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.add(shapePanel, BorderLayout.WEST);
     this.add(videoPanel, BorderLayout.CENTER);
@@ -89,6 +91,9 @@ public class EditorView extends JFrame implements IView, ActionListener {
     keyframeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     keyframeList.setFixedCellWidth(shapePanel.getWidth());
     keyframeList.addListSelectionListener((e -> {
+      if (keyframeList.getSelectedIndex() == -1) {
+        return;
+      }
       IReadOnlyShape curShape = this.shapesToRender.get(shapeList.getSelectedIndex());
       IReadOnlyKeyframe curFrame = curShape.getKeyframes().get(keyframeList.getSelectedIndex());
       tick.setText(Integer.toString(curFrame.getTick()));
@@ -106,10 +111,10 @@ public class EditorView extends JFrame implements IView, ActionListener {
 
     JLabel keyframeListHeader = new JLabel("Keyframes (in order)");
 
-    keyframePanel.setLayout(new BoxLayout(keyframePanel, BoxLayout.Y_AXIS));
+    keyframePanel.setLayout(new BorderLayout());
     keyframePanel.setPreferredSize(new Dimension(300, 500));
-    keyframePanel.add(keyframeListHeader);
-    keyframePanel.add(scrolledKeyframeList);
+    keyframePanel.add(keyframeListHeader, BorderLayout.NORTH);
+    keyframePanel.add(scrolledKeyframeList, BorderLayout.CENTER);
 
     // construct panel for adding/removing/editing keyframes
 
@@ -171,7 +176,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
 
     keyframeInteraction.add(keyframeButtons);
 
-    keyframePanel.add(keyframeInteraction);
+    keyframePanel.add(keyframeInteraction, BorderLayout.SOUTH);
 
 
   }
@@ -182,6 +187,9 @@ public class EditorView extends JFrame implements IView, ActionListener {
     shapeList = new JList<>(this.shapeListModel);
     shapeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     shapeList.addListSelectionListener((e -> {
+      if (shapeList.getSelectedIndex() == -1) {
+        return;
+      }
       IReadOnlyShape shape = this.shapesToRender.get(shapeList.getSelectedIndex());
       keyframeListModel.clear();
       for (IReadOnlyKeyframe keyframe : shape.getKeyframes()) {
@@ -213,7 +221,9 @@ public class EditorView extends JFrame implements IView, ActionListener {
     shapeSelections = new ButtonGroup();
 
     rectangleRadio = new JRadioButton("Rectangle");
+    rectangleRadio.setActionCommand("rect");
     ellipseRadio = new JRadioButton("Ellipse");
+    ellipseRadio.setActionCommand("ellipse");
 
     shapeSelections.add(rectangleRadio);
     shapeSelections.add(ellipseRadio);
@@ -341,7 +351,159 @@ public class EditorView extends JFrame implements IView, ActionListener {
         break;
       case "loop":
         this.features.toggleLoopback();
+        break;
+      case "addShape":
+        this.addShape();
+        break;
+      case "removeShape":
+        this.removeShape();
+        break;
+      case "addKeyframe":
+        this.addKeyframe();
+        break;
+      case "removeKeyframe":
+        this.removeKeyframe();
+        break;
+      case "modifyKeyframe":
+        this.modifyKeyframe();
+        break;
       default:
+
     }
   }
+
+  private void modifyKeyframe() {
+    if (keyframeList.isSelectionEmpty()) {
+      return;
+    }
+
+    int tickVal = 0;
+    int x = 0;
+    int y = 0;
+    int heightVal = 0;
+    int widthVal = 0;
+    int r = 0;
+    int g = 0;
+    int b = 0;
+
+    if (tick.getText().isEmpty() || xCoor.getText().isEmpty() || yCoor.getText().isEmpty()
+            || width.getText().isEmpty() || height.getText().isEmpty() || rVal.getText().isEmpty()
+            || gVal.getText().isEmpty() || bVal.getText().isEmpty()) {
+      return;
+    }
+    try {
+      tickVal = Integer.parseInt(this.tick.getText());
+      x = Integer.parseInt(this.xCoor.getText());
+      y = Integer.parseInt(this.yCoor.getText());
+      widthVal = Integer.parseInt(this.width.getText());
+      heightVal = Integer.parseInt(this.height.getText());
+      r = Integer.parseInt(this.rVal.getText());
+      b = Integer.parseInt(this.bVal.getText());
+      g = Integer.parseInt(this.gVal.getText());
+    }
+    catch (NumberFormatException e){
+      this.errorPopup("Inputs for a new keyframe must be numbers!");
+    }
+
+    try {
+      this.features.modifyKeyframe(shapeList.getSelectedValue(), tickVal, widthVal, heightVal, x, y,
+              new Color(r, g, b));
+    } catch (Exception e) {
+      this.errorPopup(e.getMessage());
+    }
+
+  }
+
+  private void removeKeyframe() {
+    if (keyframeList.isSelectionEmpty()) {
+      return;
+    }
+    IReadOnlyShape curShape = this.shapesToRender.get(shapeList.getSelectedIndex());
+    IReadOnlyKeyframe curFrame = curShape.getKeyframes().get(keyframeList.getSelectedIndex());
+    try {
+      this.features.removeKeyframe(curShape.getID(), curFrame.getTick());
+    } catch (Exception e) {
+      this.errorPopup(e.getMessage());
+    }
+  }
+
+  private void addKeyframe() {
+    int tickVal = 0;
+    int x = 0;
+    int y = 0;
+    int heightVal = 0;
+    int widthVal = 0;
+    int r = 0;
+    int g = 0;
+    int b = 0;
+
+    if (tick.getText().isEmpty() || xCoor.getText().isEmpty() || yCoor.getText().isEmpty()
+    || width.getText().isEmpty() || height.getText().isEmpty() || rVal.getText().isEmpty()
+    || gVal.getText().isEmpty() || bVal.getText().isEmpty()) {
+      return;
+    }
+    try {
+      tickVal = Integer.parseInt(this.tick.getText());
+      x = Integer.parseInt(this.xCoor.getText());
+      y = Integer.parseInt(this.yCoor.getText());
+      widthVal = Integer.parseInt(this.width.getText());
+      heightVal = Integer.parseInt(this.height.getText());
+      r = Integer.parseInt(this.rVal.getText());
+      b = Integer.parseInt(this.bVal.getText());
+      g = Integer.parseInt(this.gVal.getText());
+    }
+    catch (NumberFormatException e){
+      this.errorPopup("Inputs for a new keyframe must be numbers!");
+    }
+
+    try {
+      this.features.addKeyframe(shapeList.getSelectedValue(), tickVal, widthVal, heightVal, x, y,
+              new Color(r, g, b));
+    } catch (Exception e) {
+      this.errorPopup(e.getMessage());
+    }
+
+  }
+
+  private void removeShape() {
+    if (shapeList.isSelectionEmpty()) {
+      return;
+    }
+    try {
+      this.features.removeShape(shapeList.getSelectedValue());
+    }
+    catch (Exception e) {
+      errorPopup(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+
+  private void addShape() {
+    ShapeType type = null;
+    if (shapeIDField.getText().isEmpty() || shapeSelections.getSelection() == null) {
+      return;
+    }
+
+
+    switch (shapeSelections.getSelection().getActionCommand()) {
+      case "rect":
+        type = ShapeType.RECTANGLE;
+        break;
+      case "ellipse":
+        type = ShapeType.ELLIPSE;
+        break;
+      default:
+    }
+    try {
+      this.features.addShape(shapeIDField.getText(), type);
+    } catch (Exception e) {
+      errorPopup(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+
+  private void errorPopup(String errorMessage) {
+    JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+  }
+
 }

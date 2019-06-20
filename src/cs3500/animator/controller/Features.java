@@ -18,8 +18,7 @@ public interface Features {
   void toggleLoopback();
 
 
-  void addShape(String id, ShapeType type,  double width, double height, double x, double y,
-      Color color)
+  void addShape(String id, ShapeType type)
       throws IllegalArgumentException;
 
   void removeShape(String id) throws IllegalArgumentException;

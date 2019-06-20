@@ -138,16 +138,14 @@ public class ControllerImpl implements IController, Features {
   }
 
   @Override
-  public void addShape(String id, ShapeType type, double width, double height, double x, double y,
-      Color color) throws IllegalArgumentException {
-    if (id == null || type == null || color == null) {
+  public void addShape(String id, ShapeType type) throws IllegalArgumentException {
+    if (id == null || type == null) {
       throw new IllegalArgumentException("Given id, ShapeType, and/or Color in addShape are null");
     }
-    if (width < 0 || height < 0) {
-      throw new IllegalArgumentException("Given width and/or height in addShape are negative");
-    }
 
-    this.model.addShape(id, type, width, height, x, y, color);
+    // default values for a shape
+    this.model.addShape(id, type, 0, 0, 0, 0, Color.BLACK);
+    this.view.setShapes(model.getShapes());
     // TODO: Vido had a tick field in class????
   }
 
@@ -158,23 +156,27 @@ public class ControllerImpl implements IController, Features {
     }
 
     this.model.removeShape(id);
+    this.view.setShapes(model.getShapes());
   }
 
   @Override
   public void addKeyframe(String id, int tick, double width, double height, double x, double y,
       Color color) throws IllegalArgumentException {
     this.model.addKeyframe(id, tick, x, y, width, height, color);
+    this.view.setShapes(model.getShapes());
   }
 
   @Override
   public void removeKeyframe(String id, int tick) throws IllegalArgumentException {
     this.model.removeKeyframe(id, tick);
+    this.view.setShapes(model.getShapes());
   }
 
   @Override
   public void modifyKeyframe(String id, int tick, double width, double height,  double x, double y,
       Color color) throws IllegalArgumentException {
     this.model.addKeyframe(id, tick, width, height, x, y, color);
+    this.view.setShapes(model.getShapes());
     // FIXME!!!
     //  Note: should separate adding and modifying keyframes in the model as separate methods
     //  (because they are one method right now).
