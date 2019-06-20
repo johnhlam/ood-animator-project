@@ -292,7 +292,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
     restart.setActionCommand("restart");
     restart.addActionListener(this);
 
-    loopback = new JCheckBox("Loopback Enabled:");
+    loopback = new JCheckBox("Loopback Enabled");
     loopback.setSelected(false);
     loopback.setActionCommand("loop");
     loopback.addActionListener(this);
