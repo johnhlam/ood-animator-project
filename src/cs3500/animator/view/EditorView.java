@@ -26,7 +26,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
   private JPanel buttonPanel;
 
   private JPanel shapePanel;
-  private DefaultListModel shapeListModel = new DefaultListModel();
+  private DefaultListModel<String> shapeListModel = new DefaultListModel();
   private JList<String> shapeList;
   private JTextField shapeIDField;
   private JRadioButton rectangleRadio;
@@ -34,7 +34,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
   ButtonGroup shapeSelections;
 
   private JPanel keyframePanel;
-  private DefaultListModel keyframeListModel = new DefaultListModel();
+  private DefaultListModel<String> keyframeListModel = new DefaultListModel();
   private JList<String> keyframeList;
   private JTextField tick;
   private JTextField xCoor;
@@ -54,8 +54,9 @@ public class EditorView extends JFrame implements IView, ActionListener {
 
 
 
-
+  // TODO: Sometimes, the window starts up with empty lists
   public EditorView() {
+
     animationPanel = new AnimationPanel();
     videoPanel = new JPanel();
     videoPanel.setLayout(new BorderLayout());
@@ -87,7 +88,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
 
   private void configureKeyframePanel() {
     keyframePanel = new JPanel();
-    keyframeList = new JList<>(this.keyframeListModel);
+    keyframeList = new JList<String>(this.keyframeListModel);
     keyframeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     keyframeList.setFixedCellWidth(shapePanel.getWidth());
     keyframeList.addListSelectionListener((e -> {
@@ -166,12 +167,12 @@ public class EditorView extends JFrame implements IView, ActionListener {
     add.addActionListener(this);
     keyframeButtons.add(add);
     JButton remove = new JButton("Remove");
-    remove.addActionListener(this);
     remove.setActionCommand("removeKeyframe");
+    remove.addActionListener(this);
     keyframeButtons.add(remove);
     JButton modify = new JButton("Modify");
-    remove.addActionListener(this);
-    remove.setActionCommand("modifyKeyframe");
+    modify.addActionListener(this);
+    modify.setActionCommand("modifyKeyframe"); // TODO: Was originally remove (copy/paste error)
     keyframeButtons.add(modify);
 
     keyframeInteraction.add(keyframeButtons);
@@ -184,7 +185,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
   private void configureShapePanel() {
     // construct overall shape panel
     shapePanel = new JPanel();
-    shapeList = new JList<>(this.shapeListModel);
+    shapeList = new JList<String>(this.shapeListModel);
     shapeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     shapeList.addListSelectionListener((e -> {
       if (shapeList.getSelectedIndex() == -1) {
@@ -368,7 +369,6 @@ public class EditorView extends JFrame implements IView, ActionListener {
         this.modifyKeyframe();
         break;
       default:
-
     }
   }
 
@@ -403,6 +403,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
     }
     catch (NumberFormatException e){
       this.errorPopup("Inputs for a new keyframe must be numbers!");
+      return;
     }
 
     try {
@@ -410,8 +411,8 @@ public class EditorView extends JFrame implements IView, ActionListener {
               new Color(r, g, b));
     } catch (Exception e) {
       this.errorPopup(e.getMessage());
+      return;
     }
-
   }
 
   private void removeKeyframe() {
@@ -424,6 +425,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
       this.features.removeKeyframe(curShape.getID(), curFrame.getTick());
     } catch (Exception e) {
       this.errorPopup(e.getMessage());
+      return;
     }
   }
 
@@ -445,6 +447,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
 
     if (shapeList.isSelectionEmpty()) {
       this.errorPopup("Select a shape to add the keyframe to!");
+      return;
     }
     try {
       tickVal = Integer.parseInt(this.tick.getText());
@@ -458,6 +461,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
     }
     catch (NumberFormatException e){
       this.errorPopup("Inputs for a new keyframe must be numbers!");
+      return;
     }
 
     try {
@@ -466,6 +470,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
     } catch (Exception e) {
       this.errorPopup(e.getMessage());
       e.printStackTrace();
+      return;
     }
 
   }
@@ -480,6 +485,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
     catch (Exception e) {
       errorPopup(e.getMessage());
       e.printStackTrace();
+      return;
     }
   }
 
@@ -504,11 +510,22 @@ public class EditorView extends JFrame implements IView, ActionListener {
     } catch (Exception e) {
       errorPopup(e.getMessage());
       e.printStackTrace();
+      return;
     }
   }
 
   private void errorPopup(String errorMessage) {
     JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
   }
+
+// TODO: Make keyframe list refresh upon interacting with the keyframes
+  
+//  private void refreshKeyframeList() {
+//    IReadOnlyShape curShape = this.shapesToRender.get(this.shapeList.getSelectedIndex());
+//    keyframeListModel.clear();
+//    for (IReadOnlyKeyframe keyframe : curShape.getKeyframes()) {
+//      keyframeListModel.addElement(keyframe.printKeyframe());
+//    }
+//  }
 
 }

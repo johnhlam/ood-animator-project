@@ -100,6 +100,7 @@ public class ControllerImpl implements IController, Features {
   @Override
   public void renderAnimation() {
 //    timer.start();
+    // TODO: For a visual, the timer should start, but for the editor, the timer should not
   }
 
   @Override
