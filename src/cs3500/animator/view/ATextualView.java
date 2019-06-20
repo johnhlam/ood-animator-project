@@ -89,4 +89,9 @@ public abstract class ATextualView implements IView {
     throw new UnsupportedOperationException("Text-based views do not have features");
   }
 
+  @Override
+  public void setShapes(List<IReadOnlyShape> shapes) {
+    // does not do anything since text-based view gets shapes from toOutput method
+  }
+
 }

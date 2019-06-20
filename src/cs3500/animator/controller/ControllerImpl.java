@@ -71,6 +71,7 @@ public class ControllerImpl implements IController, Features {
 
     try {
       this.view.setFeatures(this);
+      this.view.setShapes(model.getShapes());
     } catch (UnsupportedOperationException e) {
 
     }
@@ -114,6 +115,7 @@ public class ControllerImpl implements IController, Features {
   @Override
   public void restart() {
     this.tick = 0;
+    this.view.render(model.getShapesAtTick(0));
   }
 
   @Override

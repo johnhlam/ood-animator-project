@@ -99,4 +99,9 @@ public class VisualView extends JFrame implements IView {
   public void setFeatures(Features features) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Visual view does not have features");
   }
+
+  @Override
+  public void setShapes(List<IReadOnlyShape> shapes) {
+    // does not do anything since visual view gets shapes from render method
+  }
 }

@@ -48,4 +48,6 @@ public interface IView {
   void render(List<IReadOnlyShape> shapes) throws UnsupportedOperationException;
 
   void setFeatures(Features features) throws UnsupportedOperationException;
+
+  void setShapes(List<IReadOnlyShape> shapes);
 }
