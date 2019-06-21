@@ -45,6 +45,11 @@ public class TestModel implements IModel {
     this.attemptAppend("Model: Keyframe removed for shape " + id + " at tick " + tick);
   }
 
+  @Override
+  public List<IKeyframe> getKeyframesAtTick(int tick) throws IllegalArgumentException {
+    return null; // TODO: Fill this in!
+  }
+
   /**
    * Appends the appropriate message to the Appendable.
    */

@@ -23,8 +23,8 @@ public interface IModelShape extends IReadOnlyShape {
 
   /**
    * Adds a keyframe with the given parameters to this shape. If there is already an existing
-   * keyframe at the given tick, then that keyframe will be modified to contain the given
-   * parameters. How each keyframe is represented/stored is left for the implementation.
+   * keyframe at the given tick, then an error will be thrown. How each keyframe is
+   * represented/stored is left for the implementation.
    *
    * @param tick   is the tick of the keyframe to be added
    * @param width  is the width of the keyframe to be added

@@ -35,7 +35,7 @@ public interface IModel {
    *                                  is negative, or if the given keyframe already exists.
    */
   void addKeyframe(String id, int tick, double x, double y, double width, double height,
-                   Color color) throws IllegalArgumentException;
+      Color color) throws IllegalArgumentException;
 
   /**
    * Specific implementations of the model will have different ways of doing so. Each implementation
@@ -47,6 +47,17 @@ public interface IModel {
    *                                  tick does not exist in the shape
    */
   void removeKeyframe(String id, int tick) throws IllegalArgumentException;
+
+  /**
+   * Returns a list of keyframes that occur at the given tick (i.e. checks all shapes to see if
+   * they have a keyframe at that tick, and adds it to the list if it exists).
+   *
+   * @param tick is the tick of the keyframes to get
+   * @return a list of keyframes that occur at the given tick
+   * @throws IllegalArgumentException if the given tick is negative
+   */
+
+  List<IKeyframe> getKeyframesAtTick(int tick) throws IllegalArgumentException;
 
   /**
    * Adds a shape to this model to be represented in an animation. Each shape is specified by an
@@ -63,7 +74,7 @@ public interface IModel {
    * @throws IllegalArgumentException if any of the arguments are null, or if the ID already exists
    */
   void addShape(String id, ShapeType shape, double width, double height, double x, double y,
-                Color color) throws IllegalArgumentException;
+      Color color) throws IllegalArgumentException;
 
   /**
    * Removes the shape and its associated motions with the given ID in the list. Throws an exception

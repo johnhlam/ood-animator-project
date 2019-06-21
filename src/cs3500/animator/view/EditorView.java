@@ -207,7 +207,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
     keyframeButtons.add(remove);
     JButton modify = new JButton("Modify");
     modify.addActionListener(this);
-    modify.setActionCommand("modifyKeyframe"); // TODO: Was originally remove (copy/paste error)
+    modify.setActionCommand("modifyKeyframe");
     keyframeButtons.add(modify);
 
     keyframeInteraction.add(keyframeButtons);
