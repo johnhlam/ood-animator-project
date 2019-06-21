@@ -1,11 +1,9 @@
-// TODO: Write tests for get final tick
 // TODO: Test for clashing keyframes
 // TODO: Get rid of printStackTraces
 // TODO: Fix line wrapping: File -> Settings -> Code Style -> Java -> Wrapping and Braces -> Keep
 //  when reformatting -> Line breaks OFF;; Toggle back on when done
-// TODO: Added a getKeyframesAtTick method to the model (analogous to the motion version)-- Make
-//  sure to test it!
-// TODO: Add tests for Builder.addKeyframe
+// TODO: Add tests for making sure that no error occurs when adding a keyframe in with the exact
+//  same params as an existing one
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +17,6 @@ import cs3500.animator.model.IModelImpl;
 import cs3500.animator.model.IReadOnlyShape;
 import cs3500.animator.model.IModelShape;
 import cs3500.animator.model.IKeyframe;
-import cs3500.animator.model.IKeyframeImpl;
 import cs3500.animator.model.ShapeType;
 import cs3500.animator.util.AnimationBuilder;
 
@@ -548,7 +545,7 @@ public class IModelImplTests {
     this.model1.addKeyframe("R", 45, 20, 40, 60, 120, Color.DARK_GRAY);
 
     // This call should throw an error
-    this.model1.addKeyframe("R", 45, 20, 40, 60, 120, Color.DARK_GRAY);
+    this.model1.addKeyframe("R", 45, 0, 40, 60, 120, Color.DARK_GRAY);
   }
 
   /**
@@ -571,7 +568,7 @@ public class IModelImplTests {
 
 
   /**
-   * Tests for adding 2 keyframe into a model with one shape in it that has no keyframes.
+   * Tests for adding 2 keyframes into a model with one shape in it that has no keyframes. I
    */
   @Test
   public void testAddKeyframe1ShapeEmpty() {
@@ -632,6 +629,43 @@ public class IModelImplTests {
 
     assertEquals("shape R rectangle", this.model1.printAnimations());
 
+    this.model1.addKeyframe("R", 10, 30, 40, 40, 60, Color.CYAN);
+    this.model1.addKeyframe("R", 15, 45, 60, 40, 60, Color.CYAN);
+    this.model1.addKeyframe("R", 30, 50, 60, 80, 120, Color.GREEN);
+
+    assertEquals(
+        "shape R rectangle\n" + "motion R 10 30 40 40 60 0 255 255\t15 45 60 40 60 0 255 255\n"
+            + "motion R 15 45 60 40 60 0 255 255\t30 50 60 80 120 0 255 0",
+        this.model1.printAnimations());
+
+    this.model1.addKeyframe("R", 1, 30, 40, 10, 20, Color.CYAN);
+
+    assertEquals("shape R rectangle\n" +
+            "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
+            "motion R 10 30 40 40 60 0 255 255\t15 45 60 40 60 0 255 255\n" +
+            "motion R 15 45 60 40 60 0 255 255\t30 50 60 80 120 0 255 0",
+        this.model1.printAnimations());
+  }
+
+  /**
+   * Tests for adding a keyframe into a model with one shape in it that has three keyframes.
+   * The keyframe should be added to the beginning of the shape's keyframe list. Includes adding
+   * multiple identical keyframes, which should not throw an error.
+   */
+  @Test
+  public void testAddKeyframe1Shape3KFBeg2() {
+    assertEquals("", this.model1.printAnimations());
+
+    this.model1.addShape("R", ShapeType.RECTANGLE, 10, 20, 30, 40, Color.CYAN);
+
+    assertEquals("shape R rectangle", this.model1.printAnimations());
+
+    this.model1.addKeyframe("R", 10, 30, 40, 40, 60, Color.CYAN);
+    this.model1.addKeyframe("R", 15, 45, 60, 40, 60, Color.CYAN);
+    this.model1.addKeyframe("R", 30, 50, 60, 80, 120, Color.GREEN);
+
+    // Since these keyframes are identical to the ones above, this should not throw and error
+    // (and should not have any effect on the shapes or model).
     this.model1.addKeyframe("R", 10, 30, 40, 40, 60, Color.CYAN);
     this.model1.addKeyframe("R", 15, 45, 60, 40, 60, Color.CYAN);
     this.model1.addKeyframe("R", 30, 50, 60, 80, 120, Color.GREEN);
@@ -1972,7 +2006,7 @@ public class IModelImplTests {
   public void testBuilderOverlapMotion() {
     this.builder.declareShape("R", "rectangle");
     this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0, 0, 10, 40, 40, 40, 40, 0, 0, 0);
-    this.builder.addMotion("R", 4, 20, 20, 30, 40, 255, 0, 0, 10, 40, 40, 40, 40, 0, 0, 0);
+    this.builder.addMotion("R", 4, 20, 20, 30, 40, 255, 0, 0, 10, 0, 40, 40, 40, 0, 0, 0);
   }
 
 
@@ -2148,4 +2182,227 @@ public class IModelImplTests {
     assertEquals(40, keyframeAdded4.getHeight(), .001);
     assertEquals(new Color(0, 0, 0), keyframeAdded4.getColor());
   }
+
+  /**
+   * Tests that adding a keyframe with a null ID (via Builder) will throw an error.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testBuildAddKeyframeNullID() {
+    this.builder.addKeyframe(null, 10, 0, 0, 0, 0, 0, 0, 0);
+  }
+
+  /**
+   * Tests that adding a keyframe with a negative tick (via Builder) will throw an error.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testBuildAddKeyframeNegTick() {
+    this.builder.addKeyframe("NULL", -1, 0, 0, 0, 0, 0, 0, 0);
+  }
+
+  /**
+   * Tests that adding a keyframe with a negative width (via Builder) will throw an error.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testBuildAddKeyframeNegWidth() {
+    this.builder.addKeyframe("NULL", 1, 0, 0, -1, 0, 0, 0, 0);
+  }
+
+  /**
+   * Tests that adding a keyframe with a negative height (via Builder) will throw an error.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testBuildAddKeyframeNegHeight() {
+    this.builder.addKeyframe("NULL", 1, 0, 0, 0, -1, 0, 0, 0);
+  }
+
+  /**
+   * Tests that adding a keyframe with an ID for a shape that doesn't exist will throw an error.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testBuildAddKeyframeNoShape() {
+    this.builder.addKeyframe("R", 1, 0, 0, 0, 0, 0, 0, 0);
+  }
+
+  /**
+   * Tests that adding a keyframe with an ID for a shape that doesn't exist will throw an error.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testBuildAddKeyframeNoShape2() {
+    this.builder.declareShape("R", "rectangle");
+    this.builder.declareShape("C", "ellipse");
+    this.builder.declareShape("S", "rectangle");
+
+    this.builder.addKeyframe("NULL", 1, 0, 0, 0, 0, 0, 0, 0);
+  }
+
+  /**
+   * Tests that adding a keyframe twice for the same shape will throw an error.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testBuildAddKeyframeTwice() {
+    this.builder.declareShape("R", "rectangle");
+    this.builder.declareShape("C", "ellipse");
+    this.builder.declareShape("S", "rectangle");
+
+    this.builder.addKeyframe("R", 1, 0, 0, 0, 0, 0, 0, 0);
+    this.builder.addKeyframe("R", 1, 0, 0, 0, 0, 0, 0, 1);
+  }
+
+  /**
+   * Tests that adding a keyframe works properly when the given keyframe is valid.
+   */
+  @Test
+  public void testAddKeyframeBuild() {
+    this.builder.declareShape("R", "rectangle");
+    this.builder.declareShape("C", "ellipse");
+    this.builder.declareShape("S", "rectangle");
+
+    this.builder.addKeyframe("R", 10, 0, 0, 0, 0, 0, 0, 0);
+
+    IModel model = this.builder.build();
+
+    assertEquals("shape R rectangle\n"
+            + "motion R 10 0 0 0 0 0 0 0\t10 0 0 0 0 0 0 0\n\n"
+            + "shape C ellipse\n\n"
+            + "shape S rectangle",
+        model.printAnimations());
+  }
+
+  /**
+   * Tests that adding a keyframe works properly when the given keyframe is valid.
+   */
+  @Test
+  public void testAddKeyframeBuild2() {
+    this.builder.declareShape("R", "rectangle");
+    this.builder.declareShape("C", "ellipse");
+    this.builder.declareShape("S", "rectangle");
+
+    this.builder.addKeyframe("C", 10, 0, 0, 0, 0, 0, 0, 0);
+
+    IModel model = this.builder.build();
+
+    assertEquals("shape R rectangle\n\n"
+            + "shape C ellipse\n"
+            + "motion C 10 0 0 0 0 0 0 0\t10 0 0 0 0 0 0 0\n\n"
+            + "shape S rectangle",
+        model.printAnimations());
+  }
+
+  /**
+   * Tests that adding a keyframe works properly when the given keyframe is valid.
+   */
+  @Test
+  public void testAddKeyframeBuild3() {
+    this.builder.declareShape("R", "rectangle");
+    this.builder.declareShape("C", "ellipse");
+    this.builder.declareShape("S", "rectangle");
+
+    this.builder.addKeyframe("S", 10, 0, 0, 0, 0, 0, 0, 0);
+
+    IModel model = this.builder.build();
+
+    assertEquals("shape R rectangle\n\n"
+            + "shape C ellipse\n\n"
+            + "shape S rectangle\n"
+            + "motion S 10 0 0 0 0 0 0 0\t10 0 0 0 0 0 0 0",
+        model.printAnimations());
+  }
+
+  /**
+   * Tests that adding keyframes works properly when the given keyframes is valid.
+   */
+  @Test
+  public void testAddKeyframeBuild4() {
+    this.builder.declareShape("R", "rectangle");
+    this.builder.declareShape("C", "ellipse");
+    this.builder.declareShape("S", "rectangle");
+
+    this.builder.addKeyframe("R", 10, 0, 0, 0, 0, 0, 0, 0);
+    this.builder.addKeyframe("C", 10, 0, 0, 0, 0, 0, 0, 0);
+    this.builder.addKeyframe("S", 10, 0, 0, 0, 0, 0, 0, 0);
+
+    IModel model = this.builder.build();
+
+    assertEquals("shape R rectangle\n"
+            + "motion R 10 0 0 0 0 0 0 0\t10 0 0 0 0 0 0 0\n\n"
+            + "shape C ellipse\n"
+            + "motion C 10 0 0 0 0 0 0 0\t10 0 0 0 0 0 0 0\n\n"
+            + "shape S rectangle\n"
+            + "motion S 10 0 0 0 0 0 0 0\t10 0 0 0 0 0 0 0",
+        model.printAnimations());
+  }
+
+  /**
+   * Tests that adding keyframes works properly when the given keyframes is valid. Includes
+   * adding identical keyframes, which should not throw an error.
+   */
+  @Test
+  public void testAddKeyframeBuild5() {
+    this.builder.declareShape("R", "rectangle");
+    this.builder.declareShape("C", "ellipse");
+    this.builder.declareShape("S", "rectangle");
+
+    this.builder.addKeyframe("R", 10, 0, 0, 0, 0, 0, 0, 0);
+    this.builder.addKeyframe("C", 10, 0, 0, 0, 0, 0, 0, 0);
+    this.builder.addKeyframe("S", 10, 0, 0, 0, 0, 0, 0, 0);
+    // Since these keyframes are identical to the ones above, it should not throw an error.
+    this.builder.addKeyframe("R", 10, 0, 0, 0, 0, 0, 0, 0);
+    this.builder.addKeyframe("C", 10, 0, 0, 0, 0, 0, 0, 0);
+    this.builder.addKeyframe("S", 10, 0, 0, 0, 0, 0, 0, 0);
+
+    IModel model = this.builder.build();
+
+    assertEquals("shape R rectangle\n"
+            + "motion R 10 0 0 0 0 0 0 0\t10 0 0 0 0 0 0 0\n\n"
+            + "shape C ellipse\n"
+            + "motion C 10 0 0 0 0 0 0 0\t10 0 0 0 0 0 0 0\n\n"
+            + "shape S rectangle\n"
+            + "motion S 10 0 0 0 0 0 0 0\t10 0 0 0 0 0 0 0",
+        model.printAnimations());
+  }
+
+  /**
+   * Tests that adding keyframes works properly when the given keyframes is valid.
+   */
+  @Test
+  public void testAddKeyframeBuild6() {
+    this.builder.declareShape("R", "rectangle");
+    this.builder.declareShape("C", "ellipse");
+    this.builder.declareShape("S", "rectangle");
+
+    this.builder.addKeyframe("R", 1, 30, 40, 10, 20, 0, 255, 255);
+    this.builder.addKeyframe("R", 10, 30, 40, 40, 60, 0, 255, 255);
+    this.builder.addKeyframe("R", 15, 45, 60, 40, 60, 0, 255, 255);
+    this.builder.addKeyframe("R", 30, 50, 60, 80, 120, 0, 255, 0);
+
+    this.builder.addKeyframe("C", 1, 30, 40, 10, 20, 0, 255, 255);
+    this.builder.addKeyframe("C", 10, 30, 40, 10, 20, 255, 200, 0);
+    this.builder.addKeyframe("C", 15, 30, 40, 0, 0, 255, 200, 0);
+    this.builder.addKeyframe("C", 30, 45, 60, 0, 0, 255, 200, 0);
+
+    this.builder.addKeyframe("S", 10, 30, 40, 10, 10, 255, 0, 0);
+    this.builder.addKeyframe("S", 25, 15, 20, 10, 20, 255, 0, 0);
+    this.builder.addKeyframe("S", 35, 15, 20, 6, 7, 255, 0, 0);
+    this.builder.addKeyframe("S", 45, 15, 20, 6, 7, 255, 255, 0);
+    
+    IModel model = this.builder.build();
+    
+    assertEquals(
+        "shape R rectangle\n" +
+            "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
+            "motion R 10 30 40 40 60 0 255 255\t15 45 60 40 60 0 255 255\n" +
+            "motion R 15 45 60 40 60 0 255 255\t30 50 60 80 120 0 255 0\n" +
+            "\n" +
+            "shape C ellipse\n" +
+            "motion C 1 30 40 10 20 0 255 255\t10 30 40 10 20 255 200 0\n" +
+            "motion C 10 30 40 10 20 255 200 0\t15 30 40 0 0 255 200 0\n" +
+            "motion C 15 30 40 0 0 255 200 0\t30 45 60 0 0 255 200 0\n" +
+            "\n" +
+            "shape S rectangle\n" +
+            "motion S 10 30 40 10 10 255 0 0\t25 15 20 10 20 255 0 0\n" +
+            "motion S 25 15 20 10 20 255 0 0\t35 15 20 6 7 255 0 0\n" +
+            "motion S 35 15 20 6 7 255 0 0\t45 15 20 6 7 255 255 0",
+        model.printAnimations());
+  }
+  
 }
