@@ -2,6 +2,7 @@ package cs3500.animator.view;
 
 import cs3500.animator.model.IKeyframe;
 
+import java.awt.geom.Ellipse2D;
 import java.util.List;
 
 import cs3500.animator.model.IMotion;
@@ -100,11 +101,31 @@ public class SVGView extends ATextualView {
    * @param tickRate    is the tick rate of the SVG animation
    * @param ap          is the Appendable to output to
    */
-  // TODO: Maybe rename this method
   private void printShapeMotionsSVG(IReadOnlyShape shape, String xCoordinate, String yCoordinate,
                                     String width, String height, int tickRate, Appendable ap) {
 
     List<IKeyframe> keyframesList = shape.getKeyframes();
+
+    if (keyframesList.size() == 1) {
+      IKeyframe keyframe = keyframesList.get(0);
+      String startTime = Integer.toString(this.tickToMS(keyframe.getTick(), tickRate));
+      this.svgAnimationText(xCoordinate, startTime, "0", Double.toString(keyframe.getX()),
+              Double.toString(keyframe.getX()), ap);
+      this.svgAnimationText(yCoordinate, startTime, "0", Double.toString(keyframe.getY()),
+              Double.toString(keyframe.getY()), ap);
+      this.svgAnimationText(width, startTime, "0", Double.toString(keyframe.getWidth()),
+              Double.toString(keyframe.getWidth()), ap);
+      this.svgAnimationText(height, startTime, "0", Double.toString(keyframe.getHeight()),
+              Double.toString(keyframe.getHeight()), ap);
+
+      StringBuilder color = new StringBuilder();
+      color.append("rgb(").append(keyframe.getColor().getRed()).append(
+              ",").append(keyframe.getColor().getGreen()).append(
+              ",").append(keyframe.getColor().getBlue()).append(")");
+      this.svgAnimationText("fill", startTime,
+              "0", color.toString(), color.toString(), ap);
+      this.attemptAppend("\n", ap);
+    }
 
     // Subtracts one from the loop termination condition because the loop checks the current
     // keyframe and the next keyframe
@@ -146,38 +167,6 @@ public class SVGView extends ATextualView {
 
 
     }
-
-//    for (IMotion motion : shape.getMotions()) {
-//      String startTime = Integer.toString(this.tickToMS(motion.getStartTick(), tickRate));
-//      String duration =
-//          Integer.toString(this.tickToMS(motion.getEndTick() - motion.getStartTick(), tickRate));
-//
-//      // Adds the 'animate' element for each attribute of the shape
-//      this.svgAnimationText(xCoordinate, startTime,
-//          duration, Double.toString(motion.getStartX()), Double.toString(motion.getEndX()), ap);
-//      this.svgAnimationText(yCoordinate, startTime,
-//          duration, Double.toString(motion.getStartY()), Double.toString(motion.getEndY()), ap);
-//      this.svgAnimationText(width, startTime,
-//          duration, Double.toString(motion.getStartWidth()),
-//          Double.toString(motion.getEndWidth()), ap);
-//      this.svgAnimationText(height, startTime,
-//          duration, Double.toString(motion.getStartHeight()),
-//          Double.toString(motion.getEndHeight()), ap);
-//
-//      StringBuilder colorStart = new StringBuilder();
-//      colorStart.append("rgb(").append(motion.getStartColor().getRed()).append(
-//          ",").append(motion.getStartColor().getGreen()).append(
-//          ",").append(motion.getStartColor().getBlue()).append(")");
-//
-//      StringBuilder colorEnd = new StringBuilder();
-//      colorEnd.append("rgb(").append(motion.getEndColor().getRed()).append(
-//          ",").append(motion.getEndColor().getGreen()).append(
-//          ",").append(motion.getEndColor().getBlue()).append(")");
-//
-//      this.svgAnimationText("fill", startTime,
-//          duration, colorStart.toString(), colorEnd.toString(), ap);
-//      this.attemptAppend("\n", ap);
-//    }
   }
 
   /**
