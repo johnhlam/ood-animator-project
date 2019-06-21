@@ -375,15 +375,8 @@ public class IModelImpl implements IModel {
 
       for (IModelShape cur : this.shapes) {
         if (cur.getID().equals(name)) {
-          // If the list has no keyframes yet, then adds both the start and end states of the motion
-          if (cur.getKeyframes().isEmpty()) {
             cur.addKeyframe(t1, w1, h1, x1, y1, new Color(r1, g1, b1));
             cur.addKeyframe(t2, w2, h2, x2, y2, new Color(r2, g2, b2));
-            // Else (the list has at least 1 keyframe in it), adds just the end keyframe, since
-            // the starting keyframe will overlap with an existing one
-          } else {
-            cur.addKeyframe(t2, w2, h2, x2, y2, new Color(r2, g2, b2));
-          }
           // Does not need to iterate through the rest of the list if a shape with the given id
           // has been found
           return this;

@@ -269,7 +269,6 @@ public class IModelShapeImpl implements IModelShape {
           + "cannot be negative");
     }
 
-
     // If the keyframe list is empty, or if given tick is after the last keyframe's tick, then
     // adds the keyframe (with the given params) to the list
     if (keyframeList.isEmpty()
@@ -303,12 +302,19 @@ public class IModelShapeImpl implements IModelShape {
    */
   private void insertKeyframe(int tick, double width, double height,
       double x, double y, Color color) throws IllegalArgumentException {
-
     // Checks for any coinciding keyframes (i.e. keyframes for the same tick)
     // Subtracts one from the loop termination condition because the loop checks the current
     // keyframe and the next keyframe
     for (int i = 0; i < this.keyframeList.size() - 1; i++) {
-      if (this.keyframeList.get(i).getTick() == tick) {
+      IKeyframe keyframe = this.keyframeList.get(i);
+      if (keyframe.getTick() == tick
+          && Math.abs(keyframe.getWidth() - width) < 0.0001
+          && Math.abs(keyframe.getHeight() - height) < 0.0001
+          && Math.abs(keyframe.getX() - x) < 0.0001
+          && Math.abs(keyframe.getY() - y) < 0.0001
+          && keyframe.getColor().equals(color)) {
+        // Does nothing if all of the given fields are the same
+      } else if (keyframe.getTick() == tick) {
         throw new IllegalArgumentException("There is already a keyframe at the given tick: "
             + tick + ", for shape " + this.id);
 
@@ -323,9 +329,18 @@ public class IModelShapeImpl implements IModelShape {
       }
     }
 
+    if (this.keyframeList.get(this.keyframeList.size() - 1).getTick() == tick
+        && Math.abs(this.keyframeList.get(this.keyframeList.size() - 1).getWidth() - width) < 0.0001
+        && Math.abs(this.keyframeList.get(this.keyframeList.size() - 1).getHeight() - height)
+        < 0.0001
+        && Math.abs(this.keyframeList.get(this.keyframeList.size() - 1).getX() - x) < 0.0001
+        && Math.abs(this.keyframeList.get(this.keyframeList.size() - 1).getY() - y) < 0.0001
+        && this.keyframeList.get(this.keyframeList.size() - 1).getColor().equals(color)) {
+      // Does nothing if all of the given fields are the same
+    }
     // Checks to make sure that the given tick isn't the same as the last keyframe, since the
     // loop does not check the last keyframe
-    if (this.keyframeList.get(this.keyframeList.size() - 1).getTick() == tick) {
+    else if (this.keyframeList.get(this.keyframeList.size() - 1).getTick() == tick) {
       throw new IllegalArgumentException("There is already a keyframe at the given tick: "
           + tick + ", for shape " + this.id);
     }

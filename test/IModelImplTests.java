@@ -490,7 +490,7 @@ public class IModelImplTests {
     this.model1.addKeyframe("R",45, 20, 40, 60, 120, Color.DARK_GRAY);
 
     // This call should throw an error
-    this.model1.addKeyframe("R", 0, 10, 20, 30, 40, Color.CYAN);
+    this.model1.addKeyframe("R", 0, 0, 20, 30, 40, Color.CYAN);
   }
 
   /**
@@ -509,7 +509,7 @@ public class IModelImplTests {
     this.model1.addKeyframe("R", 45, 20, 40, 60, 120, Color.DARK_GRAY);
 
     // This call should throw an error
-    this.model1.addKeyframe("R", 20, 10, 40, 30, 40, Color.CYAN);
+    this.model1.addKeyframe("R", 20, 0, 40, 30, 40, Color.CYAN);
   }
 
   /**
@@ -528,7 +528,7 @@ public class IModelImplTests {
     this.model1.addKeyframe("R", 45, 20, 40, 60, 120, Color.DARK_GRAY);
 
     // This call should throw an error
-    this.model1.addKeyframe("R", 35, 10, 40, 60, 120, Color.CYAN);
+    this.model1.addKeyframe("R", 35, 1, 40, 60, 120, Color.CYAN);
   }
 
   /**
@@ -1349,7 +1349,7 @@ public class IModelImplTests {
    * Tests that nothing happens if the ID cannot be found.
    */
   @Test
-  public void testRemovekeyframe2() {
+  public void testRemoveKeyframe2() {
     this.model1.addShape("R", ShapeType.RECTANGLE, 10, 20, 30, 40, Color.CYAN);
     this.model1.addKeyframe("R", 1, 30, 40, 10, 20, Color.CYAN);
     this.model1.addKeyframe("R", 10, 30, 40, 40, 60, Color.CYAN);
@@ -1401,7 +1401,7 @@ public class IModelImplTests {
    * Tests that removing from an empty animation does nothing.
    */
   @Test
-  public void testRemovekeyframe4() {
+  public void testRemoveKeyframe4() {
     assertEquals("", model1.printAnimations());
 
     this.model1.removeKeyframe("E", 2);
@@ -1438,6 +1438,158 @@ public class IModelImplTests {
   }
 
   /**
+   * Tests getFinalTick on a model without shapes.
+   */
+  @Test
+  public void testGetFinalTickEmpty() {
+    assertEquals(0, this.model1.getFinalTick());
+  }
+
+  /**
+   * Tests getFinalTick on a model with 3 shapes, but no keyframes.
+   */
+  @Test
+  public void testGetFinalTick3Shapes() {
+    this.model1.addShape("R", ShapeType.RECTANGLE, 10.3, 20.5, 30.7, 40.9, Color.CYAN);
+    assertEquals(0, this.model1.getFinalTick());
+
+    this.model1.addShape("C", ShapeType.ELLIPSE, 10, 20, 30, 40, Color.CYAN);
+    assertEquals(0, this.model1.getFinalTick());
+
+    this.model1.addShape("S", ShapeType.RECTANGLE, 4, 5.9, 6.8, 1000, Color.RED);
+    assertEquals(0, this.model1.getFinalTick());
+  }
+
+  /**
+   * Tests getFinalTick on a model with 3 shapes, but only the first shape has 1 keyframe.
+   */
+  @Test
+  public void testGetFinalTick3Shapes1KF() {
+    this.model1.addShape("R", ShapeType.RECTANGLE, 10.3, 20.5, 30.7, 40.9, Color.CYAN);
+    this.model1.addKeyframe("R", 1, 0, 0, 0, 0, new Color(0, 0, 0));
+    assertEquals(1, this.model1.getFinalTick());
+
+    this.model1.addShape("C", ShapeType.ELLIPSE, 10, 20, 30, 40, Color.CYAN);
+    assertEquals(1, this.model1.getFinalTick());
+
+    this.model1.addShape("S", ShapeType.RECTANGLE, 4, 5.9, 6.8, 1000, Color.RED);
+    assertEquals(1, this.model1.getFinalTick());
+  }
+
+  /**
+   * Tests getFinalTick on a model with 3 shapes, but only the second shape has 1 keyframe.
+   */
+  @Test
+  public void testGetFinalTick3Shapes1KF2() {
+    this.model1.addShape("R", ShapeType.RECTANGLE, 10.3, 20.5, 30.7, 40.9, Color.CYAN);
+    assertEquals(0, this.model1.getFinalTick());
+
+    this.model1.addShape("C", ShapeType.ELLIPSE, 10, 20, 30, 40, Color.CYAN);
+    this.model1.addKeyframe("C", 1, 0, 0, 0, 0, new Color(0, 0, 0));
+    assertEquals(1, this.model1.getFinalTick());
+
+    this.model1.addShape("S", ShapeType.RECTANGLE, 4, 5.9, 6.8, 1000, Color.RED);
+    assertEquals(1, this.model1.getFinalTick());
+  }
+
+  /**
+   * Tests getFinalTick on a model with 3 shapes, but only the third shape has 1 keyframe.
+   */
+  @Test
+  public void testGetFinalTick3Shapes1KF3() {
+    this.model1.addShape("R", ShapeType.RECTANGLE, 10.3, 20.5, 30.7, 40.9, Color.CYAN);
+    assertEquals(0, this.model1.getFinalTick());
+
+    this.model1.addShape("C", ShapeType.ELLIPSE, 10, 20, 30, 40, Color.CYAN);
+    assertEquals(0, this.model1.getFinalTick());
+
+    this.model1.addShape("S", ShapeType.RECTANGLE, 4, 5.9, 6.8, 1000, Color.RED);
+    this.model1.addKeyframe("S", 1, 0, 0, 0, 0, new Color(0, 0, 0));
+    assertEquals(1, this.model1.getFinalTick());
+  }
+
+  /**
+   * Tests that calling getFinalTick on a model with 3 shapes, each with their own keyframes,
+   * returns the correct result.
+   */
+  @Test
+  public void testGetFinalTickKF1() {
+    this.model1.addShape("R", ShapeType.RECTANGLE, 10, 20, 30, 40, Color.CYAN);
+    this.model1.addShape("C", ShapeType.ELLIPSE, 10, 20, 30, 40, Color.CYAN);
+    this.model1.addShape("S", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
+
+    this.model1.addKeyframe("R", 1, 30, 40, 10, 20, Color.CYAN);
+    this.model1.addKeyframe("R", 10, 30, 40, 40, 60, Color.CYAN);
+    this.model1.addKeyframe("R", 15, 45, 60, 40, 60, Color.CYAN);
+    this.model1.addKeyframe("R", 30, 50, 60, 80, 120, Color.GREEN);
+
+    this.model1.addKeyframe("C", 1, 30, 40, 10, 20, Color.CYAN);
+    this.model1.addKeyframe("C", 10, 30, 40, 10, 20, Color.ORANGE);
+    this.model1.addKeyframe("C", 15, 30, 40, 0, 0, Color.ORANGE);
+    this.model1.addKeyframe("C", 30, 45, 60, 0, 0, Color.ORANGE);
+
+    this.model1.addKeyframe("S", 10, 30, 40, 10, 10, Color.RED);
+    this.model1.addKeyframe("S", 25, 15, 20, 10, 20, Color.RED);
+    this.model1.addKeyframe("S", 35, 15, 20, 6, 7, Color.RED);
+    this.model1.addKeyframe("S", 45, 15, 20, 6, 7, Color.YELLOW);
+
+    assertEquals(45, this.model1.getFinalTick());
+  }
+
+  /**
+   * Tests that calling getFinalTick on a model with 3 shapes, each with their own keyframes,
+   * returns the correct result.
+   */
+  @Test
+  public void testGetFinalTickKF2() {
+    this.model1.addShape("R", ShapeType.RECTANGLE, 10, 20, 30, 40, Color.CYAN);
+    this.model1.addShape("C", ShapeType.ELLIPSE, 10, 20, 30, 40, Color.CYAN);
+    this.model1.addShape("S", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
+
+    this.model1.addKeyframe("R", 1, 30, 40, 10, 20, Color.CYAN);
+    this.model1.addKeyframe("R", 10, 30, 40, 40, 60, Color.CYAN);
+    this.model1.addKeyframe("R", 15, 45, 60, 40, 60, Color.CYAN);
+    this.model1.addKeyframe("R", 30, 50, 60, 80, 120, Color.GREEN);
+
+    this.model1.addKeyframe("C", 1, 30, 40, 10, 20, Color.CYAN);
+    this.model1.addKeyframe("C", 10, 30, 40, 10, 20, Color.ORANGE);
+    this.model1.addKeyframe("C", 15, 30, 40, 0, 0, Color.ORANGE);
+    this.model1.addKeyframe("C", 36, 45, 60, 0, 0, Color.ORANGE);
+
+    this.model1.addKeyframe("S", 10, 30, 40, 10, 10, Color.RED);
+    this.model1.addKeyframe("S", 25, 15, 20, 10, 20, Color.RED);
+
+    assertEquals(36, this.model1.getFinalTick());
+  }
+
+  /**
+   * Tests that calling getFinalTick on a model with 3 shapes, each with their own keyframes,
+   * returns the correct result.
+   */
+  @Test
+  public void testGetFinalTickKF3() {
+    this.model1.addShape("R", ShapeType.RECTANGLE, 10, 20, 30, 40, Color.CYAN);
+    this.model1.addShape("C", ShapeType.ELLIPSE, 10, 20, 30, 40, Color.CYAN);
+    this.model1.addShape("S", ShapeType.RECTANGLE, 10, 10, 30, 40, Color.RED);
+
+    this.model1.addKeyframe("R", 1, 30, 40, 10, 20, Color.CYAN);
+    this.model1.addKeyframe("S", 35, 15, 20, 6, 7, Color.RED);
+    this.model1.addKeyframe("C", 1, 30, 40, 10, 20, Color.CYAN);
+    this.model1.addKeyframe("C", 10, 30, 40, 10, 20, Color.ORANGE);
+    this.model1.addKeyframe("R", 10, 30, 40, 40, 60, Color.CYAN);
+    this.model1.addKeyframe("S", 45, 15, 20, 6, 7, Color.YELLOW);
+    this.model1.addKeyframe("R", 15, 45, 60, 40, 60, Color.CYAN);
+    this.model1.addKeyframe("S", 10, 30, 40, 10, 10, Color.RED);
+    this.model1.addKeyframe("C", 15, 30, 40, 0, 0, Color.ORANGE);
+    this.model1.addKeyframe("C", 30, 45, 60, 0, 0, Color.ORANGE);
+    this.model1.addKeyframe("S", 25, 15, 20, 10, 20, Color.RED);
+    this.model1.addKeyframe("R", 30, 50, 60, 80, 120, Color.GREEN);
+
+    assertEquals(45, this.model1.getFinalTick());
+  }
+
+
+  /**
    * Tests that getting shapes at a negative tick throws an exception.
    */
   @Test(expected = IllegalArgumentException.class)
@@ -1459,7 +1611,7 @@ public class IModelImplTests {
    * Tests that getting shapes at a given tick with no keyframes inside returns the same shapes.
    */
   @Test
-  public void testShapesNokeyframesTween() {
+  public void testShapesNoKeyframesTween() {
     this.builder.declareShape("R", "rectangle");
     this.builder.declareShape("E", "ellipse");
     IModel model = this.builder.build();
