@@ -149,10 +149,11 @@ public class IModelImpl implements IModel {
   /**
    * Adds a keyframe to the shape corresponding with the given ID. Keyframes can be given in any
    * order, and the shape will insert them in such a way that keyframes are sorted based on tick. If
-   * there is an already existing keyframe for the given tick, for the shape with the given id, the
-   * existing keyframe will be modified to contain the given parameters.  The model will also update
-   * the largest x and y values seen based on the values of the keyframe. INVARIANT: All existing
-   * keyframes in the shapes will be chronologically ordered, with no overlap in ticks.
+   * there is an already existing keyframe for the given tick, for the shape with the given id,
+   * an error will be thrown.  The model will also update the largest x and y values seen based
+   * on the values of the keyframe.
+   * INVARIANT: All existing keyframes in the shapes will be chronologically ordered, with no
+   * overlap in ticks.
    *
    * @param id     is the id of the shape the keyframe will be added to
    * @param tick   is the tick value of the keyframe
@@ -166,8 +167,8 @@ public class IModelImpl implements IModel {
    *                                  at the given tick.
    */
   @Override
-  public void addKeyframe(String id, int tick, double width, double height, double x, double y,
-                          Color color) throws IllegalArgumentException {
+  public void addKeyframe(String id, int tick, double x, double y,  double width, double height,
+      Color color) throws IllegalArgumentException {
     if (id == null) {
       throw new IllegalArgumentException("Given id to addKeyframe is null");
     }
@@ -202,6 +203,29 @@ public class IModelImpl implements IModel {
         shape.removeKeyframe(tick);
       }
     }
+  }
+
+  @Override
+  public List<IKeyframe> getKeyframesAtTick(int tick) throws IllegalArgumentException {
+    if (tick < 0) {
+      throw new IllegalArgumentException("Given tick to getKeyframesAtTick is negative");
+    }
+
+    List<IKeyframe> keyframeList = new ArrayList<>();
+
+    for (IModelShape s : this.shapes) {
+      List<IKeyframe> sKeyframes = s.getKeyframes();
+
+      for (IKeyframe kf : sKeyframes) {
+        if (kf.getTick() == tick) {
+          keyframeList.add(kf);
+          // Breaks out of the loop, since there can only be one keyframe per shape with the
+          // given tick
+          break;
+        }
+      }
+    }
+    return keyframeList;
   }
 
   @Override
@@ -339,6 +363,10 @@ public class IModelImpl implements IModel {
         throw new IllegalArgumentException("Ticks, widths, and/or heights for add motion cannot "
                 + "be negative");
       }
+      if (t1 > t2) {
+        throw new IllegalArgumentException("Given start tick to Builder#addMotion is after end "
+            + "tick");
+      }
 
       maxX = Math.max(maxX, x1 + w1);
       maxX = Math.max(maxX, x2 + w2);
@@ -347,11 +375,17 @@ public class IModelImpl implements IModel {
 
       for (IModelShape cur : this.shapes) {
         if (cur.getID().equals(name)) {
-          cur.addKeyframe(t1, w1, h1, x1, y1, new Color(r1, g1, b1));
-          cur.addKeyframe(t2, w2, h2, x2, y2, new Color(r2, g2, b2));
+          // If the list has no keyframes yet, then adds both the start and end states of the motion
+          if (cur.getKeyframes().isEmpty()) {
+            cur.addKeyframe(t1, w1, h1, x1, y1, new Color(r1, g1, b1));
+            cur.addKeyframe(t2, w2, h2, x2, y2, new Color(r2, g2, b2));
+            // Else (the list has at least 1 keyframe in it), adds just the end keyframe, since
+            // the starting keyframe will overlap with an existing one
+          } else {
+            cur.addKeyframe(t2, w2, h2, x2, y2, new Color(r2, g2, b2));
+          }
           // Does not need to iterate through the rest of the list if a shape with the given id
-          // has
-          // been found
+          // has been found
           return this;
         }
       }
