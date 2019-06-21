@@ -75,51 +75,6 @@ public class IModelImpl implements IModel {
     return shapesAtTick;
   }
 
-
-  /**
-   * If no shape is found with the given ID or no motion is found with the given start tick, nothing
-   * is done.
-   */
-  @Override
-  public void removeMotionAtStartTick(String id, int startTick) throws IllegalArgumentException {
-    if (id == null) {
-      throw new IllegalArgumentException("ID cannot be null");
-    }
-
-    if (startTick < 0) {
-      throw new IllegalArgumentException("Start tick cannot be less than 0.");
-    }
-
-    for (IModelShape shape : this.shapes) {
-      if (shape.getID().equals(id)) {
-        shape.removeMotion(startTick);
-      }
-    }
-  }
-
-  /**
-   * If no motion is found with the given start tick, nothing is done.
-   */
-  @Override
-  public List<IMotion> getMotionsAtTick(int tick) throws IllegalArgumentException {
-    if (tick < 0) {
-      throw new IllegalArgumentException("Tick cannot be 0.");
-    }
-
-    List<IMotion> motionsToReturn = new ArrayList<IMotion>();
-    for (IModelShape shape : this.shapes) {
-      List<IMotion> motions = shape.getMotions();
-      for (int i = 0; i < motions.size(); i++) {
-        IMotion curMotion = motions.get(i);
-        if (tick > curMotion.getStartTick() && tick < curMotion.getEndTick()) {
-          motionsToReturn.add(curMotion);
-          break;
-        }
-      }
-    }
-    return motionsToReturn;
-  }
-
   @Override
   public int getX() {
     return this.topX;
@@ -189,56 +144,6 @@ public class IModelImpl implements IModel {
     }
 
     return builder.toString();
-  }
-
-  /**
-   * Adds a motion to the shape corresponding with the given ID. Motions can be given in any order,
-   * and the shape will insert them in such a way that motions are sorted based on start ticks.
-   * Throws an exception if the given motion's start or end ticks overlap with pre-existing motions.
-   * The model will also update the largest x and y values seen based on the start and end of the
-   * motion. INVARIANT: All existing motions in the shapes will be chronologically ordered, with no
-   * overlap in ticks.
-   *
-   * @throws IllegalArgumentException if the given motion's start or end ticks overlap with
-   *                                  pre-existing motions or if the motion leaves a gap between the
-   *                                  previous motion.
-   */
-  @Override
-  public void addMotion(String id,
-      int startTick, double startX, double startY, double startWidth,
-      double startHeight,
-      Color startColor,
-      int endTick, double endX, double endY, double endWidth, double endHeight,
-      Color endColor)
-      throws IllegalArgumentException {
-
-    if (startColor == null || endColor == null) {
-      throw new IllegalArgumentException("Arguments for addMotion cannot be null.");
-    }
-
-    if (startTick < 0 || endTick < 0 || startWidth < 0 || startHeight < 0
-        || endWidth < 0 || endHeight < 0) {
-      throw new IllegalArgumentException("Ticks and sizes cannot be negative.");
-    }
-
-    if (endTick < startTick) {
-      throw new IllegalArgumentException("End tick must come after start tick");
-    }
-
-    for (IModelShape cur : this.shapes) {
-      if (cur.getID().equals(id)) {
-        cur.addMotion(
-            new IMotionImpl(
-                startTick, startWidth, startHeight, startX, startY, startColor,
-                endTick, endWidth, endHeight, endX, endY, endColor));
-
-        // Does not need to iterate through the rest of the list if a shape with the given id has
-        // been found
-        return;
-      }
-    }
-    // throw an exception if it reaches here, meaning the ID was not in the list
-    throw new IllegalArgumentException("ID could not be found");
   }
 
   /**

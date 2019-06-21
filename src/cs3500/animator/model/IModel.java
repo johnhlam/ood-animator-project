@@ -20,34 +20,6 @@ public interface IModel {
    */
   String printAnimations();
 
-
-  /**
-   * Add a motion to the model for the given ID. Specific implementations of the model will have
-   * different ways of doing so. Each implementation should further specify the details of this
-   * method. Throws exceptions if null arguments are given, or if either of the ticks are negative,
-   * or if the end tick comes before the start tick.
-   *
-   * @param id          ID of the shape the motion belongs to
-   * @param startTick   starting tick
-   * @param startX      starting x position
-   * @param startY      starting y position
-   * @param startWidth  starting width
-   * @param startHeight starting height
-   * @param startColor  starting color
-   * @param endTick     ending tick
-   * @param endX        ending x position
-   * @param endY        ending y position
-   * @param endWidth    ending width
-   * @param endHeight   ending height
-   * @param endColor    ending color
-   * @throws IllegalArgumentException if arguments are null, or if ticks are negative, or if the ID
-   *                                  is not in the list, or if the end tick comes before the start
-   *                                  tick
-   */
-  void addMotion(String id, int startTick, double startX, double startY, double startWidth,
-      double startHeight, Color startColor, int endTick, double endX, double endY,
-      double endWidth, double endHeight, Color endColor) throws IllegalArgumentException;
-
   /**
    * Adds a keyframe to the shape in the model with the given ID. If there is an already existing
    * keyframe at the given tick, modifies that keyframe to contain the given parameters.
@@ -113,27 +85,6 @@ public interface IModel {
    * @throws IllegalArgumentException for negative ticks
    */
   List<IReadOnlyShape> getShapesAtTick(int tick) throws IllegalArgumentException;
-
-  /**
-   * Removes the motion from the model at the given start tick from the shape whose ID matches the
-   * given one. If the ID cannot be found or is null, an IllegalArgumentException is thrown.
-   *
-   * @param id        the ID of the shape
-   * @param startTick the starting tick of the motion
-   * @throws IllegalArgumentException if the ID cannot be found or is null, or if the start tick is
-   *                                  negative
-   */
-  void removeMotionAtStartTick(String id, int startTick) throws IllegalArgumentException;
-
-
-  /**
-   * Gets a list of motions whose intervals contain the given tick.
-   *
-   * @param tick the tick of the motions
-   * @return the list of motions
-   * @throws IllegalArgumentException if the tick is negative
-   */
-  List<IMotion> getMotionsAtTick(int tick) throws IllegalArgumentException;
 
   /**
    * Gets the starting X value of the animation.

@@ -22,24 +22,6 @@ public interface IModelShape extends IReadOnlyShape {
   IReadOnlyShape getShapeAtTick(int tick) throws IllegalArgumentException;
 
   /**
-   * Add an IMotion that the shape can perform. How the motion is represented/stored is up to the
-   * implementation. May also throw extra exceptions, which should also be specified.
-   *
-   * @param motion the motion for the shape to perform
-   * @throws IllegalArgumentException if the argument is null
-   */
-  @Deprecated
-  void addMotion(IMotion motion) throws IllegalArgumentException;
-
-  /**
-   * Removes the motion with the given start tick from this shape's motions. If no motion is found
-   * for the start tick, nothing is done.
-   *
-   * @param startTick the starting tick of the motion
-   */
-  void removeMotion(int startTick);
-
-  /**
    * Adds a keyframe with the given parameters to this shape. If there is already an existing
    * keyframe at the given tick, then that keyframe will be modified to contain the given
    * parameters. How each keyframe is represented/stored is left for the implementation.

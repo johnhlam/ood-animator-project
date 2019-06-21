@@ -1,18 +1,15 @@
 package cs3500.animator.controller;
 
-import cs3500.animator.model.ShapeType;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.swing.*;
+
+import javax.swing.Timer;
 
 import cs3500.animator.model.IModel;
 import cs3500.animator.model.IReadOnlyShape;
-import cs3500.animator.view.EditorView;
+import cs3500.animator.model.ShapeType;
 import cs3500.animator.view.IView;
 
 /**
@@ -59,7 +56,7 @@ public class ControllerImpl implements IController, Features {
 
     this.tick = 1; // Starts the tick count at 1
     this.timer = new Timer(1000 / this.tickRate, (ActionEvent e) -> {
-      if (this.tick > this.model.getFinalTick() && this.loopbackToggle) {
+      if (this.tick >= this.model.getFinalTick() && this.loopbackToggle) {
         this.tick = 1;
       }
       else if (this.tick >= this.model.getFinalTick()) {
