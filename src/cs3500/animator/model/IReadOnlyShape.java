@@ -60,20 +60,13 @@ public interface IReadOnlyShape {
   ShapeType getType();
 
   /**
-   * Return the shape's motions.
-   *
-   * @return the motions
-   */
-  List<IMotion> getMotions();
-
-  /**
    * Prints the animations that the shape holds. It should output the type of shape, the ID of the
    * shape, and whatever animations it needs to perform. Specific implementations should specify the
    * exact output.
    *
    * @return the string representation of the animation
    */
-  String printMotions();
+  String printKeyframes();
 
   /**
    * Returns a read-only version of the shape's keyframes

@@ -37,11 +37,11 @@ public interface IModelShape extends IReadOnlyShape {
    *                                  keyframe at the given tick.
    */
   void addKeyframe(int tick, double width, double height, double x, double y, Color color)
-      throws IllegalArgumentException;
+          throws IllegalArgumentException;
 
   /**
-   * Removes the keyframe with the given tick from this shape's keyframes. If no keyframe is
-   * found with the given tick, this method has no effect.
+   * Removes the keyframe with the given tick from this shape's keyframes. If no keyframe is found
+   * with the given tick, this method has no effect.
    *
    * @param tick is the tick of the keyframe to be removed
    */

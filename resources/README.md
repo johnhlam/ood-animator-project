@@ -94,6 +94,13 @@ AnimationPanel is a class that extends JPanel and implements the IAnimationPanel
 ### ViewFactory
 ViewFactory is a class for generating one of the four concrete implementations of IView listed above. It contains a method that takes in a String (one of "text", "svg", "visual", or "edit"), and will output an IView of the corresponding type. Each view that the ViewFactory returns has to be configured externally by the controller (which takes in an IView) to add view-specific attributes to it (such as canvas size, or tick rates). 
 
+modify keyframes based on tick
+talk about end of tick/tick cap
+talk about one keyframe
+talk about before and after keyframe
+talk about starting state of editor
+talk about maxX and maxY not dynamically updating with newly added keyframes
+
 ## The Excellence (main) class
 Excellence is a class that contains the main method. It serves as an entry point into the program, and takes in inputs as command line arguments. Currently, four different options are supported:
 1. -in *input-file*

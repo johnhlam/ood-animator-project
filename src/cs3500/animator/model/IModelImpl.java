@@ -36,7 +36,7 @@ public class IModelImpl implements IModel {
    *                                  and/or height are not positive
    */
   public IModelImpl(int topX, int topY, int width, int height, int maxX,
-      int maxY, List<IModelShape> shapes) throws IllegalArgumentException {
+                    int maxY, List<IModelShape> shapes) throws IllegalArgumentException {
     if (shapes == null) {
       throw new IllegalArgumentException("Given list of shapes for IModelImpl cannot be null");
     }
@@ -134,8 +134,8 @@ public class IModelImpl implements IModel {
     StringBuilder builder = new StringBuilder();
 
     for (IModelShape s : this.shapes) {
-      builder.append(s.printMotions())
-          .append("\n\n");
+      builder.append(s.printKeyframes())
+              .append("\n\n");
     }
 
     // Removes the last \n in the builder
@@ -148,13 +148,11 @@ public class IModelImpl implements IModel {
 
   /**
    * Adds a keyframe to the shape corresponding with the given ID. Keyframes can be given in any
-   * order, and the shape will insert them in such a way that keyframes are sorted based on tick.
-   * If there is an already existing keyframe for the given tick, for the shape with the given
-   * id, the existing keyframe will be modified to contain the given parameters.  The
-   * model will also update the largest x and y values seen based on the values of
-   * the keyframe.
-   * INVARIANT: All existing keyframes in the shapes will be chronologically ordered,
-   * with no overlap in ticks.
+   * order, and the shape will insert them in such a way that keyframes are sorted based on tick. If
+   * there is an already existing keyframe for the given tick, for the shape with the given id, the
+   * existing keyframe will be modified to contain the given parameters.  The model will also update
+   * the largest x and y values seen based on the values of the keyframe. INVARIANT: All existing
+   * keyframes in the shapes will be chronologically ordered, with no overlap in ticks.
    *
    * @param id     is the id of the shape the keyframe will be added to
    * @param tick   is the tick value of the keyframe
@@ -164,18 +162,18 @@ public class IModelImpl implements IModel {
    * @param y      is the y value of the keyframe
    * @param color  is the color of the keyframe
    * @throws IllegalArgumentException if the given id is null, or if the given tick, width, or
-   *                                  height is negative, or if there is already an existing
-   *                                  keyfram at the given tick.
+   *                                  height is negative, or if there is already an existing keyfram
+   *                                  at the given tick.
    */
   @Override
   public void addKeyframe(String id, int tick, double width, double height, double x, double y,
-      Color color) throws IllegalArgumentException {
+                          Color color) throws IllegalArgumentException {
     if (id == null) {
       throw new IllegalArgumentException("Given id to addKeyframe is null");
     }
     if (tick < 0 || width < 0 || height < 0) {
       throw new IllegalArgumentException("Given tick, width, and/or height to add keyframe cannot"
-          + " be negative");
+              + " be negative");
     }
 
     for (IModelShape cur : this.shapes) {
@@ -189,8 +187,6 @@ public class IModelImpl implements IModel {
     // throw an exception if it reaches here, meaning the ID was not in the list
     throw new IllegalArgumentException("ID could not be found in addKeyframe");
   }
-  // TODO: If we end up modifying a keyframe, do we have to take into account if changing it will
-  //  change the maxX and maxY?
 
   @Override
   public void removeKeyframe(String id, int tick) throws IllegalArgumentException {
@@ -210,7 +206,7 @@ public class IModelImpl implements IModel {
 
   @Override
   public void addShape(String id, ShapeType type, double width, double height, double x, double y,
-      Color color) throws IllegalArgumentException {
+                       Color color) throws IllegalArgumentException {
     if (id == null || type == null || color == null) {
       throw new IllegalArgumentException("Arguments for addShape cannot be null.");
     }
@@ -262,8 +258,7 @@ public class IModelImpl implements IModel {
   }
 
   /**
-   * Represents an implementation of the AnimationBuilder that can construct instances of this
-   * model
+   * Represents an implementation of the AnimationBuilder that can construct instances of this model
    * implementation by setting parameters and adding motions/shapes. The model is constructed with
    * the build method.
    */
@@ -300,7 +295,7 @@ public class IModelImpl implements IModel {
     public IModelImpl build() {
 
       return new IModelImpl(this.topX, this.topY, this.width, this.height, this.maxX,
-          this.maxY, this.shapes);
+              this.maxY, this.shapes);
     }
 
     @Override
@@ -329,21 +324,20 @@ public class IModelImpl implements IModel {
     }
 
     /**
-     * In this implementation, this method also updates the builder to keep track of the max x
-     * and y
+     * In this implementation, this method also updates the builder to keep track of the max x and y
      * coordinates of the animation.
      */
     @Override
     public AnimationBuilder<IModelImpl> addMotion(String name, int t1, int x1, int y1, int w1,
-        int h1, int r1, int g1, int b1, int t2, int x2,
-        int y2, int w2, int h2, int r2, int g2,
-        int b2) throws IllegalArgumentException {
+                                                  int h1, int r1, int g1, int b1, int t2, int x2,
+                                                  int y2, int w2, int h2, int r2, int g2,
+                                                  int b2) throws IllegalArgumentException {
       if (name == null) {
         throw new IllegalArgumentException("Arguments for addMotion cannot be null");
       }
       if (t1 < 0 || t2 < 0 || w1 < 0 || w2 < 0 || h1 < 0 || h2 < 0) {
         throw new IllegalArgumentException("Ticks, widths, and/or heights for add motion cannot "
-            + "be negative");
+                + "be negative");
       }
 
       maxX = Math.max(maxX, x1 + w1);
@@ -367,19 +361,19 @@ public class IModelImpl implements IModel {
     }
 
     /**
-     * In this implementation, this method also updates the builder to keep track of the max x
-     * and y coordinates of the animation.
+     * In this implementation, this method also updates the builder to keep track of the max x and y
+     * coordinates of the animation.
      */
     @Override
     public AnimationBuilder<IModelImpl> addKeyframe(String name, int t, int x, int y, int w,
-        int h, int r, int g, int b) throws IllegalArgumentException {
+                                                    int h, int r, int g, int b) throws IllegalArgumentException {
 
       if (name == null) {
         throw new IllegalArgumentException("Arguments for addKeyframe cannot be null");
       }
       if (t < 0 || w < 0 || h < 0) {
         throw new IllegalArgumentException("Tick, width, and/or height for addKeyframe cannot be "
-            + "negative");
+                + "negative");
       }
 
       maxX = Math.max(maxX, x + w);

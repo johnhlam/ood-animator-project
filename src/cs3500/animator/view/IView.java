@@ -47,7 +47,19 @@ public interface IView {
    */
   void render(List<IReadOnlyShape> shapes) throws UnsupportedOperationException;
 
+  /**
+   * Sets the view's supported features to the given Features. If a view does not support any
+   * interactive features, then the implementing class can throw an UnsupportedOperationException.
+   *
+   * @param features the features that the view will support
+   * @throws UnsupportedOperationException if the view does not support features
+   */
   void setFeatures(Features features) throws UnsupportedOperationException;
 
+  /**
+   * Sets the view's list of shapes to the given list of shapes.
+   *
+   * @param shapes a list of shapes belonging to the animation
+   */
   void setShapes(List<IReadOnlyShape> shapes);
 }

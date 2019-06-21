@@ -28,8 +28,8 @@ public abstract class ATextualView implements IView {
    * Turns this view into a textual representation. Subclasses implementing this method should
    * append the textual output to this.ap.
    *
-   * @param shapes is the List of IReadOnlyShapes that this IView will display.
-   * @param ap is the Appendable to output to
+   * @param shapes   is the List of IReadOnlyShapes that this IView will display.
+   * @param ap       is the Appendable to output to
    * @param tickRate is the tick rate of the animation
    * @throws IllegalStateException if this.ap is unable to be appended to, or is unable to transmit
    *                               output.
@@ -52,7 +52,7 @@ public abstract class ATextualView implements IView {
   public void setCanvas(int x, int y, int width, int height, int maxX, int maxY) {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("Given width and height to ATextualView#setCanvas(...) "
-          + "cannot be less than or equal to 0");
+              + "cannot be less than or equal to 0");
     }
     if (maxX < 0 || maxY < 0) {
       throw new IllegalArgumentException("Max x and max y coordinates cannot be negative");

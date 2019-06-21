@@ -17,13 +17,12 @@ public class IModelShapeImpl implements IModelShape {
   private final double x;
   private final double y;
   private final Color color;
-  private final List<IMotion> motionList; // TODO: Most likely will delete
   private final List<IKeyframe> keyframeList;
   private final ShapeType type;
 
   /**
    * Constructor to create an IModelShapeImpl object. Takes in the ID, shape type, size, position,
-   * and color and initializes them. Also initializes an empty list of motions.
+   * and color and initializes them. Also initializes an empty list of keyframes.
    *
    * @param id     the ID of this shape
    * @param type   the type of shape this is
@@ -35,7 +34,7 @@ public class IModelShapeImpl implements IModelShape {
    * @throws IllegalArgumentException if arguments are null, or the width or height are negative
    */
   public IModelShapeImpl(String id, ShapeType type, double width, double height, double x, double y,
-      Color color) throws IllegalArgumentException {
+                         Color color) throws IllegalArgumentException {
 
     if (id == null || type == null || color == null) {
       throw new IllegalArgumentException("No null args allowed.");
@@ -52,7 +51,6 @@ public class IModelShapeImpl implements IModelShape {
     this.x = x;
     this.y = y;
     this.color = color;
-    this.motionList = new ArrayList<>();
     this.keyframeList = new ArrayList<>();
   }
 
@@ -65,222 +63,217 @@ public class IModelShapeImpl implements IModelShape {
    */
   // TODO: May want to refactor->rename at some point
   @Override
-  public String printMotions() {
+  public String printKeyframes() {
     StringBuilder builder = new StringBuilder();
 
     builder.append("shape ")
-        .append(this.id).append(" ")
-        .append(ShapeType.typeToString(this.type));
+            .append(this.id).append(" ")
+            .append(ShapeType.typeToString(this.type));
 
     if (!this.keyframeList.isEmpty()) {
       // Adds the contents of the first keyframe to the builder
       builder.append("\n")
-          .append("motion ")
-          .append(this.id)
-          .append(" ")
-          .append(this.keyframeList.get(0).printKeyframe())
-          .append("\t");
+              .append("motion ")
+              .append(this.id)
+              .append(" ")
+              .append(this.keyframeList.get(0).printKeyframe())
+              .append("\t");
 
       // Starts at 1 to exclude the first keyframe, and ends at size - 1 to exclude the last
       // keyframe
       for (int i = 1; i < keyframeList.size() - 1; i++) {
         builder.append(this.keyframeList.get(i).printKeyframe())
-            .append("\n")
-            .append("motion ")
-            .append(this.id)
-            .append(" ")
-            .append(this.keyframeList.get(i + 1).printKeyframe())
-            .append("\t");
+                .append("\n")
+                .append("motion ")
+                .append(this.id)
+                .append(" ")
+                .append(this.keyframeList.get(i + 1).printKeyframe())
+                .append("\t");
       }
 
       // Adds the contents of the last keyframe to the builder
       builder.append(this.keyframeList.get(this.keyframeList.size() - 1).printKeyframe());
     }
 
-      return builder.toString();
+    return builder.toString();
+  }
+
+  /**
+   * Creates the shape at the given tick based on this shape's motions. If no motion is found
+   * at the
+   * given tick, the shape remains the same as its previous motion's final state.
+   *
+   * @throws IllegalArgumentException if the given tick is negative
+   */
+  @Override
+  public IReadOnlyShape getShapeAtTick(int tick) throws IllegalArgumentException {
+    if (tick < 0) {
+      throw new IllegalArgumentException("Given tick to getShapeAtTick is negative");
     }
 
-    /**
-     * Creates the shape at the given tick based on this shape's motions. If no motion is found
-     * at the
-     * given tick, the shape remains the same as its previous motion's final state.
-     *
-     * @throws IllegalArgumentException if the given tick is negative
-     */
-    @Override
-    public IReadOnlyShape getShapeAtTick (int tick) throws IllegalArgumentException {
-      if (tick < 0) {
-        throw new IllegalArgumentException("Given tick to getShapeAtTick is negative");
+    double xAtTick;
+    double yAtTick;
+    double widthAtTick;
+    double heightAtTick;
+
+    IModelShape shapeToReturn = null;
+
+    // If there are no keyframes in the list, then returns the initial state of the shape.
+    if (this.keyframeList.isEmpty() || tick < this.keyframeList.get(0).getTick()
+            || tick > this.keyframeList.get(this.keyframeList.size() - 1).getTick()) {
+      return this;
+
+      // If the given tick is after all keyframes, then returns the state of the shape at the
+      // last keyframe
+    } else if (this.keyframeList.size() == 1) {
+      IKeyframe keyframe = this.keyframeList.get(0);
+      shapeToReturn = new IModelShapeImpl(this.id, this.type, keyframe.getWidth(),
+              keyframe.getHeight(), keyframe.getX(), keyframe.getY(), keyframe.getColor());
+    } else {
+      shapeToReturn = this.getShapeBetweenFrames(tick);
+    }
+
+    return shapeToReturn;
+  }
+
+  private IModelShape getShapeBetweenFrames(int tick) {
+    double xAtTick;
+    double yAtTick;
+    double widthAtTick;
+    double heightAtTick;
+    double redAtTick;
+    double greenAtTick;
+    double blueAtTick;
+    IModelShape shapeToReturn = null;
+
+    for (int i = 0; i < this.keyframeList.size() - 1; i++) {
+      IKeyframe curKeyframe = this.keyframeList.get(i);
+      IKeyframe nextKeyframe = this.keyframeList.get(i + 1);
+
+      if (curKeyframe.getTick() <= tick && nextKeyframe.getTick() >= tick) {
+        int startTick = curKeyframe.getTick();
+        int endTick = nextKeyframe.getTick();
+
+        xAtTick = this.calculateParamAtTick(curKeyframe.getX(), nextKeyframe.getX(),
+                tick, startTick, endTick);
+        yAtTick = this.calculateParamAtTick(curKeyframe.getY(), nextKeyframe.getY(),
+                tick, startTick, endTick);
+        widthAtTick = this
+                .calculateParamAtTick(curKeyframe.getWidth(), nextKeyframe.getWidth(),
+                        tick, startTick, endTick);
+        heightAtTick = this
+                .calculateParamAtTick(curKeyframe.getHeight(), nextKeyframe.getHeight(),
+                        tick, startTick, endTick);
+
+        Color colorAtStart = curKeyframe.getColor();
+        Color colorAtEnd = nextKeyframe.getColor();
+
+        redAtTick = this.calculateParamAtTick(colorAtStart.getRed(),
+                colorAtEnd.getRed(), tick, startTick, endTick);
+        greenAtTick = this.calculateParamAtTick(colorAtStart.getGreen(),
+                colorAtEnd.getGreen(), tick, startTick, endTick);
+        blueAtTick = this.calculateParamAtTick(colorAtStart.getBlue(),
+                colorAtEnd.getBlue(), tick, startTick, endTick);
+
+        shapeToReturn = new IModelShapeImpl(this.id,
+                this.type,
+                widthAtTick,
+                heightAtTick,
+                xAtTick,
+                yAtTick,
+                new Color((int) redAtTick, (int) greenAtTick, (int) blueAtTick));
       }
-
-      double xAtTick;
-      double yAtTick;
-      double widthAtTick;
-      double heightAtTick;
-
-      IModelShape shapeToReturn = null;
-
-      // If there are no keyframes in the list, then returns the initial state of the shape.
-      if (this.keyframeList.isEmpty() || tick < this.keyframeList.get(0).getTick()
-      || tick > this.keyframeList.get(this.keyframeList.size() - 1).getTick()) {
-        return this;
-
-        // If the given tick is after all keyframes, then returns the state of the shape at the
-        // last keyframe
-      }
-      else if (this.keyframeList.size() == 1) {
-        IKeyframe keyframe = this.keyframeList.get(0);
-        shapeToReturn = new IModelShapeImpl(this.id, this.type, keyframe.getWidth(),
-                keyframe.getHeight(), keyframe.getX(), keyframe.getY(), keyframe.getColor());
-      } else {
-        shapeToReturn = this.getShapeBetweenFrames(tick);
-      }
-
-      return shapeToReturn;
     }
 
-    private IModelShape getShapeBetweenFrames (int tick){
-      double xAtTick;
-      double yAtTick;
-      double widthAtTick;
-      double heightAtTick;
-      double redAtTick;
-      double greenAtTick;
-      double blueAtTick;
-      IModelShape shapeToReturn = null;
+    return shapeToReturn;
+  }
 
-      for (int i = 0; i < this.keyframeList.size() - 1; i++) {
-        IKeyframe curKeyframe = this.keyframeList.get(i);
-        IKeyframe nextKeyframe = this.keyframeList.get(i + 1);
+  /**
+   * Given a start and end parameter and a tick, uses the tweening function to return the value of
+   * the parameter between the given start and end tick.
+   *
+   * @param startParam start parameter of a motion
+   * @param endParam   end parameter of a motion
+   * @param tick       current tick
+   * @param startTick  start tick of a motion
+   * @param endTick    end tick of a motion
+   * @return the calculated value of the parameter
+   */
+  private double calculateParamAtTick(double startParam, double endParam, int tick,
+                                      int startTick,
+                                      int endTick) {
+    double frac1 = ((double) (endTick - tick)) / (endTick - startTick);
+    double frac2 = ((double) (tick - startTick)) / (endTick - startTick);
 
-        if (curKeyframe.getTick() <= tick && nextKeyframe.getTick() >= tick) {
-          int startTick = curKeyframe.getTick();
-          int endTick = nextKeyframe.getTick();
+    return Math.round(startParam * frac1 + endParam * frac2);
+  }
 
-          xAtTick = this.calculateParamAtTick(curKeyframe.getX(), nextKeyframe.getX(),
-              tick, startTick, endTick);
-          yAtTick = this.calculateParamAtTick(curKeyframe.getY(), nextKeyframe.getY(),
-              tick, startTick, endTick);
-          widthAtTick = this
-              .calculateParamAtTick(curKeyframe.getWidth(), nextKeyframe.getWidth(),
-                  tick, startTick, endTick);
-          heightAtTick = this
-              .calculateParamAtTick(curKeyframe.getHeight(), nextKeyframe.getHeight(),
-                  tick, startTick, endTick);
+  @Override
+  public String getID() {
+    return this.id;
+  }
 
-          Color colorAtStart = curKeyframe.getColor();
-          Color colorAtEnd = nextKeyframe.getColor();
+  @Override
+  public double getWidth() {
+    return this.width;
+  }
 
-          redAtTick = this.calculateParamAtTick(colorAtStart.getRed(),
-              colorAtEnd.getRed(), tick, startTick, endTick);
-          greenAtTick = this.calculateParamAtTick(colorAtStart.getGreen(),
-              colorAtEnd.getGreen(), tick, startTick, endTick);
-          blueAtTick = this.calculateParamAtTick(colorAtStart.getBlue(),
-              colorAtEnd.getBlue(), tick, startTick, endTick);
+  @Override
+  public double getHeight() {
+    return this.height;
+  }
 
-          shapeToReturn = new IModelShapeImpl(this.id,
-              this.type,
-              widthAtTick,
-              heightAtTick,
-              xAtTick,
-              yAtTick,
-              new Color((int) redAtTick, (int) greenAtTick, (int) blueAtTick));
-        }
-      }
+  @Override
+  public double getX() {
+    return this.x;
+  }
 
-      return shapeToReturn;
+  @Override
+  public double getY() {
+    return this.y;
+  }
+
+  @Override
+  public Color getColor() {
+    return new Color(this.color.getRGB());
+  }
+
+  @Override
+  public ShapeType getType() {
+    return this.type;
+  }
+
+
+  // -----------------------------------------------------------------------------------------------
+  // NEW STUFF
+
+  // TODO: Note that this method means that the list of keyframes will always be sorted by tick
+  // TODO: Add functionality where keyframes are not added if they have the same tick and fields
+  //   as existing keyframes -- Added for now
+  @Override
+  public void addKeyframe(int tick, double width, double height, double x, double y, Color color)
+          throws IllegalArgumentException {
+    if (color == null) {
+      throw new IllegalArgumentException("Given Color to addKeyframe is null");
+    }
+    if (tick < 0 || width < 0 || height < 0) {
+      throw new IllegalArgumentException("Given tick, width, and/or height to addKeyframe "
+              + "cannot be negative");
     }
 
-    /**
-     * Given a start and end parameter and a tick, uses the tweening function to return the value of
-     * the parameter between the given start and end tick.
-     *
-     * @param startParam start parameter of a motion
-     * @param endParam   end parameter of a motion
-     * @param tick       current tick
-     * @param startTick  start tick of a motion
-     * @param endTick    end tick of a motion
-     * @return the calculated value of the parameter
-     */
-    private double calculateParamAtTick ( double startParam, double endParam, int tick,
-    int startTick,
-    int endTick){
-      double frac1 = ((double) (endTick - tick)) / (endTick - startTick);
-      double frac2 = ((double) (tick - startTick)) / (endTick - startTick);
-
-      return Math.round(startParam * frac1 + endParam * frac2);
+    if (keyframeList.isEmpty()
+            || (tick > this.keyframeList.get(this.keyframeList.size() - 1).getTick())) {
+      this.keyframeList.add(new IKeyframeImpl(tick, width, height, x, y, color));
+      return;
     }
 
-    @Override
-    public String getID () {
-      return this.id;
-    }
-
-    @Override
-    public double getWidth () {
-      return this.width;
-    }
-
-    @Override
-    public double getHeight () {
-      return this.height;
-    }
-
-    @Override
-    public double getX () {
-      return this.x;
-    }
-
-    @Override
-    public double getY () {
-      return this.y;
-    }
-
-    @Override
-    public Color getColor () {
-      return new Color(this.color.getRGB());
-    }
-
-    @Override
-    public ShapeType getType () {
-      return this.type;
-    }
-
-    @Override
-    public List<IMotion> getMotions () {
-      return new ArrayList<>(this.motionList);
-    }
-
-    // -----------------------------------------------------------------------------------------------
-    // NEW STUFF
-
-    // TODO: Note that this method means that the list of keyframes will always be sorted by tick
-    // TODO: Add functionality where keyframes are not added if they have the same tick and fields
-    //   as existing keyframes -- Added for now
-    @Override
-    public void addKeyframe (int tick, double width, double height, double x, double y, Color color)
-        throws IllegalArgumentException {
-      if (color == null) {
-        throw new IllegalArgumentException("Given Color to addKeyframe is null");
-      }
-      if (tick < 0 || width < 0 || height < 0) {
-        throw new IllegalArgumentException("Given tick, width, and/or height to addKeyframe "
-            + "cannot be negative");
-      }
-
-      if (keyframeList.isEmpty()
-          || (tick > this.keyframeList.get(this.keyframeList.size() - 1).getTick())) {
-        this.keyframeList.add(new IKeyframeImpl(tick, width, height, x, y, color));
-        return;
-      }
-
-      this.insertKeyframe(tick, width, height, x, y, color);
-    }
+    this.insertKeyframe(tick, width, height, x, y, color);
+  }
 
   /**
    * Inserts the given keyframe into the the list of keyframes, such that the list of keyframes
-   * remains sorted by tick. If a keyframe exists with the same tick as the given keyframe,
-   * instead modifies that keyframe to contain the values of the given keyframe.
+   * remains sorted by tick. If a keyframe exists with the same tick as the given keyframe, instead
+   * modifies that keyframe to contain the values of the given keyframe.
    *
    * @param tick   is the tick of the keyframe to be added
    * @param width  is the width of the keyframe to be added
@@ -289,45 +282,44 @@ public class IModelShapeImpl implements IModelShape {
    * @param y      is the y value of the keyframe to be added
    * @param color  is the color of the keyframe to be added
    * @throws IllegalArgumentException if a keyframe at the given tick already exists for this shape
-   *
    */
   private void insertKeyframe(int tick, double width, double height,
-      double x, double y, Color color) throws IllegalArgumentException {
+                              double x, double y, Color color) throws IllegalArgumentException {
 
-      // Checks for any coinciding keyframes (i.e. keyframes for the same tick)
-      // Subtracts one from the loop termination condition because the loop checks the current
-      // keyframe and the next keyframe
-      for (int i = 0; i < this.keyframeList.size() - 1; i++) {
-        if (this.keyframeList.get(i).getTick() == tick) {
-          throw new IllegalArgumentException("There is already a keyframe at the given tick:"
-              + tick + ", for shape " + this.id);
+    // Checks for any coinciding keyframes (i.e. keyframes for the same tick)
+    // Subtracts one from the loop termination condition because the loop checks the current
+    // keyframe and the next keyframe
+    for (int i = 0; i < this.keyframeList.size() - 1; i++) {
+      if (this.keyframeList.get(i).getTick() == tick) {
+        throw new IllegalArgumentException("There is already a keyframe at the given tick:"
+                + tick + ", for shape " + this.id);
 
-          //If the given keyframe is between the current keyframe and the next keyframe, adds it in
-        } else if (this.keyframeList.get(i).getTick() < tick
-            && this.keyframeList.get(i + 1).getTick() > tick) {
-          // Adds the keyframe in between the current and the next keyframe
-          this.keyframeList.add(i + 1,
-              new IKeyframeImpl(tick, width, height, x, y, color));
-          // Returns to exit the loop
-          return;
-        }
-      }
-
-    }
-
-    @Override
-    public void removeKeyframe ( int tick){
-      for (int i = 0; i < this.keyframeList.size(); i++) {
-        if (this.keyframeList.get(i).getTick() == tick) {
-          this.keyframeList.remove(i);
-          return;
-        }
+        //If the given keyframe is between the current keyframe and the next keyframe, adds it in
+      } else if (this.keyframeList.get(i).getTick() < tick
+              && this.keyframeList.get(i + 1).getTick() > tick) {
+        // Adds the keyframe in between the current and the next keyframe
+        this.keyframeList.add(i + 1,
+                new IKeyframeImpl(tick, width, height, x, y, color));
+        // Returns to exit the loop
+        return;
       }
     }
 
-    @Override
-    public List<IKeyframe> getKeyframes () {
-      return new ArrayList<>(this.keyframeList);
+  }
+
+  @Override
+  public void removeKeyframe(int tick) {
+    for (int i = 0; i < this.keyframeList.size(); i++) {
+      if (this.keyframeList.get(i).getTick() == tick) {
+        this.keyframeList.remove(i);
+        return;
+      }
     }
   }
+
+  @Override
+  public List<IKeyframe> getKeyframes() {
+    return new ArrayList<>(this.keyframeList);
+  }
+}
 

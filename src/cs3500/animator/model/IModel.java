@@ -24,27 +24,27 @@ public interface IModel {
    * Adds a keyframe to the shape in the model with the given ID. If there is an already existing
    * keyframe at the given tick, modifies that keyframe to contain the given parameters.
    *
-   * @param id is the id of the shape the keyframe will be added to
-   * @param tick is the tick value of the keyframe
-   * @param x is the x value of the keyframe
-   * @param y is the y value of the keyframe
-   * @param width is the width value of the keyframe
+   * @param id     is the id of the shape the keyframe will be added to
+   * @param tick   is the tick value of the keyframe
+   * @param x      is the x value of the keyframe
+   * @param y      is the y value of the keyframe
+   * @param width  is the width value of the keyframe
    * @param height is the height value of the keyframe
-   * @param color is the color of the keyframe
+   * @param color  is the color of the keyframe
    * @throws IllegalArgumentException if the given id is null, if the given tick, width, or height
-   * is negative, or if the given keyframe already exists.
+   *                                  is negative, or if the given keyframe already exists.
    */
   void addKeyframe(String id, int tick, double x, double y, double width, double height,
-      Color color) throws IllegalArgumentException;
+                   Color color) throws IllegalArgumentException;
 
   /**
-   * Specific implementations of the model will have different ways of doing so. Each
-   * implementation should further specify the details of this method.
+   * Specific implementations of the model will have different ways of doing so. Each implementation
+   * should further specify the details of this method.
    *
-   * @param id is the id of the shape that they keyframe will be removed in
+   * @param id   is the id of the shape that they keyframe will be removed in
    * @param tick is the tick of the keyframe in the shape that is to be removed
    * @throws IllegalArgumentException if the given id is null, or if the keyframe with the given
-   * tick does not exist in the shape
+   *                                  tick does not exist in the shape
    */
   void removeKeyframe(String id, int tick) throws IllegalArgumentException;
 
@@ -63,7 +63,7 @@ public interface IModel {
    * @throws IllegalArgumentException if any of the arguments are null, or if the ID already exists
    */
   void addShape(String id, ShapeType shape, double width, double height, double x, double y,
-      Color color) throws IllegalArgumentException;
+                Color color) throws IllegalArgumentException;
 
   /**
    * Removes the shape and its associated motions with the given ID in the list. Throws an exception

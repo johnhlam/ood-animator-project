@@ -13,9 +13,9 @@ import cs3500.animator.model.ShapeType;
 import cs3500.animator.view.IView;
 
 /**
- * Represents one implementation of the controller. It contains the timer logic for an animation,
- * as well as the Appendable for textual views. It relays information back and forth between the
- * model and the view. It also acts as a listener to user events and handles them accordingly.
+ * Represents one implementation of the controller. It contains the timer logic for an animation, as
+ * well as the Appendable for textual views. It relays information back and forth between the model
+ * and the view. It also acts as a listener to user events and handles them accordingly.
  */
 public class ControllerImpl implements IController, Features {
 
@@ -40,7 +40,7 @@ public class ControllerImpl implements IController, Features {
    * @throws IllegalArgumentException if arguments are null or tick rate is negative
    */
   public ControllerImpl(IView view, IModel model, int tickRate, Appendable ap)
-      throws IllegalArgumentException {
+          throws IllegalArgumentException {
     if (view == null || model == null) {
       throw new IllegalArgumentException("Given view and/or model cannot be null.");
     }
@@ -58,27 +58,26 @@ public class ControllerImpl implements IController, Features {
     this.timer = new Timer(1000 / this.tickRate, (ActionEvent e) -> {
       if (this.tick >= this.model.getFinalTick() && this.loopbackToggle) {
         this.tick = 1;
-      }
-      else if (this.tick >= this.model.getFinalTick()) {
+      } else if (this.tick >= this.model.getFinalTick()) {
         List<IReadOnlyShape> toRender = this.model.getShapesAtTick(tick);
         this.view.render(toRender);
-      }
-      else {
+      } else {
         List<IReadOnlyShape> toRender = this.model.getShapesAtTick(tick++);
         this.view.render(toRender);
       }
     });
 
     this.view.setCanvas(model.getX(), model.getY(), model.getWidth(), model.getHeight(),
-        model.getMaxX(), model.getMaxY());
+            model.getMaxX(), model.getMaxY());
 
     try {
       this.view.setFeatures(this);
-      this.view.setShapes(model.getShapes());
       this.timerOnStart = false;
     } catch (UnsupportedOperationException e) {
 
     }
+
+    this.view.setShapes(model.getShapes());
   }
 
 
@@ -105,8 +104,8 @@ public class ControllerImpl implements IController, Features {
   public void renderAnimation() {
     if (timerOnStart) {
       timer.start();
-    }
-    else {
+    } else {
+      this.view.setShapes(model.getShapes());
       this.view.render(model.getShapesAtTick(1));
     }
   }
@@ -155,7 +154,6 @@ public class ControllerImpl implements IController, Features {
     // default values for a shape
     this.model.addShape(id, type, 0, 0, 0, 0, Color.BLACK);
     this.view.setShapes(model.getShapes());
-    // TODO: Vido had a tick field in class????
   }
 
   @Override
@@ -170,7 +168,7 @@ public class ControllerImpl implements IController, Features {
 
   @Override
   public void addKeyframe(String id, int tick, double width, double height, double x, double y,
-      Color color) throws IllegalArgumentException {
+                          Color color) throws IllegalArgumentException {
     this.model.addKeyframe(id, tick, x, y, width, height, color);
     this.view.setShapes(model.getShapes());
   }
@@ -182,14 +180,13 @@ public class ControllerImpl implements IController, Features {
   }
 
   @Override
-  public void modifyKeyframe(String id, int tick, double width, double height,  double x, double y,
-      Color color) throws IllegalArgumentException {
+  public void modifyKeyframe(String id, int tick, double width, double height, double x, double y,
+                             Color color) throws IllegalArgumentException {
     try {
       this.model.removeKeyframe(id, tick);
       this.model.addKeyframe(id, tick, width, height, x, y, color);
       this.view.setShapes(model.getShapes());
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       throw new IllegalArgumentException("Modifcation unsuccessful. Please modify the currently " +
               "selected keyframe.");
     }

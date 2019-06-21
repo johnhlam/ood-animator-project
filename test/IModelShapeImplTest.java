@@ -109,7 +109,7 @@
 //   */
 //  @Test
 //  public void testShapeConstructor() {
-//    assertEquals("shape R1 rectangle", this.rect1.printMotions());
+//    assertEquals("shape R1 rectangle", this.rect1.printKeyframes());
 //  }
 //
 //  /**
@@ -117,7 +117,7 @@
 //   */
 //  @Test
 //  public void testShapeConstructor2() {
-//    assertEquals("shape E1 ellipse", this.ellipse1.printMotions());
+//    assertEquals("shape E1 ellipse", this.ellipse1.printKeyframes());
 //  }
 //
 //  /**
@@ -169,17 +169,17 @@
 //   */
 //  @Test(expected = IllegalArgumentException.class)
 //  public void testAddMotion2() {
-//    assertEquals("shape R1 rectangle", this.rect1.printMotions());
+//    assertEquals("shape R1 rectangle", this.rect1.printKeyframes());
 //    // does not throw exception
 //    this.rect1.addMotion(this.motion1);
 //    assertEquals("shape R1 rectangle\nmotion R1 1 0 0 10 10 0 0 0\t10 0 0 " +
-//        "15 15 255 0 0", this.rect1.printMotions());
+//        "15 15 255 0 0", this.rect1.printKeyframes());
 //    // throws exception
 //    this.rect1.addMotion(this.motion4);
 //    assertEquals("shape R1 rectangle\nmotion R1 1 0 0 10 10 0 0 0\t10 0 0 " +
 //            "15 15 255 0 0\nmotion R1 10 0 0 15 15 255 0 0\t20 0 0 15 " +
 //            "15 255 0 0\nmotion R1 30 0 0 15 15 255 0 0\t40 0 0 15 15 255 0 0",
-//        this.rect1.printMotions());
+//        this.rect1.printKeyframes());
 //  }
 //
 //  /**
@@ -187,10 +187,10 @@
 //   */
 //  @Test
 //  public void testAddMotion1() {
-//    assertEquals("shape R1 rectangle", this.rect1.printMotions());
+//    assertEquals("shape R1 rectangle", this.rect1.printKeyframes());
 //    this.rect1.addMotion(this.motion1);
 //    assertEquals("shape R1 rectangle\nmotion R1 1 0 0 10 10 0 0 0\t10 0 0 " +
-//        "15 15 255 0 0", this.rect1.printMotions());
+//        "15 15 255 0 0", this.rect1.printKeyframes());
 //  }
 //
 //  /**
@@ -198,27 +198,27 @@
 //   */
 //  @Test
 //  public void testAddAdjMotion() {
-//    assertEquals("shape R1 rectangle", this.rect1.printMotions());
+//    assertEquals("shape R1 rectangle", this.rect1.printKeyframes());
 //    this.rect1.addMotion(this.motion1);
 //    assertEquals("shape R1 rectangle\nmotion R1 1 0 0 10 10 0 0 0\t10 0 0 " +
-//        "15 15 255 0 0", this.rect1.printMotions());
+//        "15 15 255 0 0", this.rect1.printKeyframes());
 //    this.rect1.addMotion(this.motion3);
 //    assertEquals("shape R1 rectangle\nmotion R1 1 0 0 10 10 0 0 0\t10 0 0 " +
 //        "15 15 255 0 0\nmotion R1 10 0 0 15 15 255 0 0\t20 0 0 15 " +
-//        "15 255 0 0", this.rect1.printMotions());
+//        "15 255 0 0", this.rect1.printKeyframes());
 //  }
 //
 //  @Test
 //  public void testPrintMotions() {
-//    assertEquals("shape E1 ellipse", this.ellipse1.printMotions());
+//    assertEquals("shape E1 ellipse", this.ellipse1.printKeyframes());
 //  }
 //
 //  @Test
 //  public void testPrintMotions2() {
-//    assertEquals("shape E1 ellipse", this.ellipse1.printMotions());
+//    assertEquals("shape E1 ellipse", this.ellipse1.printKeyframes());
 //    this.ellipse1.addMotion(this.motion1);
 //    assertEquals("shape E1 ellipse\nmotion E1 1 0 0 10 10 0 0 0\t10 0 0 " +
-//        "15 15 255 0 0", this.ellipse1.printMotions());
+//        "15 15 255 0 0", this.ellipse1.printKeyframes());
 //  }
 //
 //  @Test

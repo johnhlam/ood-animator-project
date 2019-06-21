@@ -13,14 +13,29 @@ import cs3500.animator.model.IKeyframe;
 import cs3500.animator.model.IReadOnlyShape;
 import cs3500.animator.model.ShapeType;
 
+/**
+ * Represents an interactive view that displays an animation. The user can modify the animation
+ * through adding and removing shapes, and adding/removing/modifying keyframes. The user can also
+ * control how the animation can played with the click of buttons. The view acts as its own action
+ * listener and transmits events to the controller, or its "features."
+ */
 public class EditorView extends JFrame implements IView, ActionListener {
   Features features;
   private List<IReadOnlyShape> shapesToRender = new ArrayList<>();
 
+  // panel for the animation and its buttons
   private final AnimationPanel animationPanel;
-  private final JPanel videoPanel;
+  private JScrollPane scrollableAnimationPanel;
+  private JPanel videoPanel;
   private JPanel buttonPanel;
+  private JButton stop;
+  private JButton play;
+  private JButton restart;
+  private JCheckBox loopback;
+  private JButton faster;
+  private JButton slower;
 
+  // panel for the shape interactions
   private JPanel shapePanel;
   private DefaultListModel<String> shapeListModel = new DefaultListModel();
   private JList<String> shapeList;
@@ -29,6 +44,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
   private JRadioButton ellipseRadio;
   ButtonGroup shapeSelections;
 
+  // panel for the keyframe interactions
   private JPanel keyframePanel;
   private DefaultListModel<String> keyframeListModel = new DefaultListModel();
   private JList<String> keyframeList;
@@ -41,28 +57,15 @@ public class EditorView extends JFrame implements IView, ActionListener {
   private JTextField gVal;
   private JTextField bVal;
 
-  private JButton stop;
-  private JButton play;
-  private JButton restart;
-  private JCheckBox loopback;
-  private JButton faster;
-  private JButton slower;
-
-
-
   public EditorView() {
 
     animationPanel = new AnimationPanel();
-    JScrollPane scrolledAnimation = new JScrollPane(animationPanel);
+    scrollableAnimationPanel = new JScrollPane(animationPanel);
 
     this.configureButtons();
-    scrolledAnimation.setPreferredSize(new Dimension(buttonPanel.getWidth(), 500));
+    scrollableAnimationPanel.setPreferredSize(new Dimension(buttonPanel.getWidth(), 500));
 
-    videoPanel = new JPanel();
-    videoPanel.setLayout(new BorderLayout());
-    videoPanel.add(scrolledAnimation, BorderLayout.CENTER);
-    videoPanel.add(buttonPanel, BorderLayout.SOUTH);
-
+    this.configureVideoPanel();
     this.configureShapePanel();
     this.configureKeyframePanel();
 
@@ -79,8 +82,20 @@ public class EditorView extends JFrame implements IView, ActionListener {
     this.pack();
   }
 
-  //TODO: Add deselect option
+  /**
+   * Configures the JPanel that contains the animation panel and its associated buttons.
+   */
+  private void configureVideoPanel() {
+    videoPanel = new JPanel();
+    videoPanel.setLayout(new BorderLayout());
+    videoPanel.add(scrollableAnimationPanel, BorderLayout.CENTER);
+    videoPanel.add(buttonPanel, BorderLayout.SOUTH);
+  }
 
+  /**
+   * Configures the JPanel that contains the all the keyframe interactions, including input text
+   * fields, buttons, and the list of keyframes for a shape.
+   */
   private void configureKeyframePanel() {
     keyframePanel = new JPanel();
     keyframeList = new JList<String>(this.keyframeListModel);
@@ -93,10 +108,10 @@ public class EditorView extends JFrame implements IView, ActionListener {
       IReadOnlyShape curShape = this.shapesToRender.get(shapeList.getSelectedIndex());
       IKeyframe curFrame = curShape.getKeyframes().get(keyframeList.getSelectedIndex());
       tick.setText(Integer.toString(curFrame.getTick()));
-      xCoor.setText(Integer.toString((int)curFrame.getX()));
-      yCoor.setText(Integer.toString((int)curFrame.getY()));
-      width.setText(Integer.toString((int)curFrame.getWidth()));
-      height.setText(Integer.toString((int)curFrame.getHeight()));
+      xCoor.setText(Integer.toString((int) curFrame.getX()));
+      yCoor.setText(Integer.toString((int) curFrame.getY()));
+      width.setText(Integer.toString((int) curFrame.getWidth()));
+      height.setText(Integer.toString((int) curFrame.getHeight()));
       rVal.setText(Integer.toString(curFrame.getColor().getRed()));
       gVal.setText(Integer.toString(curFrame.getColor().getGreen()));
       bVal.setText(Integer.toString(curFrame.getColor().getBlue()));
@@ -133,7 +148,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
     JPanel keyframeInputs8 = new JPanel(new FlowLayout());
 
     JPanel keyframeInputs = new JPanel();
-    keyframeInputs.setLayout(new GridLayout(8,0));
+    keyframeInputs.setLayout(new GridLayout(8, 0));
     JLabel tickLabel = new JLabel("Tick:");
     JLabel xLabel = new JLabel("X-Coor:");
     JLabel yLabel = new JLabel("Y-Coor:");
@@ -197,10 +212,12 @@ public class EditorView extends JFrame implements IView, ActionListener {
     keyframeInteraction.add(keyframeButtons);
 
     keyframePanel.add(keyframeInteraction, BorderLayout.SOUTH);
-
-
   }
 
+  /**
+   * Configures the JPanel that contains the all the shape interactions, including input text
+   * fields, buttons, and the list of shapes.
+   */
   private void configureShapePanel() {
     // construct overall shape panel
     shapePanel = new JPanel();
@@ -241,7 +258,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
     shapeSelections = new ButtonGroup();
 
     rectangleRadio = new JRadioButton("Rectangle");
-    rectangleRadio.setActionCommand("rect");
+    rectangleRadio.setActionCommand("rectangle");
     ellipseRadio = new JRadioButton("Ellipse");
     ellipseRadio.setActionCommand("ellipse");
 
@@ -271,6 +288,10 @@ public class EditorView extends JFrame implements IView, ActionListener {
     shapePanel.add(shapeInteraction);
   }
 
+  /**
+   * Configures the button panel to be placed in the main video panel. Sets all the listeners and
+   * commands.
+   */
   private void configureButtons() {
     buttonPanel = new JPanel();
     buttonPanel.setLayout(new FlowLayout());
@@ -342,6 +363,12 @@ public class EditorView extends JFrame implements IView, ActionListener {
     }
   }
 
+  /**
+   * In addition the the functionality specified in the interface, this method also updates the
+   * shape list to be drawn.
+   *
+   * @param shapes a list of shapes belonging to the animation
+   */
   @Override
   public void setShapes(List<IReadOnlyShape> shapes) {
     this.shapesToRender = shapes;
@@ -351,6 +378,11 @@ public class EditorView extends JFrame implements IView, ActionListener {
     }
   }
 
+  /**
+   * Holds the logic for deciding which button was pressed. Calls the appropriate feature.
+   *
+   * @param e the button clicked
+   */
   @Override
   public void actionPerformed(ActionEvent e) {
     switch (e.getActionCommand()) {
@@ -391,8 +423,17 @@ public class EditorView extends JFrame implements IView, ActionListener {
     }
   }
 
+  /**
+   * Parses through user input to modify the currently selected keyframe. Calls the appropriate
+   * method on Features and passes in the information for the keyframe of interest. If unsuccessful,
+   * an error will pop up.
+   */
   private void modifyKeyframe() {
     if (keyframeList.isSelectionEmpty()) {
+      return;
+    }
+    if (shapeList.isSelectionEmpty()) {
+      this.errorPopup("Please have a shape selected.");
       return;
     }
 
@@ -408,6 +449,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
     if (tick.getText().isEmpty() || xCoor.getText().isEmpty() || yCoor.getText().isEmpty()
             || width.getText().isEmpty() || height.getText().isEmpty() || rVal.getText().isEmpty()
             || gVal.getText().isEmpty() || bVal.getText().isEmpty()) {
+      this.errorPopup("Please fill in all the fields.");
       return;
     }
     try {
@@ -419,8 +461,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
       r = Integer.parseInt(this.rVal.getText());
       b = Integer.parseInt(this.bVal.getText());
       g = Integer.parseInt(this.gVal.getText());
-    }
-    catch (NumberFormatException e){
+    } catch (NumberFormatException e) {
       this.errorPopup("Inputs for a new keyframe must be numbers!");
       return;
     }
@@ -436,8 +477,16 @@ public class EditorView extends JFrame implements IView, ActionListener {
     this.keyframeListModel.clear();
   }
 
+  /**
+   * Removes the currently selected keyframe by calling the appropriate Feature method. If
+   * unsuccessful, an error will pop up.
+   */
   private void removeKeyframe() {
     if (keyframeList.isSelectionEmpty()) {
+      return;
+    }
+    if (shapeList.isSelectionEmpty()) {
+      this.errorPopup("Please have a shape selected.");
       return;
     }
     IReadOnlyShape curShape = this.shapesToRender.get(shapeList.getSelectedIndex());
@@ -454,7 +503,15 @@ public class EditorView extends JFrame implements IView, ActionListener {
     this.keyframeListModel.clear();
   }
 
+  /**
+   * Parses through user input to add the desired keyframe to the currently selected shape by
+   * calling the appropriate method on Feature. If unsuccessful, an error will pop up.
+   */
   private void addKeyframe() {
+    if (shapeList.isSelectionEmpty()) {
+      this.errorPopup("Please have a shape selected.");
+      return;
+    }
     int tickVal = 0;
     int x = 0;
     int y = 0;
@@ -465,8 +522,9 @@ public class EditorView extends JFrame implements IView, ActionListener {
     int b = 0;
 
     if (tick.getText().isEmpty() || xCoor.getText().isEmpty() || yCoor.getText().isEmpty()
-    || width.getText().isEmpty() || height.getText().isEmpty() || rVal.getText().isEmpty()
-    || gVal.getText().isEmpty() || bVal.getText().isEmpty()) {
+            || width.getText().isEmpty() || height.getText().isEmpty() || rVal.getText().isEmpty()
+            || gVal.getText().isEmpty() || bVal.getText().isEmpty()) {
+      this.errorPopup("Please fill in all the fields.");
       return;
     }
 
@@ -483,8 +541,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
       r = Integer.parseInt(this.rVal.getText());
       b = Integer.parseInt(this.bVal.getText());
       g = Integer.parseInt(this.gVal.getText());
-    }
-    catch (NumberFormatException e){
+    } catch (NumberFormatException e) {
       this.errorPopup("Inputs for a new keyframe must be numbers!");
       return;
     }
@@ -501,6 +558,9 @@ public class EditorView extends JFrame implements IView, ActionListener {
     this.keyframeListModel.clear();
   }
 
+  /**
+   * Removes the currently selected shape. If unsuccessful, an error will pop up.
+   */
   private void removeShape() {
     if (shapeList.isSelectionEmpty()) {
       return;
@@ -509,30 +569,22 @@ public class EditorView extends JFrame implements IView, ActionListener {
     try {
       this.shapeListModel.remove(shapeList.getSelectedIndex());
       this.features.removeShape(id);
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       errorPopup(e.getMessage());
       e.printStackTrace();
       return;
     }
   }
 
+  /**
+   * Parses user input and radio button selection to add a shape. If unsuccessful, an error will pop
+   * up.
+   */
   private void addShape() {
-    ShapeType type = null;
     if (shapeIDField.getText().isEmpty() || shapeSelections.getSelection() == null) {
       return;
     }
-
-
-    switch (shapeSelections.getSelection().getActionCommand()) {
-      case "rect":
-        type = ShapeType.RECTANGLE;
-        break;
-      case "ellipse":
-        type = ShapeType.ELLIPSE;
-        break;
-      default:
-    }
+    ShapeType type = ShapeType.stringToType(shapeSelections.getSelection().getActionCommand());
     try {
       this.features.addShape(shapeIDField.getText(), type);
     } catch (Exception e) {
@@ -542,6 +594,11 @@ public class EditorView extends JFrame implements IView, ActionListener {
     }
   }
 
+  /**
+   * Pop up an error message with the given message.
+   *
+   * @param errorMessage the message to display
+   */
   private void errorPopup(String errorMessage) {
     JOptionPane.showMessageDialog(new JFrame(), errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
   }

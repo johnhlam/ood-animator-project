@@ -3,17 +3,10 @@ package cs3500.animator.model;
 import java.awt.Color;
 
 /**
- * Represents a Keyframe for a shape. Each keyframe represents the state of the shape it
- * is in at a given tick. Besides the read-only functionalities that the IKeyframe
- * interface provides, this interface also provides a series of setters to modify the keyframe.
- * This version of the keyframe is meant to work closely with the model itself, while the
- * read-only version is meant to work with controllers and views.
- */
-/**
- * Represents a keyframe for an shape. Each keyframe represents the state of the shape it
- * is in at a given tick. This interface provides methods that can only read from the keyframe's
- * fields. Other interfaces may extend this one to add further functionality. This read-only
- * keyframe is meant to work with the controller and view.
+ * Represents a keyframe for an shape. Each keyframe represents the state of the shape it is in at a
+ * given tick. This interface provides methods that can only read from the keyframe's fields. Other
+ * interfaces may extend this one to add further functionality. This read-only keyframe is meant to
+ * work with the controller and view.
  */
 public interface IKeyframe {
   /**

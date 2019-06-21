@@ -17,8 +17,8 @@ public interface IController {
   void setTickRate(int tickRate);
 
   /**
-   * Outputs the animation as a string to an Appendable object. Specific implementations of the
-   * view may not support this functionality.
+   * Outputs the animation as a string to an Appendable object. Specific implementations of the view
+   * may not support this functionality.
    */
   void outputText();
 

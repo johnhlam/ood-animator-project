@@ -51,7 +51,7 @@ public enum ShapeType {
         return ShapeType.ELLIPSE;
       default:
         throw new IllegalArgumentException("Given name for shape type, " + name
-            + ", is not supported.");
+                + ", is not supported.");
     }
   }
 }
