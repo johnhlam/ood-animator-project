@@ -10,13 +10,6 @@ package cs3500.animator.controller;
 public interface IController {
 
   /**
-   * Sets the controller's tick rate the given value.
-   *
-   * @param tickRate is the new tick rate
-   */
-  void setTickRate(int tickRate);
-
-  /**
    * Outputs the animation as a string to an Appendable object. Specific implementations of the view
    * may not support this functionality.
    */

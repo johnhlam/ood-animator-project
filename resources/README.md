@@ -9,14 +9,14 @@ We decided to implement our animator project using a variety different classes a
 ### IModel
 The IModel interface is used to represent the logic for animating different shapes. It guarantees that any implementing classes will be able to provide the following functions:
 1. Returning a String representation of the animation
-2. Adding motions via its parameters (as long as the motions don't conflict with each other - specific details below)
+2. Adding keyframes via its parameters (as long as the keyframes don't conflict with each other - specific details below)
 3. Adding shapes via its parameters (as long as no shape with the same id exists)
 4. Removing a shape from the model given its id
 5. Returning a new *read-only* list of the model's updated shapes by giving it an non-negative integer tick value
-6. Removing a motion given the shape's id and the tick that the motion starts at
-7. Returning a list of motions that are occurring at a specified tick
-8. Returning the starting x-value, starting y-value, width, height, maximum x-value, and maximum y-value of the animation
-9. Returning a new *read-only* list of the model's shapes (with each shape's initial state and list of motions)
+6. Removing a keyframe given the shape's id and the tick that the keyframe starts at
+7. Returning a list of keyframes that are occurring at a specified tick
+8. Returning the starting x-value, starting y-value, width, height, maximum x-value, and maximum y-value of the animation, as well as the final tick of the animation
+9. Returning a new *read-only* list of the model's shapes (with each shape's initial state and list of keyframes)
 
 ### IModelImpl and IModelImpl.Builder
 The IModelImpl class implements the IModel interface described above. It stores information about the model's minimum x/y, its maximum x/y values, and the canvas' width and height. It also stores a list of shapes that represents what is currently being drawn/animated. Each individual shape will contain the information required for it to be animated, while the model class itself just contains the shapes with its state as what it was initialized as. All methods that the IModel interface requires are fully implemented. In order to return a read-only list of the model's updated shapes at a given tick, each shape in the list is responsible for returning a read-only version of itself at that tick (via delegation). Consequently, the controller and/or view receive a new list of read-only shapes for every tick they query for.
@@ -27,80 +27,87 @@ This class also contains a nested static builder class (accessible by calling th
 The IReadOnlyShape interface represents a shape for the model, but only provides methods that can read from the shape. It provides getter methods that return the values that the shape holds, as well as a method to print a String representation of the shape. It provides no other methods than the aforementioned methods, and provides no means to mutate the shape. This read-only shape is passed into the controller and the view, so that they can read information from this shape, but not write any information to it.
 
 ### IModelShape
-The IModelShape interface also represents a shape for the model. It extends the IReadOnlyShape interface, meaning that it will provide all the functionalities required to read from a shape, but in addition to those, also provides methods that get the state of the shape at a given tick, add motions to this shape, and remove motions from this shape (given a start tick). The model itself will interact with IModelShapes, and be able get shapes at a certain tick, and add/remove motions, while the controller and view are only be able to read from the same shapes as IReadOnlyShapes.
+The IModelShape interface also represents a shape for the model. It extends the IReadOnlyShape interface, meaning that it will provide all the functionalities required to read from a shape, but in addition to those, also provides methods that get the state of the shape at a given tick, add keyframes to this shape, and remove keyframes from this shape (given a start tick). The model itself will interact with IModelShapes, and be able get shapes at a certain tick, and add/remove keyframes, while the controller and view are only be able to read from the same shapes as IReadOnlyShapes.
 
 ### IModelShapeImpl and ShapeType
 The IModelShapeImpl class implements the IModelShape interface above, and its purpose is to store data about the shape (and its characteristics). It implements all methods that IModelShape requires. All of its fields are final, and *cannot be mutated* (as in cannot be set to different values/references).
 
 This class has a field of type ShapeType, which is an enum that represents what type of shape this instance of the class represents. At the moment, there are only two choices: Rectangle and Ellipse, but more types of shapes can easily be added to ShapeType. The ShapeType in a given shape will determine how that shape will be depicted on in the view. ShapeType also offers a public method that returns a string representation of itself ("rectangle" for RECTANGLE, and "ellipse" for ELLIPSE), and a public method that returns a ShapeType given a String (the String has to be one of "rectangle", or "ellipse", or else an exception is thrown).
 
-This class also has a list of motions (motions specified below), which represent the states of this shape at any two given "start" and "end" ticks. It assumes and enforces the following invariants about the list:
-1. This list will always be sorted by tick (i.e. in chronological order) by inserting incoming motions in order.
-2. Any two adjacent motions (defined as two motions in the same list/same shape that have the same ending and starting tick values, with respect to their positions in the list) will have the same ending and starting states, with respect to their positions in the list. In other words, the motion that comes first in the list should have the same ending state as the starting state of the motion that comes *immediately after* it in the list, and vice versa.
-3. There are no overlapping intervals between any two motions in this list. In the future, if it is the case that motions can overlap as long as they perform different actions (e.g. x-y movement vs color changing), we will enforce those rules, but for now, we disallow any overlapping motions based on tick.
-4. There are no gaps in the list, meaning that the previous motion's end tick must the same as the following motion's start tick (and vice versa). The list of motions does not necessarily have to begin at tick 0. Details of how the list of motions affects tweening are described below.
+This class also has a list of keyframes (keyframes specified below), which represent the states of this shape at any two given "start" and "end" ticks. It assumes and enforces the following invariants about the list:
+1. This list will always be sorted by tick (i.e. in chronological order), as incoming keyframes should be in order.
+2. There are no conflicting keyframes in the list - as in, two keyframes with the same tick but different fields will never exist.
 
-In order to calculate the shape's state at a given tick, it uses the tweening function given by the assignment. If the list of motions is empty, then the shape will take the state of its fields (as in whatever it's other fields have been initialized as). If the given tick is before the first motion's start tick, then the state of the shape at the start tick of the first motion is returned. If the given tick is after the end tick of the last motion in the list, then the state of the shape at the end tick of the last motion is returned (freezing it on the screen after all motions have been completed).
+In order to calculate the shape's state at a given tick, it uses the tweening function given by the assignment. If the list of keyframes is empty or if the given tick is before the first keyframe's tick, then the shape will take the state of its fields (as in whatever it's other fields have been initialized as). If the given tick is after the tick of the last keyframe in the list, then the shape will disappear. However, this means that the animation will stop at the final tick.
 
-Since details for birth and death of shapes have not been specified, we have left it so that a shape is always on the screen until removed from the model's list.
+### IKeyframe
+The IKeyframe interface provides various getter methods that retrieve information from this keyframe, and also provides a method that returns a string representation of this keyframe. An implementation of this interface represents what the state of a shape should be at the given tick.
 
-### IMotion
-The IMotion interface provides various getter methods that retrieve information from this motion, and also provides a method that returns a string representation of this motion. An implementation of this interface represents the start state and end state of an animation at an arbitrary start and end tick (although the end tick cannot be before the start tick).
+### IKeyframeImpl
+The IKeyframeImpl class implements the IKeyframe interface above, and implements all of its methods. It holds the state of shapes through individual fields. It does not hold a shape itself as we thought that Shapes should have knowledge of keyframes, but not the other way around. All of the fields in the IKeyframeImpl class are final, and thus *cannot be mutated*.
 
-### IMotionImpl
-The IMotionImpl class implements the IMotion interface above, and implements all of its methods. It holds the start and end state of shapes through individual fields. It does not hold a shape itself as we thought that Shapes should have knowledge of motions, but not the other way around. All of the fields in the IMotionImpl class are final, and thus *cannot be mutated*.
+### TestModel
+The TestModel class implements the IModel interface above, and serves as an auxiliary class for testing. It takes an Appendable, and is used in tandem with the real controller implementation and a mock view. It ensures that the wiring between the view, controller, and model works properly by appending appropriate messages to the Appendable that can be tested for.
 
 ## The Controller
 
 ### IController
-The IController interface is used to represent a controller that mediates operations between a model and a view. Neither the model nor the view directly communicates with each other- all communication occurs through the controller. This interface provides two methods. The first method sets/adjusts the tick rate for the controller, and was created in anticipation for a future assignment. If an implementing class does not support tick rates, it can throw an exception. The other method in this interface runs the program. Generally, this means retrieving information from the model, and passing it into the view so that some type of output can be produced.
+The IController interface is used to represent a controller that mediates operations between a model and a view. Neither the model nor the view directly communicates with each other- all communication occurs through the controller. This interface provides two methods. The first method gets the view to output text, however the view implements it. If the view is visual-based, it may throw an UnsupportedOperationException. The second method gets the view to render the animation, however the view implements it. If the view is text-based, it may throw an UnsupportedOperationException.
 
-### TextControllerImpl
-The TextControllerImpl class implements the IController interface described above. It stores exactly one IView and one IModel, both of which are final and cannot be changed. It does not support a tick rate, so it throws an exception if the setTickRate method is called. When the run method is called, this controller takes the model's list of shapes and passes it into the view, where some type of text will be outputted (such as via a file, or in a terminal).
+### ControllerImpl
+The ControllerImpl class implements the IController interface above. It contains an IView, an IModel, a Timer, tick rate, tick, and an Appendable. It has a timer to facilitate rendering the animation for visual views, and an Appendable to pass onto text-based views. The timer takes in an anonymous ActionListener that tells the view to render an image at a given tick. The controller additionally implements the Features (below) interface that implements the features that GUI view may support. Upon construction, a controller will attempt to set itself as the features of its view. To perform the features, it may mutate the model to add/modify/remove shapes and keyframes, or pause/start the timer.
 
-### TimerControllerImpl
-The TimerControllerImpl class implements the IController interface as well as the ActionListener interface. Like the TextControllerImpl, it stores exactly one IView and one IModel, which cannot be changed. Unlike the TextControllerImpl, it also stores a timer, a tick rate (in ticks/second), and a current tick. The timer is initialized with the tick rate (converted to milliseconds/tick), and this controller itself as the action listener. This class supports being able to change the tick rate, and if the tick rate is changed, the timer is adjusted accordingly. When the run method is called, the timer starts, and the controller begins relaying information between the model and view so that the view can draw a new image at every tick.
-
-We choose to create two separate controller classes because we felt that the differences between the visual view and the text-based views (text and svg) were too great to create a controller that could run both types of views effectively. The greatest distinction between the visual and text-based views were that the visual view required a timer that would allow it to be redrawn at every tick, while the text views did not. The text-based views needed to be played only once to generate their respective outputs, while the visual view needed to be played continuously to generate a smooth animation. Since the views were so different, we created a TextControllerImpl that would only be run once, and a TimerControllerImpl that would be run continuously once the timer started.
+### TestController
+The TestController class functions as an auxiliary class that takes in an Appendable and prints to it based on what features its view calls for. It is used with a mock view and no model. All the feature methods print an appropriate method to the Appendable, and this message can be checked for during testing.
 
 ## The View
 
 ### IView
-The IView interface is used to represent the "view" of an animation of shapes. Implementing classes should be able to process a given list of shapes into some kind of "view". The view does not necessarily have to represent the animation with images- it may choose to represent it using text or some other medium. It contains three methods that should be offered by implementing classes:
+The IView interface is used to represent the "view" of an animation of shapes. Implementing classes should be able to process a given list of shapes into some kind of "view". The view does not necessarily have to represent the animation with images- it may choose to represent it using text or some other medium. It contains the following key methods that should be offered by implementing classes:
 1. A way to adjust the canvas size (by setting it to given values),
-2. A way to set the maximum window size (although not all implementations may choose to support this).
-3. A way to generate some type of output. This output can vary from implementation to implementation, but can range from a visual representation, to a textual representation.
+2. A way to generate some type of output. This output can vary from implementation to implementation, but can range from a visual representation, to a textual representation.
+3. A way to set the features that the view supports, though non-GUI views will most likely not support this.
+4. A way to set the shapes for the view to represent, though most views will get this information through the method mentioned in 2.
 
 ### ATextualView
-ATextualView is an abstract class that implements the IView abstract class. It represents a view that outputs text in some form (be it by terminal, or by file). It stores the lowest x and y values of the canvas, and its width and height. It also stores an Appendable (which is final), to which textual output can be appended. Since it stores an Appendable, it is capable of outputting to various locations, such as a file (using some type of writer), or to the terminal (via System.out). It implements the method (from the interface) that adjusts the canvas size, as well as the method that sets the maximum window size (throwing an error in the latter case). It leaves the method for generating output to extending classes, as each class may have different formats for the text.
+ATextualView is an abstract class that implements the IView abstract class. It represents a view that outputs text in some form (be it by terminal, or by file). It stores the lowest x and y values of the canvas, and its width and height. Since it receives an Appendable through the toOutput method, it is capable of outputting to various locations, such as a file (using some type of writer), or to the terminal (via System.out). It implements the method (from the interface) that adjusts the canvas size, as well as the method that sets the features for the view (throwing an error in the latter case). It also does nothing for setting the shapes, as it will receive this information in the form of a method parameter. It leaves the method for generating output to extending classes, as each class may have different formats for the text.
 
 ### TextView
-TextView is a class that extends the ATextualView abstract class. It stores no extra fields, and relies on the abstract class for storing information. It implements the play(List<IReadOnlyShape>) method (the method that generates output), by using each shape's print method (delegating to each shape), formats it according to the assignment's specifications, and appends it to the Appendable in the abstract class. See the assignment or Javadocs for details on how exactly the text is formatted.  
+TextView is a class that extends the ATextualView abstract class. It stores no extra fields, and relies on the abstract class for storing information. It implements the toOutput(List<IReadOnlyShape>, ...) method (the method that generates output), by using each shape's print method (delegating to each shape), formats it according to the assignment's specifications, and appends it to the Appendable parameter. See the assignment or Javadocs for details on how exactly the text is formatted.  
 
 ### SVGView
-SVGView is a class that extends the ATextualView abstract class. Along with the fields in the abstract class, it also stores a tick rate in ticks/second so that ticks for each animation can be converted into milliseconds, as the format requires. It implements the play(List<IReadOnlyShape>) using a few helper methods that ultimately format the text according to the [SVG documentation](https://www.w3.org/TR/SVG11/) and append it to the Appendable in the abstract class. The SVG output does not currently support loopback, so animations (and their shapes) will freeze upon completion.
+SVGView is a class that extends the ATextualView abstract class. It makes use of the tick rate provided from the toOutput method (in ticks/second so that ticks for each animation can be converted into milliseconds, as the format requires). It implements the toOutput(List<IReadOnlyShape>, ...) using a few helper methods that ultimately format the text according to the [SVG documentation](https://www.w3.org/TR/SVG11/) and append it to the Appendable parameter. The SVG output does not currently support loopback, so animations (and their shapes) will freeze upon completion.
 
 ### VisualView
-VisualView is a class that extends the JFrame class and implements the IView interface. Unlike the text-based views, the VisualView will create a window with scroll bars that will display the animation. It stores information about the canvas' width, height, maximum x-value, maximum y-value, as well as an AnimationPanel for drawing. When the constructor for this class is called, it creates a window that will pop up on the user's screen with the specified dimensions. The frame size is specified by the input file, while the setPreferredSize method is determined by the model's information about the animations largest x and y coordinates. However, the window will remain blank (without any animations or images) until the play(List<IReadOnlyShape>) is called. When the play method is called in this class, it will pass the given list of shapes into the AnimationPanel, where the shapes will actually be rendered. The play method is expected to be called on every tick, with a slightly different list of shapes, so that output will appear to be an animation. Additionally, this class also supports both adjusting the canvas size and setting the maximum window size (as specified by the IView interface).
+VisualView is a class that extends the JFrame class and implements the IView interface. Unlike the text-based views, the VisualView will create a window with scroll bars that will display the animation. It stores information about the canvas' width, height, maximum x-value, maximum y-value, as well as an AnimationPanel for drawing. When the constructor for this class is called, it creates a window that will pop up on the user's screen with the specified dimensions. The frame size is specified by the input file, while the setPreferredSize method is determined by the model's information about the animations largest x and y coordinates. However, the window will remain blank (without any animations or images) until the render(List<IReadOnlyShape>) is called. When the play method is called in this class, it will pass the given list of shapes into the AnimationPanel, where the shapes will actually be rendered. The play method is expected to be called on every tick, with a slightly different list of shapes, so that output will appear to be an animation. Additionally, this class also supports both adjusting the canvas size and setting the maximum window size (as specified by the IView interface).
 
 ### IAnimationPanel
-The IAnimationPanel is an interface that is used to represent the panel onto which images can be drawn. It contains one method, draw(List<IReadOnlyShape>) that renders the given list of shapes onto the panel.
+The IAnimationPanel is an interface that is used to represent the panel onto which images can be drawn. It contains two methods: draw(List<IReadOnlyShape>) that renders the given list of shapes onto the panel, and setCanvas(...) that sets the size of the panel based on the inputs.
 
 ### AnimationPanel
 AnimationPanel is a class that extends JPanel and implements the IAnimationPanel interface. It stores a list of shapes that represents what is currently being displayed on the panel. The draw method is implemented by storing the given list of shapes in the class, and by delegating the process to the repaint method inherited from the JPanel class. It overrides the paintComponent(Graphics) method from the JPanel class so that calling the method will draw the list of shapes stored in the class onto the panel. Currently, this class only supports rendering filled rectangles, and filled ellipses.
 
-### EditView (to be filled in)
+### EditorView
+EditorView is a class that extends JFrame and implements the IView interface and is essentially a composite view, taking in the AnimationPanel from above as a field. It utilizes the Swing library to render a variety of panels, buttons, text fields, and labels. It takes in a Features class (below) that represents the features that this editor view supports. To listen to the low-level events emitted by the buttons, the class also implements ActionListener. The view uses JLists to dynamically show the shapes of the animation, and any selected shape's keyframes. Users can perform all operations specified by the Features interface through the interactive aspects of the view. To add a shape, the user can select a shape option and enter an ID. To remove a shape, the user can click a shape and click remove. These operations are mirrored to remove/add/modify a keyframe.
+
+Some specifications:
+* The animation will start out stopped on the first frame upon initialization.
+* The user can modify shapes and keyframes in real time, but may not see the effects until another loop through the animation.
+* A shape or keyframe must be selected to remove it.
+* Modifying keyframes is based on the currently selected shape and the equality of the ticks between the two keyframes.
+* The animation will stop on the last tick of the animation if loopback is not enabled.
+* If a shape has no keyframes, it won't appear on the screen. If it has one keyframe, it will appear for that one tick. A shape will not appear before its first keyframe, and will disappear after its last.
+* If a new keyframe is added with an x and y value larger than the existing max, the frame will not update dynamically.
+* Adding an identical/existing keyframe will do nothing.
+* Upon adding a shape or keyframe, both selections from the lists are deselected/refreshed.
+* The minimum size of the editor frame is 750 x 400.
+* The keyframe textfields will fill up based on the previously selected keyframe.
 
 ### ViewFactory
-ViewFactory is a class for generating one of the four concrete implementations of IView listed above. It contains a method that takes in a String (one of "text", "svg", "visual", or "edit"), and will output an IView of the corresponding type. Each view that the ViewFactory returns has to be configured externally by the controller (which takes in an IView) to add view-specific attributes to it (such as canvas size, or tick rates). 
+ViewFactory is a class for generating one of the four concrete implementations of IView listed above. It contains a method that takes in a String (one of "text", "svg", "visual", or "edit"), and will output an IView of the corresponding type. Each view that the ViewFactory returns has to be configured externally by the controller (which takes in an IView) to add view-specific attributes to it (such as canvas size, or tick rates).
 
-modify keyframes based on tick
-talk about end of tick/tick cap
-talk about one keyframe
-talk about before and after keyframe
-talk about starting state of editor
-talk about maxX and maxY not dynamically updating with newly added keyframes
-talk about adding same keyframe with same variables does nothing
+### Features
+The Features interface represents the features that a GUI view can support. Implementing classes should determine how exactly the features are implemented. The features that it supports are: playing/pausing/restarting the animation, enabling loopback, adding/remove a shape, adding/remove/modifying a keyframe, and speeding up/slowing down. 
 
 ## The Excellence (main) class
 Excellence is a class that contains the main method. It serves as an entry point into the program, and takes in inputs as command line arguments. Currently, four different options are supported:
@@ -117,8 +124,15 @@ If, for whatever reason, an error occurs (such as invalid command-line arguments
 
 ## Changelog
 For Assignment 7:
-* We added a view factory class to help construct views for us.
-* **Other stuff to be added later**
+* We added a view factory class to help construct views for us. This included refactoring views to be constr
+* Refactored the model to use keyframes instead of motions. This includes the model builder, tweening, and any other animation-related logic. This also includes deleting the notion of a Motion.
+* Merged all the controllers into one controller - ControllerImpl. This controller contains logic for the timer, as well as the features our GUI view can perform.
+* Implemented a Features interface. This interface represents the features that our editor view supports. Examples of features are playing the animation, stopping the animation, restarting the animation, and modifying the animation in various forms.
+* Implemented a new editor view that allows for user interaction with the animation in the form of the features mentioned above through buttons and text fields.
+* Changed controller to have two different methods for two different types of views - visual/timer based views and text-based views.
+* Changed view interface to have two different methods for two different types of views - visual/timer based views and text-based views. Also gave option to set the shapes that the view has to render and the features they can support.
+* Updated our Excellence (main) method/file to properly support the changes we made.
+* Added test versions of the model, controller, and view to help test listeners and wiring.
 
 For Assignment 6:
 We have made a few changes since the previous assignment.

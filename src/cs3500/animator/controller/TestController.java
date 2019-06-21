@@ -26,11 +26,6 @@ public class TestController implements IController, Features {
   }
 
   @Override
-  public void setTickRate(int tickRate) {
-    // empty since doesn't have to do with testing wiring
-  }
-
-  @Override
   public void outputText() {
     // empty since doesn't have to do with testing wiring
   }

@@ -80,21 +80,6 @@ public class ControllerImpl implements IController, Features {
     this.view.setShapes(model.getShapes());
   }
 
-
-  /**
-   * Sets the tickRate to the given tick rate. Also, resets the Timer, gives it a new delay based on
-   * the tick rate, and restarts it.
-   *
-   * @param tickRate is the new tick rate
-   */
-  @Override
-  public void setTickRate(int tickRate) {
-    this.tickRate = tickRate;
-    this.timer.stop();
-    this.timer.setDelay(tickRate);
-    this.timer.start();
-  }
-
   @Override
   public void outputText() {
     view.toOutput(model.getShapes(), this.ap, this.tickRate);
