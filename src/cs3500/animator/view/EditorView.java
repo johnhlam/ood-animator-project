@@ -21,7 +21,7 @@ import cs3500.animator.model.ShapeType;
  * listener and transmits events to the controller, or its "features."
  */
 public class EditorView extends JFrame implements IView, ActionListener {
-  Features features;
+  private Features features;
   private List<IReadOnlyShape> shapesToRender = new ArrayList<>();
 
   // panel for the animation and its buttons
@@ -43,7 +43,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
   private JTextField shapeIDField;
   private JRadioButton rectangleRadio;
   private JRadioButton ellipseRadio;
-  ButtonGroup shapeSelections;
+  private ButtonGroup shapeSelections;
 
   // panel for the keyframe interactions
   private JPanel keyframePanel;
@@ -58,6 +58,9 @@ public class EditorView extends JFrame implements IView, ActionListener {
   private JTextField gVal;
   private JTextField bVal;
 
+  /**
+   * Constructs an instance of the EditorView. Initializes the panels and buttons of the view.
+   */
   public EditorView() {
 
     animationPanel = new AnimationPanel();
