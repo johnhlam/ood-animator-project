@@ -100,6 +100,7 @@ talk about one keyframe
 talk about before and after keyframe
 talk about starting state of editor
 talk about maxX and maxY not dynamically updating with newly added keyframes
+talk about adding same keyframe with same variables does nothing
 
 ## The Excellence (main) class
 Excellence is a class that contains the main method. It serves as an entry point into the program, and takes in inputs as command line arguments. Currently, four different options are supported:

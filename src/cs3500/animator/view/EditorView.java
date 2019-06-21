@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.*;
 
@@ -37,7 +38,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
 
   // panel for the shape interactions
   private JPanel shapePanel;
-  private DefaultListModel<String> shapeListModel = new DefaultListModel();
+  private Vector<String> shapeListModel = new Vector<>();
   private JList<String> shapeList;
   private JTextField shapeIDField;
   private JRadioButton rectangleRadio;
@@ -46,7 +47,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
 
   // panel for the keyframe interactions
   private JPanel keyframePanel;
-  private DefaultListModel<String> keyframeListModel = new DefaultListModel();
+  private Vector<String> keyframeListModel = new Vector<>();
   private JList<String> keyframeList;
   private JTextField tick;
   private JTextField xCoor;
@@ -229,9 +230,12 @@ public class EditorView extends JFrame implements IView, ActionListener {
       }
       IReadOnlyShape shape = this.shapesToRender.get(shapeList.getSelectedIndex());
       keyframeListModel.clear();
+      List<String> keyframes = new ArrayList<>();
       for (IKeyframe keyframe : shape.getKeyframes()) {
-        keyframeListModel.addElement(keyframe.printKeyframe());
+        keyframes.add(keyframe.printKeyframe());
       }
+      keyframeListModel = new Vector<>(keyframes);
+      keyframeList.setListData(keyframeListModel);
     }));
     JScrollPane scrolledShapeList = new JScrollPane(shapeList);
 
@@ -372,10 +376,13 @@ public class EditorView extends JFrame implements IView, ActionListener {
   @Override
   public void setShapes(List<IReadOnlyShape> shapes) {
     this.shapesToRender = shapes;
-    this.shapeListModel.clear();
+    List<String> shapeIDs = new ArrayList<>();
+
     for (int i = 0; i < this.shapesToRender.size(); i++) {
-      this.shapeListModel.addElement(this.shapesToRender.get(i).getID());
+      shapeIDs.add(this.shapesToRender.get(i).getID());
     }
+    Vector<String> listData = new Vector<String>(shapeIDs);
+    this.shapeList.setListData(listData);
   }
 
   /**
@@ -493,6 +500,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
     IKeyframe curFrame = curShape.getKeyframes().get(keyframeList.getSelectedIndex());
     try {
       this.keyframeListModel.remove(this.keyframeList.getSelectedIndex());
+      this.keyframeList.setListData(keyframeListModel);
       this.features.removeKeyframe(curShape.getID(), curFrame.getTick());
     } catch (Exception e) {
       this.errorPopup(e.getMessage());
@@ -549,6 +557,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
     try {
       this.features.addKeyframe(shapeList.getSelectedValue(), tickVal, widthVal, heightVal, x, y,
               new Color(r, g, b));
+      this.keyframeList.setListData(new Vector<>());
     } catch (Exception e) {
       this.errorPopup(e.getMessage());
       e.printStackTrace();
@@ -567,8 +576,8 @@ public class EditorView extends JFrame implements IView, ActionListener {
     }
     String id = shapeList.getSelectedValue();
     try {
-      this.shapeListModel.remove(shapeList.getSelectedIndex());
       this.features.removeShape(id);
+      this.keyframeList.setListData(new Vector<>());
     } catch (Exception e) {
       errorPopup(e.getMessage());
       e.printStackTrace();
