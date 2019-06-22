@@ -133,6 +133,18 @@ public class ControllerImpl implements IController, Features {
   }
 
   @Override
+  public void setTick(int tick) {
+    this.tick = tick;
+    List<IReadOnlyShape> toRender = this.model.getShapesAtTick(this.tick);
+    this.view.render(toRender);
+  }
+
+  @Override
+  public int getFinalTick() {
+    return this.model.getFinalTick();
+  }
+
+  @Override
   public void addShape(String id, ShapeType type) throws IllegalArgumentException {
     if (id == null || type == null) {
       throw new IllegalArgumentException("Given id, ShapeType, and/or Color in addShape are null");

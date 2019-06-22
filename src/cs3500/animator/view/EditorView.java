@@ -26,6 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
@@ -45,6 +46,9 @@ public class EditorView extends JFrame implements IView, ActionListener {
   private JScrollPane scrollableAnimationPanel;
   private JPanel videoPanel;
   private JPanel buttonPanel;
+  private JPanel scrubbingPanel;
+  private JPanel videoOptionsPanel;
+  private JSlider scrubber;
 
   // panel for the shape interactions
   private JPanel shapePanel;
@@ -101,7 +105,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
     videoPanel = new JPanel();
     videoPanel.setLayout(new BorderLayout());
     videoPanel.add(scrollableAnimationPanel, BorderLayout.CENTER);
-    videoPanel.add(buttonPanel, BorderLayout.SOUTH);
+    videoPanel.add(videoOptionsPanel, BorderLayout.SOUTH);
   }
 
   /**
@@ -110,7 +114,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
    */
   private void configureKeyframePanel() {
     keyframePanel = new JPanel();
-    keyframeList = new JList<String>(this.keyframeListModel);
+    keyframeList = new JList<>(this.keyframeListModel);
     keyframeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     keyframeList.setFixedCellWidth(shapePanel.getWidth());
     keyframeList.addListSelectionListener((e -> {
@@ -308,6 +312,24 @@ public class EditorView extends JFrame implements IView, ActionListener {
    * commands.
    */
   private void configureButtons() {
+
+    scrubbingPanel = new JPanel();
+    scrubbingPanel.setLayout(new BorderLayout());
+    // Sets the min to 0 to allow for 0 ticks (and so major/minor intervals are nice numbers)
+    // Sets the max to 100 by default. Will be set to the correct value once setFeatures is called
+    // Sets the value to 1 so that the image initially displayed is at tick 1
+    // TODO: Are there better initial values than these?
+    scrubber = new JSlider(0, 100, 1);
+    scrubber.addChangeListener(e -> { // TODO: Can also make the view a change listener
+      JSlider slider = (JSlider) e.getSource();  // TODO: Pretty sure you have to cast here
+      this.features.setTick(slider.getValue());
+    });
+    // TODO: Needs a way to update along with the timer in the controller (as in update with the
+    //  current tick)
+    scrubber.setPaintTicks(true);
+    scrubber.setPaintLabels(true);
+    scrubbingPanel.add(scrubber);
+
     buttonPanel = new JPanel();
     buttonPanel.setLayout(new FlowLayout());
 
@@ -331,7 +353,6 @@ public class EditorView extends JFrame implements IView, ActionListener {
     JButton faster = new JButton("Speed up");
     faster.setActionCommand("fast");
     faster.addActionListener(this);
-
     JButton slower = new JButton("Slow down");
     slower.setActionCommand("slow");
     slower.addActionListener(this);
@@ -342,6 +363,11 @@ public class EditorView extends JFrame implements IView, ActionListener {
     buttonPanel.add(faster);
     buttonPanel.add(slower);
     buttonPanel.add(loopback);
+
+    videoOptionsPanel = new JPanel();
+    videoOptionsPanel.setLayout(new GridLayout(2, 0));
+    videoOptionsPanel.add(scrubbingPanel);
+    videoOptionsPanel.add(buttonPanel);
   }
 
   @Override
@@ -377,7 +403,17 @@ public class EditorView extends JFrame implements IView, ActionListener {
   public void setFeatures(Features features) {
     if (features != null) {
       this.features = features;
+
+      int finalTick = this.features.getFinalTick();
+
+      this.scrubber.setMaximum(finalTick);
+      // Divides by 25 and multiplies by 5 so that the spacing will be a multiple of 5
+      scrubber.setMajorTickSpacing(finalTick / 25 * 5);
+      // Divides by 250 and multiplies by 5 so that the spacing will be a multiple of 5
+      scrubber.setMinorTickSpacing(finalTick / 250 * 5);
+      // TODO: Figure out a better way configure the scrubber
     }
+
   }
 
   /**
@@ -394,7 +430,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
     for (int i = 0; i < this.shapesToRender.size(); i++) {
       shapeIDs.add(this.shapesToRender.get(i).getID());
     }
-    Vector<String> listData = new Vector<String>(shapeIDs);
+    Vector<String> listData = new Vector<>(shapeIDs);
     this.shapeList.setListData(listData);
   }
 

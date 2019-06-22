@@ -81,6 +81,17 @@ public class TestController implements IController, Features {
     this.attemptAppend("Loopback was checked.");
   }
 
+  @Override
+  public void setTick(int tick) {
+    // TODO: Implement and write tests for this (maybe if required)
+  }
+
+  @Override
+  public int getFinalTick() {
+    // TODO: Implement and write tests for this (maybe if required)
+    return 0;
+  }
+
   /**
    * Appends the appropriate message to the Appendable.
    */

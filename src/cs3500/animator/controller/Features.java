@@ -44,6 +44,19 @@ public interface Features {
   void toggleLoopback();
 
   /**
+   * Sets the current tick to the given value.
+   * @param tick is the tick that the current tick will be changed to
+   */
+  void setTick(int tick);
+
+  /**
+   * Returns the final tick of the animation.
+   *
+   * @return the final tick of the animation
+   */
+  int getFinalTick(); // TODO: May be a better way to do it than this
+
+  /**
    * Adds a shape to the animation with the given ID and type.
    *
    * @param id   of the shape
@@ -98,5 +111,4 @@ public interface Features {
    */
   void modifyKeyframe(String id, int tick, double width, double height, double x, double y,
       Color color) throws IllegalArgumentException;
-
 }
