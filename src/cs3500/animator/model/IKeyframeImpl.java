@@ -21,6 +21,10 @@ public class IKeyframeImpl implements IKeyframe {
     if (color == null) {
       throw new IllegalArgumentException("Given color to IKeyframeImpl cannot be null");
     }
+    if (tick < 0 || width < 0 || height < 0) {
+      throw new IllegalArgumentException("Keyframes cannot be constructed with negative "
+          + "tick/width/height.");
+    }
     this.tick = tick;
     this.width = width;
     this.height = height;

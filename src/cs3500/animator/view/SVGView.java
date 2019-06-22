@@ -33,11 +33,15 @@ public class SVGView extends ATextualView {
    * @throws IllegalArgumentException if the given list is null
    */
   @Override
-  public void toOutput(List<IReadOnlyShape> shapes, Appendable ap, int tickRate) throws IllegalArgumentException,
-          IllegalStateException {
-    if (shapes == null) {
-      throw new IllegalArgumentException("Shapes cannot be null.");
+  public void toOutput(List<IReadOnlyShape> shapes, Appendable ap, int tickRate)
+      throws IllegalArgumentException, IllegalStateException {
+    if (shapes == null || ap == null) {
+      throw new IllegalArgumentException("Shapes or Appendable cannot be null.");
     }
+    if (tickRate < 1) {
+      throw new IllegalArgumentException("Tick rate must be positive");
+    }
+
     String xCoordinate = null;
     String yCoordinate = null;
     String widthAttribute = null;
