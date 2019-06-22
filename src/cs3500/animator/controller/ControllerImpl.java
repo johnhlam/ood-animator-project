@@ -169,11 +169,11 @@ public class ControllerImpl implements IController, Features {
       Color color) throws IllegalArgumentException {
     try {
       this.model.removeKeyframe(id, tick);
-      this.model.addKeyframe(id, tick, width, height, x, y, color);
+      this.model.addKeyframe(id, tick, x, y, width, height, color);
       this.view.setShapes(model.getShapes());
     } catch (Exception e) {
-      throw new IllegalArgumentException("Modifcation unsuccessful. Please modify the currently " +
-          "selected keyframe.");
+      throw new IllegalArgumentException("Modification unsuccessful. Please modify the currently " +
+          "selected keyframe.\nError message: " + e.getMessage());
     }
   }
 }

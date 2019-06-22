@@ -12,8 +12,6 @@ import java.util.Scanner;
 
 import cs3500.animator.model.IModelShape;
 import cs3500.animator.model.IModelShapeImpl;
-import cs3500.animator.model.IMotion;
-import cs3500.animator.model.IMotionImpl;
 import cs3500.animator.model.IReadOnlyShape;
 import cs3500.animator.model.ShapeType;
 import cs3500.animator.view.IView;
@@ -28,12 +26,6 @@ public class TextViewTests {
 
   private Appendable out;
   private IView textView;
-  private IMotion motion1 = new IMotionImpl(1, 10, 10, 0, 0, Color.BLACK, 10, 15, 15, 0, 0,
-      Color.RED);
-  private IMotion motion2 = new IMotionImpl(5, 15, 10, 20, 20, Color.BLACK, 10, 15, 15, 0, 0,
-      Color.RED);
-  private IMotion motion3 = new IMotionImpl(10, 15, 15, 0, 0, Color.RED, 20, 15, 15, 0, 0,
-      Color.RED);
   private List<IReadOnlyShape> shapes;
 
   /**

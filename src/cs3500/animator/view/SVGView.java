@@ -2,10 +2,8 @@ package cs3500.animator.view;
 
 import cs3500.animator.model.IKeyframe;
 
-import java.awt.geom.Ellipse2D;
 import java.util.List;
 
-import cs3500.animator.model.IMotion;
 import cs3500.animator.model.IReadOnlyShape;
 import cs3500.animator.model.ShapeType;
 
