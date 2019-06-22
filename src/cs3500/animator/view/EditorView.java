@@ -1,18 +1,33 @@
 package cs3500.animator.view;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import javax.swing.*;
-
 import cs3500.animator.controller.Features;
 import cs3500.animator.model.IKeyframe;
 import cs3500.animator.model.IReadOnlyShape;
 import cs3500.animator.model.ShapeType;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 
 /**
  * Represents an interactive view that displays an animation. The user can modify the animation
@@ -30,20 +45,12 @@ public class EditorView extends JFrame implements IView, ActionListener {
   private JScrollPane scrollableAnimationPanel;
   private JPanel videoPanel;
   private JPanel buttonPanel;
-  private JButton stop;
-  private JButton play;
-  private JButton restart;
-  private JCheckBox loopback;
-  private JButton faster;
-  private JButton slower;
 
   // panel for the shape interactions
   private JPanel shapePanel;
   private Vector<String> shapeListModel = new Vector<>();
   private JList<String> shapeList;
   private JTextField shapeIDField;
-  private JRadioButton rectangleRadio;
-  private JRadioButton ellipseRadio;
   private ButtonGroup shapeSelections;
 
   // panel for the keyframe interactions
@@ -265,9 +272,9 @@ public class EditorView extends JFrame implements IView, ActionListener {
     shapeIDField = new JTextField(5);
     shapeSelections = new ButtonGroup();
 
-    rectangleRadio = new JRadioButton("Rectangle");
+    JRadioButton rectangleRadio = new JRadioButton("Rectangle");
     rectangleRadio.setActionCommand("rectangle");
-    ellipseRadio = new JRadioButton("Ellipse");
+    JRadioButton ellipseRadio = new JRadioButton("Ellipse");
     ellipseRadio.setActionCommand("ellipse");
 
     shapeSelections.add(rectangleRadio);
@@ -304,28 +311,28 @@ public class EditorView extends JFrame implements IView, ActionListener {
     buttonPanel = new JPanel();
     buttonPanel.setLayout(new FlowLayout());
 
-    stop = new JButton("Stop");
+    JButton stop = new JButton("Stop");
     stop.setActionCommand("stop");
     stop.addActionListener(this);
 
-    play = new JButton("Play");
+    JButton play = new JButton("Play");
     play.setActionCommand("play");
     play.addActionListener(this);
 
-    restart = new JButton("Restart");
+    JButton restart = new JButton("Restart");
     restart.setActionCommand("restart");
     restart.addActionListener(this);
 
-    loopback = new JCheckBox("Loopback Enabled");
+    JCheckBox loopback = new JCheckBox("Loopback Enabled");
     loopback.setSelected(false);
     loopback.setActionCommand("loop");
     loopback.addActionListener(this);
 
-    faster = new JButton("Speed up");
+    JButton faster = new JButton("Speed up");
     faster.setActionCommand("fast");
     faster.addActionListener(this);
 
-    slower = new JButton("Slow down");
+    JButton slower = new JButton("Slow down");
     slower.setActionCommand("slow");
     slower.addActionListener(this);
 

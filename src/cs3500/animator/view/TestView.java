@@ -1,6 +1,6 @@
 package cs3500.animator.view;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.List;
 import java.util.Scanner;
 

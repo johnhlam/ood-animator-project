@@ -103,7 +103,7 @@ public class ControllerTests {
   }
 
   /**
-   * Tests that passing in a negative tickrate throws an exception
+   * Tests that passing in a negative tickrate throws an exception.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testNullViewTimer() {
@@ -111,7 +111,7 @@ public class ControllerTests {
   }
 
   /**
-   * Tests that passing in a null Appendable throws an exception
+   * Tests that passing in a null Appendable throws an exception.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testNullModelTimer() {

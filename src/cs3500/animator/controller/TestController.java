@@ -1,9 +1,8 @@
 package cs3500.animator.controller;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.IOException;
 
-import cs3500.animator.model.IModel;
 import cs3500.animator.model.ShapeType;
 import cs3500.animator.view.IView;
 
@@ -13,7 +12,6 @@ import cs3500.animator.view.IView;
  */
 public class TestController implements IController, Features {
 
-  private IView view;
   private final Appendable ap;
 
   /**
@@ -21,9 +19,8 @@ public class TestController implements IController, Features {
    * Appendable that it will write to.
    */
   public TestController(IView view, Appendable ap) {
-    this.view = view;
     this.ap = ap;
-    this.view.setFeatures(this);
+    view.setFeatures(this);
   }
 
   @Override

@@ -70,11 +70,13 @@ public class ControllerImpl implements IController, Features {
     this.view.setCanvas(model.getX(), model.getY(), model.getWidth(), model.getHeight(),
         model.getMaxX(), model.getMaxY());
 
+    // Tries to set the view's features to this
     try {
       this.view.setFeatures(this);
       this.timerOnStart = false;
     } catch (UnsupportedOperationException e) {
-
+      // Does nothing if an UnsupportedOperationException is thrown, meaning that the view does
+      // not support setting the features to this
     }
 
     this.view.setShapes(model.getShapes());

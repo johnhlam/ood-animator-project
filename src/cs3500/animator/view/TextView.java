@@ -25,7 +25,8 @@ public class TextView extends ATextualView {
    *                               output.
    */
   @Override
-  public void toOutput(List<IReadOnlyShape> shapes, Appendable ap, int tickRate) throws RuntimeException {
+  public void toOutput(List<IReadOnlyShape> shapes, Appendable ap, int tickRate)
+      throws RuntimeException {
     if (shapes == null || ap == null) {
       throw new IllegalArgumentException(
               "Given list of read-only shapes and Appendable for toOutput cannot be null");

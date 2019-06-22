@@ -3,7 +3,6 @@ package cs3500.animator.view;
 import cs3500.animator.controller.Features;
 import cs3500.animator.model.IReadOnlyShape;
 
-import java.awt.event.ActionListener;
 import java.util.List;
 
 /**

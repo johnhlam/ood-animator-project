@@ -16,6 +16,19 @@ public class IKeyframeImpl implements IKeyframe {
   private final double y;
   private Color color;
 
+  /**
+   * Constructor for a keyframe. Throws an exception if the given color is null, or if the given
+   * tick, width, height is negative.
+   *
+   * @param tick   is the tick of the keyframe
+   * @param width  is the width of the keyframe
+   * @param height is the height of the keyframe
+   * @param x      is the x value of the keyframe
+   * @param y      is the y value of the keyframe
+   * @param color  is the Color of the keyframe
+   * @throws IllegalArgumentException if the given color is null, or i the given tick, width, or
+   *                                  height are negative
+   */
   public IKeyframeImpl(int tick, double width, double height, double x, double y, Color color)
       throws IllegalArgumentException {
     if (color == null) {

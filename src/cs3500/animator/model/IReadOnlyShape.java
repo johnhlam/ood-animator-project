@@ -69,7 +69,7 @@ public interface IReadOnlyShape {
   String printKeyframes();
 
   /**
-   * Returns a read-only version of the shape's keyframes
+   * Returns a read-only version of the shape's keyframes.
    *
    * @return the shape's keyframes
    */

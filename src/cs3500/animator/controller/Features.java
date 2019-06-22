@@ -53,14 +53,14 @@ public interface Features {
       throws IllegalArgumentException;
 
   /**
-   * Removes the shape of the given ID
+   * Removes the shape of the given ID.
    *
    * @param id of shape to remove
    */
   void removeShape(String id) throws IllegalArgumentException;
 
   /**
-   * Adds a keyframe to the animation to the shape of the given ID
+   * Adds a keyframe to the animation to the shape of the given ID.
    *
    * @param id     of the shape who should get the new keyframe
    * @param tick   of keyframe
@@ -75,7 +75,7 @@ public interface Features {
       Color color) throws IllegalArgumentException;
 
   /**
-   * Removes the keyframe with the given tick from the shape of the given ID
+   * Removes the keyframe with the given tick from the shape of the given ID.
    *
    * @param id   of the shape
    * @param tick of the keyframe to remove
@@ -85,7 +85,7 @@ public interface Features {
   void removeKeyframe(String id, int tick) throws IllegalArgumentException;
 
   /**
-   * Modifies a selected keyframe to the animation to the shape of the given ID
+   * Modifies a selected keyframe to the animation to the shape of the given ID.
    *
    * @param id     of the shape whose keyframe is being modified
    * @param tick   new tick of keyframe

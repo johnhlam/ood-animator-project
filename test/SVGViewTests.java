@@ -150,7 +150,7 @@ public class SVGViewTests {
   }
 
   /**
-   * Tests that calling render on a text view throws an UnsupportedOperationException
+   * Tests that calling render on a text view throws an UnsupportedOperationException.
    */
   @Test(expected = UnsupportedOperationException.class)
   public void testRenderError() {
@@ -158,7 +158,7 @@ public class SVGViewTests {
   }
 
   /**
-   * Tests that calling setFeatures on a text view throws an UnsupportedOperationException
+   * Tests that calling setFeatures on a text view throws an UnsupportedOperationException.
    */
   @Test(expected = UnsupportedOperationException.class)
   public void testSetFeaturesError() {
@@ -167,7 +167,7 @@ public class SVGViewTests {
   }
 
   /**
-   * Tests that calling setShapes on a text view does nothing
+   * Tests that calling setShapes on a text view does nothing.
    */
   @Test
   public void testSetShapesError() {

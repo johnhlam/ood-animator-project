@@ -4,7 +4,6 @@ import org.junit.Test;
 import java.io.StringReader;
 
 import cs3500.animator.controller.ControllerImpl;
-import cs3500.animator.controller.Features;
 import cs3500.animator.controller.IController;
 import cs3500.animator.controller.TestController;
 import cs3500.animator.model.IModel;

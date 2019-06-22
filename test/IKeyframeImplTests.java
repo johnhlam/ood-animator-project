@@ -1,4 +1,3 @@
-import cs3500.animator.Excellence;
 import cs3500.animator.model.IKeyframe;
 import cs3500.animator.model.IKeyframeImpl;
 import org.junit.Test;
