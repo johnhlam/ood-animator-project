@@ -220,8 +220,7 @@ public class IModelShapeImplTest {
             + "motion R1 10 0 0 15 15 255 0 0\t30 0 0 15 15 255 0 0",
         this.rect1.printKeyframes());
   }
-  
-  
+
 
   /**
    * Tests adding an adjacent keyframe at the end of a list.
@@ -238,8 +237,8 @@ public class IModelShapeImplTest {
         this.rect1.printKeyframes());
     this.rect1.addKeyframe(11, 15, 15, 0, 0, Color.RED);
     assertEquals("shape R1 rectangle\n"
-        + "motion R1 1 0 0 10 10 0 0 0\t10 0 0 15 15 255 0 0\n"
-        + "motion R1 10 0 0 15 15 255 0 0\t11 0 0 15 15 255 0 0",
+            + "motion R1 1 0 0 10 10 0 0 0\t10 0 0 15 15 255 0 0\n"
+            + "motion R1 10 0 0 15 15 255 0 0\t11 0 0 15 15 255 0 0",
         this.rect1.printKeyframes());
   }
 
@@ -253,7 +252,7 @@ public class IModelShapeImplTest {
     assertEquals("shape E1 ellipse", this.ellipse1.printKeyframes());
     this.ellipse1.addKeyframe(1, 10, 10, 0, 0, Color.BLACK);
     assertEquals("shape E1 ellipse\n"
-        + "motion E1 1 0 0 10 10 0 0 0\t1 0 0 10 10 0 0 0",
+            + "motion E1 1 0 0 10 10 0 0 0\t1 0 0 10 10 0 0 0",
         this.ellipse1.printKeyframes());
   }
 
@@ -376,7 +375,7 @@ public class IModelShapeImplTest {
   public void testGetKeyframes2() {
     ellipse1.addKeyframe(1, 10, 10, 0, 0, Color.BLACK);
     IKeyframe kf = ellipse1.getKeyframes().get(0);
-    
+
     assertEquals(this.keyframe1.getTick(), kf.getTick());
     assertEquals(this.keyframe1.getWidth(), kf.getWidth(), 0.0001);
     assertEquals(this.keyframe1.getHeight(), kf.getHeight(), 0.0001);
@@ -390,11 +389,11 @@ public class IModelShapeImplTest {
     ellipse1.addKeyframe(1, 10, 10, 0, 0, Color.BLACK);
     ellipse1.addKeyframe(10, 15, 15, 0, 0, Color.RED);
     ellipse1.addKeyframe(20, 15, 15, 0, 0, Color.RED);
-    
+
     IKeyframe kf0 = ellipse1.getKeyframes().get(0);
     IKeyframe kf1 = ellipse1.getKeyframes().get(1);
     IKeyframe kf2 = ellipse1.getKeyframes().get(2);
-    
+
     assertEquals(this.keyframe1.getTick(), kf0.getTick());
     assertEquals(this.keyframe1.getWidth(), kf0.getWidth(), 0.0001);
     assertEquals(this.keyframe1.getHeight(), kf0.getHeight(), 0.0001);
@@ -430,7 +429,7 @@ public class IModelShapeImplTest {
   @Test
   public void testRemoveKeyframe2() {
     ellipse1.addKeyframe(1, 10, 10, 0, 0, Color.BLACK);
-    
+
     ArrayList<IKeyframe> temp = new ArrayList<>();
 
     IKeyframe kf = ellipse1.getKeyframes().get(0);
@@ -553,7 +552,8 @@ public class IModelShapeImplTest {
   }
 
   /**
-   * Tests that getting a shape at a tick during a keyframe returns the correct output (including with
+   * Tests that getting a shape at a tick during a keyframe returns the correct output (including
+   * with
    * negative numbers).
    */
   @Test

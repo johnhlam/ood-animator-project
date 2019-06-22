@@ -26,9 +26,12 @@ public class TextView extends ATextualView {
    */
   @Override
   public void toOutput(List<IReadOnlyShape> shapes, Appendable ap, int tickRate) throws RuntimeException {
-    if (shapes == null) {
+    if (shapes == null || ap == null) {
       throw new IllegalArgumentException(
-              "Given list of read-only shapes for setShapes cannot be null");
+              "Given list of read-only shapes and Appendable for toOutput cannot be null");
+    }
+    if (tickRate < 1) {
+      throw new IllegalArgumentException("Given tickRate to toOutput must be positive");
     }
     this.attemptAppend("canvas ", ap);
     this.attemptAppend(Integer.toString(x), ap);

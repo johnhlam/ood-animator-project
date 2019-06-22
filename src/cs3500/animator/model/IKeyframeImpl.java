@@ -17,7 +17,7 @@ public class IKeyframeImpl implements IKeyframe {
   private Color color;
 
   public IKeyframeImpl(int tick, double width, double height, double x, double y, Color color)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     if (color == null) {
       throw new IllegalArgumentException("Given color to IKeyframeImpl cannot be null");
     }
@@ -38,20 +38,20 @@ public class IKeyframeImpl implements IKeyframe {
     StringBuilder builder = new StringBuilder();
 
     builder.append(this.tick)
-            .append(" ")
-            .append((int) this.x)
-            .append(" ")
-            .append((int) this.y)
-            .append(" ")
-            .append((int) this.width)
-            .append(" ")
-            .append((int) this.height)
-            .append(" ")
-            .append(this.color.getRed())
-            .append(" ")
-            .append(this.color.getGreen())
-            .append(" ")
-            .append(this.color.getBlue());
+        .append(" ")
+        .append((int) this.x)
+        .append(" ")
+        .append((int) this.y)
+        .append(" ")
+        .append((int) this.width)
+        .append(" ")
+        .append((int) this.height)
+        .append(" ")
+        .append(this.color.getRed())
+        .append(" ")
+        .append(this.color.getGreen())
+        .append(" ")
+        .append(this.color.getBlue());
 
     return builder.toString();
   }

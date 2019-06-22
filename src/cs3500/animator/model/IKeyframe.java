@@ -9,6 +9,7 @@ import java.awt.Color;
  * work with the controller and view.
  */
 public interface IKeyframe {
+
   /**
    * Prints the parameters of this motion in one line. Each implementation should specify how this
    * information is represented.

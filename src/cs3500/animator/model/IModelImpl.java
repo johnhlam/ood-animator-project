@@ -36,7 +36,7 @@ public class IModelImpl implements IModel {
    *                                  and/or height are not positive
    */
   public IModelImpl(int topX, int topY, int width, int height, int maxX,
-                    int maxY, List<IModelShape> shapes) throws IllegalArgumentException {
+      int maxY, List<IModelShape> shapes) throws IllegalArgumentException {
     if (shapes == null) {
       throw new IllegalArgumentException("Given list of shapes for IModelImpl cannot be null");
     }
@@ -135,7 +135,7 @@ public class IModelImpl implements IModel {
 
     for (IModelShape s : this.shapes) {
       builder.append(s.printKeyframes())
-              .append("\n\n");
+          .append("\n\n");
     }
 
     // Removes the last \n in the builder
@@ -167,14 +167,14 @@ public class IModelImpl implements IModel {
    *                                  at the given tick.
    */
   @Override
-  public void addKeyframe(String id, int tick, double x, double y,  double width, double height,
+  public void addKeyframe(String id, int tick, double x, double y, double width, double height,
       Color color) throws IllegalArgumentException {
     if (id == null) {
       throw new IllegalArgumentException("Given id to addKeyframe is null");
     }
     if (tick < 0 || width < 0 || height < 0) {
       throw new IllegalArgumentException("Given tick, width, and/or height to add keyframe cannot"
-              + " be negative");
+          + " be negative");
     }
 
     for (IModelShape cur : this.shapes) {
@@ -230,7 +230,7 @@ public class IModelImpl implements IModel {
 
   @Override
   public void addShape(String id, ShapeType type, double width, double height, double x, double y,
-                       Color color) throws IllegalArgumentException {
+      Color color) throws IllegalArgumentException {
     if (id == null || type == null || color == null) {
       throw new IllegalArgumentException("Arguments for addShape cannot be null.");
     }
@@ -319,7 +319,7 @@ public class IModelImpl implements IModel {
     public IModelImpl build() {
 
       return new IModelImpl(this.topX, this.topY, this.width, this.height, this.maxX,
-              this.maxY, this.shapes);
+          this.maxY, this.shapes);
     }
 
     @Override
@@ -353,15 +353,15 @@ public class IModelImpl implements IModel {
      */
     @Override
     public AnimationBuilder<IModelImpl> addMotion(String name, int t1, int x1, int y1, int w1,
-                                                  int h1, int r1, int g1, int b1, int t2, int x2,
-                                                  int y2, int w2, int h2, int r2, int g2,
-                                                  int b2) throws IllegalArgumentException {
+        int h1, int r1, int g1, int b1, int t2, int x2,
+        int y2, int w2, int h2, int r2, int g2,
+        int b2) throws IllegalArgumentException {
       if (name == null) {
         throw new IllegalArgumentException("Arguments for addMotion cannot be null");
       }
       if (t1 < 0 || t2 < 0 || w1 < 0 || w2 < 0 || h1 < 0 || h2 < 0) {
         throw new IllegalArgumentException("Ticks, widths, and/or heights for add motion cannot "
-                + "be negative");
+            + "be negative");
       }
       if (t1 > t2) {
         throw new IllegalArgumentException("Given start tick to Builder#addMotion is after end "
@@ -375,8 +375,8 @@ public class IModelImpl implements IModel {
 
       for (IModelShape cur : this.shapes) {
         if (cur.getID().equals(name)) {
-            cur.addKeyframe(t1, w1, h1, x1, y1, new Color(r1, g1, b1));
-            cur.addKeyframe(t2, w2, h2, x2, y2, new Color(r2, g2, b2));
+          cur.addKeyframe(t1, w1, h1, x1, y1, new Color(r1, g1, b1));
+          cur.addKeyframe(t2, w2, h2, x2, y2, new Color(r2, g2, b2));
           // Does not need to iterate through the rest of the list if a shape with the given id
           // has been found
           return this;
@@ -393,14 +393,14 @@ public class IModelImpl implements IModel {
      */
     @Override
     public AnimationBuilder<IModelImpl> addKeyframe(String name, int t, int x, int y, int w,
-                                                    int h, int r, int g, int b) throws IllegalArgumentException {
+        int h, int r, int g, int b) throws IllegalArgumentException {
 
       if (name == null) {
         throw new IllegalArgumentException("Arguments for addKeyframe cannot be null");
       }
       if (t < 0 || w < 0 || h < 0) {
         throw new IllegalArgumentException("Tick, width, and/or height for addKeyframe cannot be "
-                + "negative");
+            + "negative");
       }
 
       maxX = Math.max(maxX, x + w);

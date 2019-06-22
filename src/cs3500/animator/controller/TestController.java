@@ -12,6 +12,7 @@ import cs3500.animator.view.IView;
  * controller. Methods that require the model will be further tested through a test model.
  */
 public class TestController implements IController, Features {
+
   private IView view;
   private final Appendable ap;
 
@@ -104,7 +105,7 @@ public class TestController implements IController, Features {
    */
   @Override
   public void addKeyframe(String id, int tick, double width, double height, double x, double y,
-                          Color color) throws IllegalArgumentException {
+      Color color) throws IllegalArgumentException {
     this.attemptAppend("Keyframe added for shape " + id + " at tick " + tick);
   }
 
@@ -121,7 +122,7 @@ public class TestController implements IController, Features {
    */
   @Override
   public void modifyKeyframe(String id, int tick, double width, double height, double x, double y
-          , Color color) throws IllegalArgumentException {
+      , Color color) throws IllegalArgumentException {
     this.attemptAppend("Keyframe modified for shape " + id + " at tick " + tick);
   }
 

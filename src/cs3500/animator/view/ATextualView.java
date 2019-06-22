@@ -35,7 +35,8 @@ public abstract class ATextualView implements IView {
    *                               output.
    */
   @Override
-  public abstract void toOutput(List<IReadOnlyShape> shapes, Appendable ap, int tickRate) throws IllegalStateException;
+  public abstract void toOutput(List<IReadOnlyShape> shapes, Appendable ap, int tickRate)
+      throws IllegalStateException;
 
   /**
    * Since textual views cannot render an animation visually, this throws an
@@ -52,7 +53,7 @@ public abstract class ATextualView implements IView {
   public void setCanvas(int x, int y, int width, int height, int maxX, int maxY) {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("Given width and height to ATextualView#setCanvas(...) "
-              + "cannot be less than or equal to 0");
+          + "cannot be less than or equal to 0");
     }
     if (maxX < 0 || maxY < 0) {
       throw new IllegalArgumentException("Max x and max y coordinates cannot be negative");

@@ -11,6 +11,7 @@ import java.util.List;
  * for the wiring in our MVC structure.
  */
 public class TestModel implements IModel {
+
   private final Appendable ap;
 
   /**
@@ -33,7 +34,7 @@ public class TestModel implements IModel {
    */
   @Override
   public void addKeyframe(String id, int tick, double x, double y, double width, double height,
-                          Color color) throws IllegalArgumentException {
+      Color color) throws IllegalArgumentException {
     this.attemptAppend("Model: Keyframe added for shape " + id + " at tick " + tick);
   }
 
@@ -47,7 +48,7 @@ public class TestModel implements IModel {
 
   @Override
   public List<IKeyframe> getKeyframesAtTick(int tick) throws IllegalArgumentException {
-    return null; // TODO: Fill this in!
+    return null;
   }
 
   /**
@@ -55,8 +56,9 @@ public class TestModel implements IModel {
    */
   @Override
   public void addShape(String id, ShapeType shape, double width, double height, double x,
-                       double y, Color color) throws IllegalArgumentException {
-    this.attemptAppend("Model: Shape added with ID " + id + " of type " + ShapeType.typeToString(shape));
+      double y, Color color) throws IllegalArgumentException {
+    this.attemptAppend(
+        "Model: Shape added with ID " + id + " of type " + ShapeType.typeToString(shape));
   }
 
   /**

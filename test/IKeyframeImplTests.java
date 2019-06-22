@@ -8,7 +8,7 @@ import java.awt.Color;
 import static junit.framework.TestCase.assertEquals;
 
 /**
- * Tests for methods of IMotionImpl.
+ * Tests for methods of IKeyframeImpl.
  */
 public class IKeyframeImplTests {
 
@@ -30,14 +30,14 @@ public class IKeyframeImplTests {
   public void keyframeConstructorNegativeTickException1() {
     new IKeyframeImpl(-10, 20, 30, 15, 15, Color.BLACK);
   }
-  
+
 
   /**
    * Tests that passing in a negative width throws an exception.
    */
   @Test(expected = IllegalArgumentException.class)
   public void keyframeConstructorNegativeSizeException1() {
-      new IKeyframeImpl(1, -2, 30, 15, 15, Color.BLACK);
+    new IKeyframeImpl(1, -2, 30, 15, 15, Color.BLACK);
   }
 
   /**

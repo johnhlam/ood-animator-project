@@ -35,10 +35,11 @@ public class VisualView extends JFrame implements IView {
    * given values.
    */
   @Override
-  public void setCanvas(int x, int y, int width, int height, int maxX, int maxY) throws IllegalArgumentException {
+  public void setCanvas(int x, int y, int width, int height, int maxX, int maxY)
+      throws IllegalArgumentException {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("Given width and height for VisualView#setCanvas(int, "
-              + "int) cannot be non-positive");
+          + "int) cannot be non-positive");
     }
 
     if (maxX < 0 || maxY < 0) {
@@ -69,7 +70,8 @@ public class VisualView extends JFrame implements IView {
    * @throws UnsupportedOperationException due to visual view not being able to output text
    */
   @Override
-  public void toOutput(List<IReadOnlyShape> shapes, Appendable ap, int tickRate) throws UnsupportedOperationException {
+  public void toOutput(List<IReadOnlyShape> shapes, Appendable ap, int tickRate)
+      throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Visual view cannot output text.");
   }
 

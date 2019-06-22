@@ -40,7 +40,7 @@ public class ControllerImpl implements IController, Features {
    * @throws IllegalArgumentException if arguments are null or tick rate is negative
    */
   public ControllerImpl(IView view, IModel model, int tickRate, Appendable ap)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     if (view == null || model == null) {
       throw new IllegalArgumentException("Given view and/or model cannot be null.");
     }
@@ -68,7 +68,7 @@ public class ControllerImpl implements IController, Features {
     });
 
     this.view.setCanvas(model.getX(), model.getY(), model.getWidth(), model.getHeight(),
-            model.getMaxX(), model.getMaxY());
+        model.getMaxX(), model.getMaxY());
 
     try {
       this.view.setFeatures(this);
@@ -153,7 +153,7 @@ public class ControllerImpl implements IController, Features {
 
   @Override
   public void addKeyframe(String id, int tick, double width, double height, double x, double y,
-                          Color color) throws IllegalArgumentException {
+      Color color) throws IllegalArgumentException {
     this.model.addKeyframe(id, tick, x, y, width, height, color);
     this.view.setShapes(model.getShapes());
   }
@@ -166,14 +166,14 @@ public class ControllerImpl implements IController, Features {
 
   @Override
   public void modifyKeyframe(String id, int tick, double width, double height, double x, double y,
-                             Color color) throws IllegalArgumentException {
+      Color color) throws IllegalArgumentException {
     try {
       this.model.removeKeyframe(id, tick);
       this.model.addKeyframe(id, tick, width, height, x, y, color);
       this.view.setShapes(model.getShapes());
     } catch (Exception e) {
       throw new IllegalArgumentException("Modifcation unsuccessful. Please modify the currently " +
-              "selected keyframe.");
+          "selected keyframe.");
     }
   }
 }

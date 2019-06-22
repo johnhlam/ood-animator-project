@@ -1,10 +1,3 @@
-// TODO: Test for clashing keyframes
-// TODO: Get rid of printStackTraces
-// TODO: Fix line wrapping: File -> Settings -> Code Style -> Java -> Wrapping and Braces -> Keep
-//  when reformatting -> Line breaks OFF;; Toggle back on when done
-// TODO: Add tests for making sure that no error occurs when adding a keyframe in with the exact
-//  same params as an existing one
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -366,9 +359,9 @@ public class IModelImplTests {
   public void testAddKeyframeNegSHeight() {
     this.model1.addKeyframe("ID", 1, 1, 1, 1, -1, Color.GREEN);
   }
-  
+
   /**
-   * Tests that attempting to add a keyframe with a negative tick, width, and height throws an 
+   * Tests that attempting to add a keyframe with a negative tick, width, and height throws an
    * error.
    */
   @Test(expected = IllegalArgumentException.class)
@@ -484,7 +477,7 @@ public class IModelImplTests {
     this.model1.addKeyframe("R", 20, 10, 40, 30, 40, Color.CYAN);
     this.model1.addKeyframe("R", 35, 10, 40, 60, 120, Color.CYAN);
     this.model1.addKeyframe("R", 40, 10, 40, 60, 120, Color.CYAN);
-    this.model1.addKeyframe("R",45, 20, 40, 60, 120, Color.DARK_GRAY);
+    this.model1.addKeyframe("R", 45, 20, 40, 60, 120, Color.DARK_GRAY);
 
     // This call should throw an error
     this.model1.addKeyframe("R", 0, 0, 20, 30, 40, Color.CYAN);
@@ -530,7 +523,7 @@ public class IModelImplTests {
 
   /**
    * Tests that attempting to add a keyframe that overlaps with the last keyframe of the first
-   shape in
+   * shape in
    * the model throws an error.
    */
   @Test(expected = IllegalArgumentException.class)
@@ -1158,7 +1151,7 @@ public class IModelImplTests {
 
   /**
    * Tests for removing the second shape in a model's list of shapes (without any keyframes
-   added).
+   * added).
    */
   @Test
   public void testRemoveSecondNoKF() {
@@ -1374,8 +1367,8 @@ public class IModelImplTests {
     this.model1.removeKeyframe("R", 30);
 
     assertEquals("shape R rectangle\n" +
-        "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
-        "motion R 10 30 40 40 60 0 255 255\t15 45 60 40 60 0 255 255",
+            "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
+            "motion R 10 30 40 40 60 0 255 255\t15 45 60 40 60 0 255 255",
         model1.printAnimations());
   }
 
@@ -2047,8 +2040,8 @@ public class IModelImplTests {
     this.builder.declareShape("R", "rectangle");
     this.builder.addMotion("R", 1, 20, 20, 30, 40, 255, 0, 0, 10, 40, 40, 40, 40, 0, 0, 0);
     model = this.builder.build();
-    IKeyframe startKeyframe= model.getShapes().get(0).getKeyframes().get(0);
-    IKeyframe endKeyframe= model.getShapes().get(0).getKeyframes().get(1);
+    IKeyframe startKeyframe = model.getShapes().get(0).getKeyframes().get(0);
+    IKeyframe endKeyframe = model.getShapes().get(0).getKeyframes().get(1);
     assertEquals(0, model.getX());
     assertEquals(0, model.getY());
     assertEquals(200, model.getWidth());
@@ -2093,7 +2086,7 @@ public class IModelImplTests {
     IKeyframe keyframeAdded = model.getShapes().get(0).getKeyframes().get(0);
     IKeyframe keyframeAdded2 = model.getShapes().get(0).getKeyframes().get(1);
     IKeyframe keyframeAdded3 = model.getShapes().get(0).getKeyframes().get(2);
-    
+
     assertEquals(0, model.getX());
     assertEquals(0, model.getY());
     assertEquals(200, model.getWidth());
@@ -2108,7 +2101,7 @@ public class IModelImplTests {
     assertEquals(30, keyframeAdded.getWidth(), .001);
     assertEquals(40, keyframeAdded.getHeight(), .001);
     assertEquals(new Color(255, 0, 0), keyframeAdded.getColor());
-    
+
     assertEquals(2, keyframeAdded2.getTick());
     assertEquals(20, keyframeAdded2.getX(), .001);
     assertEquals(20, keyframeAdded2.getY(), .001);
@@ -2384,9 +2377,9 @@ public class IModelImplTests {
     this.builder.addKeyframe("S", 25, 15, 20, 10, 20, 255, 0, 0);
     this.builder.addKeyframe("S", 35, 15, 20, 6, 7, 255, 0, 0);
     this.builder.addKeyframe("S", 45, 15, 20, 6, 7, 255, 255, 0);
-    
+
     IModel model = this.builder.build();
-    
+
     assertEquals(
         "shape R rectangle\n" +
             "motion R 1 30 40 10 20 0 255 255\t10 30 40 40 60 0 255 255\n" +
@@ -2404,5 +2397,5 @@ public class IModelImplTests {
             "motion S 35 15 20 6 7 255 0 0\t45 15 20 6 7 255 255 0",
         model.printAnimations());
   }
-  
+
 }

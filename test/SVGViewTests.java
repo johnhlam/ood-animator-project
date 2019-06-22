@@ -1,8 +1,3 @@
-// TODO: Make sure to test 1 keyframe
-
-import cs3500.animator.model.IKeyframe;
-import cs3500.animator.model.IKeyframeImpl;
-import cs3500.animator.model.IModel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,10 +27,6 @@ public class SVGViewTests {
 
   private Appendable out;
   private IView svgView;
-  private IKeyframe keyframe1 = new IKeyframeImpl(1, 10, 10, 0, 0, Color.BLACK);
-  private IKeyframe keyframe2 = new IKeyframeImpl(10, 15, 15, 0, 0, Color.RED);
-  private IKeyframe keyframe5 = new IKeyframeImpl(10, 15, 15, 0, 0, Color.RED);
-  private IKeyframe keyframe6 = new IKeyframeImpl(20, 15, 15, 0, 0, Color.RED);
   private List<IReadOnlyShape> shapes;
 
   /**
@@ -69,7 +60,6 @@ public class SVGViewTests {
 
     out = new StringBuilder();
     this.svgView = new SVGView();
-    // TODO: originally constructed w out, 10);
     rect1.addKeyframe(1, 10, 10, 0, 0, Color.BLACK);
     rect1.addKeyframe(10, 15, 15, 0, 0, Color.RED);
     rect1.addKeyframe(20, 15, 15, 0, 0, Color.RED);
@@ -160,6 +150,36 @@ public class SVGViewTests {
   }
 
   /**
+   * Tests that calling render on a text view throws an UnsupportedOperationException
+   */
+  @Test(expected = UnsupportedOperationException.class)
+  public void testRenderError() {
+    this.svgView.render(this.shapes);
+  }
+
+  /**
+   * Tests that calling setFeatures on a text view throws an UnsupportedOperationException
+   */
+  @Test(expected = UnsupportedOperationException.class)
+  public void testSetFeaturesError() {
+
+    this.svgView.setFeatures(null);
+  }
+
+  /**
+   * Tests that calling setShapes on a text view does nothing
+   */
+  @Test
+  public void testSetShapesError() {
+
+    this.svgView.setShapes(this.shapes);
+    this.svgView.toOutput(new ArrayList<>(), this.out, 10);
+
+    assertEquals("<svg width=\"0\" height=\"0\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1" +
+        ".1\">\n</svg>", this.out.toString());
+  }
+
+  /**
    * Tests appending throwing an IOException.
    */
   @Test(expected = IllegalStateException.class)
@@ -219,7 +239,10 @@ public class SVGViewTests {
         "\n" +
         "</svg>", out.toString());
   }
-  
+
+  /**
+   * Tests to make sure that printing a view with 1 shape and 1 keyframe works properly.
+   */
   @Test
   public void testPrint1Shape1Keyframe() {
 
@@ -230,10 +253,10 @@ public class SVGViewTests {
     this.svgView.toOutput(oneKeyframe, this.out, 10);
     assertEquals(
         "<svg width=\"0\" height=\"0\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1" +
-        ".1\">\n" +
-        "<rect id=\"R1\" x=\"0.0\" y=\"0.0\" width=\"10.0\" height=\"10.0\" fill=\"rgb(255,0," +
-        "0)\" visibility=\"visible\" >\n" +
-        "<animate attributeType=\"xml\" begin=\"1000ms\" dur=\"0ms\" attributeName=\"x\" "
+            ".1\">\n" +
+            "<rect id=\"R1\" x=\"0.0\" y=\"0.0\" width=\"10.0\" height=\"10.0\" fill=\"rgb(255,0," +
+            "0)\" visibility=\"visible\" >\n" +
+            "<animate attributeType=\"xml\" begin=\"1000ms\" dur=\"0ms\" attributeName=\"x\" "
             + "from=\"40.0\" to=\"40.0\" fill=\"freeze\" />\n"
             + "<animate attributeType=\"xml\" begin=\"1000ms\" dur=\"0ms\" attributeName=\"y\" "
             + "from=\"50.0\" to=\"50.0\" fill=\"freeze\" />\n"
@@ -243,9 +266,8 @@ public class SVGViewTests {
             + "attributeName=\"height\" from=\"30.0\" to=\"30.0\" fill=\"freeze\" />\n"
             + "<animate attributeType=\"xml\" begin=\"1000ms\" dur=\"0ms\" attributeName=\"fill\""
             + " from=\"rgb(0,0,0)\" to=\"rgb(0,0,0)\" fill=\"freeze\" />\n\n" +
-        "</rect>\n\n" +
-        "</svg>", out.toString().toString());
-
+            "</rect>\n\n" +
+            "</svg>", out.toString());
   }
 
   /**

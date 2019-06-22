@@ -33,11 +33,11 @@ public class AnimationPanel extends JPanel implements IAnimationPanel {
         switch (shape.getType()) {
           case RECTANGLE:
             g.fillRect((int) shape.getX(), (int) shape.getY(), (int) shape.getWidth(),
-                    (int) shape.getHeight());
+                (int) shape.getHeight());
             break;
           case ELLIPSE:
             g.fillOval((int) shape.getX(), (int) shape.getY(), (int) shape.getWidth(),
-                    (int) shape.getHeight());
+                (int) shape.getHeight());
             break;
           default:
             // Does nothing, since you should never get here.

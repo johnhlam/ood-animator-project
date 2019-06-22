@@ -50,7 +50,7 @@ public interface Features {
    * @param type of the shape
    */
   void addShape(String id, ShapeType type)
-          throws IllegalArgumentException;
+      throws IllegalArgumentException;
 
   /**
    * Removes the shape of the given ID
@@ -72,7 +72,7 @@ public interface Features {
    * @throws IllegalArgumentException if model disallows a keyframe with the given arguments
    */
   void addKeyframe(String id, int tick, double width, double height, double x, double y,
-                   Color color) throws IllegalArgumentException;
+      Color color) throws IllegalArgumentException;
 
   /**
    * Removes the keyframe with the given tick from the shape of the given ID
@@ -97,6 +97,6 @@ public interface Features {
    * @throws IllegalArgumentException if model disallows a modification with the given arguments
    */
   void modifyKeyframe(String id, int tick, double width, double height, double x, double y,
-                      Color color) throws IllegalArgumentException;
+      Color color) throws IllegalArgumentException;
 
 }

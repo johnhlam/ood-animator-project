@@ -21,6 +21,7 @@ import cs3500.animator.model.ShapeType;
  * listener and transmits events to the controller, or its "features."
  */
 public class EditorView extends JFrame implements IView, ActionListener {
+
   private Features features;
   private List<IReadOnlyShape> shapesToRender = new ArrayList<>();
 
@@ -337,12 +338,14 @@ public class EditorView extends JFrame implements IView, ActionListener {
   }
 
   @Override
-  public void setCanvas(int x, int y, int width, int height, int maxX, int maxY) throws IllegalArgumentException {
+  public void setCanvas(int x, int y, int width, int height, int maxX, int maxY)
+      throws IllegalArgumentException {
     animationPanel.setDrawPanelSize(width, height, maxX, maxY);
   }
 
   @Override
-  public void toOutput(List<IReadOnlyShape> shapes, Appendable ap, int tickRate) throws UnsupportedOperationException {
+  public void toOutput(List<IReadOnlyShape> shapes, Appendable ap, int tickRate)
+      throws UnsupportedOperationException {
     throw new UnsupportedOperationException("Editor view cannot output to text.");
   }
 
@@ -457,8 +460,8 @@ public class EditorView extends JFrame implements IView, ActionListener {
     int b = 0;
 
     if (tick.getText().isEmpty() || xCoor.getText().isEmpty() || yCoor.getText().isEmpty()
-            || width.getText().isEmpty() || height.getText().isEmpty() || rVal.getText().isEmpty()
-            || gVal.getText().isEmpty() || bVal.getText().isEmpty()) {
+        || width.getText().isEmpty() || height.getText().isEmpty() || rVal.getText().isEmpty()
+        || gVal.getText().isEmpty() || bVal.getText().isEmpty()) {
       this.errorPopup("Please fill in all the fields.");
       return;
     }
@@ -478,7 +481,7 @@ public class EditorView extends JFrame implements IView, ActionListener {
 
     try {
       this.features.modifyKeyframe(shapeList.getSelectedValue(), tickVal, widthVal, heightVal, x, y,
-              new Color(r, g, b));
+          new Color(r, g, b));
     } catch (Exception e) {
       this.errorPopup(e.getMessage());
       return;
@@ -507,7 +510,6 @@ public class EditorView extends JFrame implements IView, ActionListener {
       this.features.removeKeyframe(curShape.getID(), curFrame.getTick());
     } catch (Exception e) {
       this.errorPopup(e.getMessage());
-      e.printStackTrace();
       return;
     }
 
@@ -533,8 +535,8 @@ public class EditorView extends JFrame implements IView, ActionListener {
     int b = 0;
 
     if (tick.getText().isEmpty() || xCoor.getText().isEmpty() || yCoor.getText().isEmpty()
-            || width.getText().isEmpty() || height.getText().isEmpty() || rVal.getText().isEmpty()
-            || gVal.getText().isEmpty() || bVal.getText().isEmpty()) {
+        || width.getText().isEmpty() || height.getText().isEmpty() || rVal.getText().isEmpty()
+        || gVal.getText().isEmpty() || bVal.getText().isEmpty()) {
       this.errorPopup("Please fill in all the fields.");
       return;
     }
@@ -559,11 +561,10 @@ public class EditorView extends JFrame implements IView, ActionListener {
 
     try {
       this.features.addKeyframe(shapeList.getSelectedValue(), tickVal, widthVal, heightVal, x, y,
-              new Color(r, g, b));
+          new Color(r, g, b));
       this.keyframeList.setListData(new Vector<>());
     } catch (Exception e) {
       this.errorPopup(e.getMessage());
-      e.printStackTrace();
       return;
     }
 
@@ -583,7 +584,6 @@ public class EditorView extends JFrame implements IView, ActionListener {
       this.keyframeList.setListData(new Vector<>());
     } catch (Exception e) {
       errorPopup(e.getMessage());
-      e.printStackTrace();
       return;
     }
   }
@@ -601,7 +601,6 @@ public class EditorView extends JFrame implements IView, ActionListener {
       this.features.addShape(shapeIDField.getText(), type);
     } catch (Exception e) {
       errorPopup(e.getMessage());
-      e.printStackTrace();
       return;
     }
   }

@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
  * be used.
  */
 public class ListenersTest {
+
   private Appendable controllerAp;
   private Appendable modelAp;
   private IModel testModel;
@@ -128,7 +129,7 @@ public class ListenersTest {
 
     testView.render(null);
     assertEquals("Shape added with ID shape added of type rectangle",
-            controllerAp.toString());
+        controllerAp.toString());
   }
 
   /**
@@ -143,7 +144,7 @@ public class ListenersTest {
 
     testView.render(null);
     assertEquals("Shape removed with ID shape removed",
-            controllerAp.toString());
+        controllerAp.toString());
   }
 
   /**
@@ -158,7 +159,7 @@ public class ListenersTest {
 
     testView.render(null);
     assertEquals("Keyframe added for shape keyframe added at tick 38",
-            controllerAp.toString());
+        controllerAp.toString());
   }
 
   /**
@@ -173,7 +174,7 @@ public class ListenersTest {
 
     testView.render(null);
     assertEquals("Keyframe removed for shape keyframe removed at tick 12",
-            controllerAp.toString());
+        controllerAp.toString());
   }
 
   /**
@@ -188,7 +189,7 @@ public class ListenersTest {
 
     testView.render(null);
     assertEquals("Keyframe modified for shape keyframe modified at tick 23",
-            controllerAp.toString());
+        controllerAp.toString());
   }
 
   /**
@@ -202,7 +203,7 @@ public class ListenersTest {
 
     testView.render(null);
     assertEquals("Model: Shape added with ID shape added of type rectangle",
-            modelAp.toString());
+        modelAp.toString());
   }
 
   /**
@@ -216,7 +217,7 @@ public class ListenersTest {
 
     testView.render(null);
     assertEquals("Model: Shape removed with ID shape removed",
-            modelAp.toString());
+        modelAp.toString());
   }
 
   /**
@@ -230,7 +231,7 @@ public class ListenersTest {
 
     testView.render(null);
     assertEquals("Model: Keyframe added for shape keyframe added at tick 38",
-            modelAp.toString());
+        modelAp.toString());
   }
 
   /**
@@ -244,7 +245,7 @@ public class ListenersTest {
 
     testView.render(null);
     assertEquals("Model: Keyframe removed for shape keyframe removed at tick 12",
-            modelAp.toString());
+        modelAp.toString());
   }
 
   /**
@@ -258,7 +259,7 @@ public class ListenersTest {
 
     testView.render(null);
     assertEquals("Model: Keyframe removed for shape keyframe modified at tick 23Model: " +
-                    "Keyframe added for shape keyframe modified at tick 23",
-            modelAp.toString());
+            "Keyframe added for shape keyframe modified at tick 23",
+        modelAp.toString());
   }
 }

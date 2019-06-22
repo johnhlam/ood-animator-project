@@ -87,8 +87,8 @@ public class Excellence {
           + e.getMessage());
       return;
     }
-    IController controller = new ControllerImpl(newView, model,  ArgsProcessor.speed,
-            ArgsProcessor.out);
+    IController controller = new ControllerImpl(newView, model, ArgsProcessor.speed,
+        ArgsProcessor.out);
 
     if ((ArgsProcessor.view.equals("text") || ArgsProcessor.view.equals("svg"))) {
       try {
@@ -100,8 +100,7 @@ public class Excellence {
         Excellence.errorPopup(
             "Error occurred upon attempting to close the file writer for text based views.");
       }
-    }
-    else {
+    } else {
       try {
         controller.renderAnimation();
       } catch (UnsupportedOperationException e) {

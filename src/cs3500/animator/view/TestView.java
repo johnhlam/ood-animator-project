@@ -15,6 +15,7 @@ import cs3500.animator.model.ShapeType;
  * testing. It leaves many methods unimplemented as they are not needed for testing.
  */
 public class TestView implements IView {
+
   private Features features;
   private final Readable readable;
 
@@ -26,12 +27,14 @@ public class TestView implements IView {
   }
 
   @Override
-  public void setCanvas(int x, int y, int width, int height, int maxX, int maxY) throws IllegalArgumentException {
+  public void setCanvas(int x, int y, int width, int height, int maxX, int maxY)
+      throws IllegalArgumentException {
     // see javadoc for the class
   }
 
   @Override
-  public void toOutput(List<IReadOnlyShape> shapes, Appendable ap, int tickRate) throws UnsupportedOperationException {
+  public void toOutput(List<IReadOnlyShape> shapes, Appendable ap, int tickRate)
+      throws UnsupportedOperationException {
     // see javadoc for the class
   }
 

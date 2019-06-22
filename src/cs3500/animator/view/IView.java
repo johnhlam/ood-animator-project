@@ -25,7 +25,8 @@ public interface IView {
    * @param maxY   the max y coordinate that the animation reaches
    * @throws IllegalArgumentException if the given width and/or height are negative
    */
-  void setCanvas(int x, int y, int width, int height, int maxX, int maxY) throws IllegalArgumentException;
+  void setCanvas(int x, int y, int width, int height, int maxX, int maxY)
+      throws IllegalArgumentException;
 
   /**
    * Outputs a textual representation of the animation to the given Appendable object. The animation
@@ -36,7 +37,8 @@ public interface IView {
    * @param ap       the Appendable to output to
    * @param tickRate the tick rate of the animation
    */
-  void toOutput(List<IReadOnlyShape> shapes, Appendable ap, int tickRate) throws UnsupportedOperationException;
+  void toOutput(List<IReadOnlyShape> shapes, Appendable ap, int tickRate)
+      throws UnsupportedOperationException;
 
   /**
    * Plays the animation visually by drawing the given shapes. Some views may not support this

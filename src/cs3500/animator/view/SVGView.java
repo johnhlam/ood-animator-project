@@ -48,7 +48,7 @@ public class SVGView extends ATextualView {
     String heightAttribute = null;
 
     this.attemptAppend("<svg width=\"" + (width + x) + "\" height=\"" + (height + y)
-            + "\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n", ap);
+        + "\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n", ap);
 
     for (IReadOnlyShape shape : shapes) {
 
@@ -74,20 +74,20 @@ public class SVGView extends ATextualView {
       String shapeName = this.convertTypeToSVGName(shape.getType());
       StringBuilder shapeHeading = new StringBuilder();
       shapeHeading
-              .append("<").append(shapeName).append(" id=\"").append(shape.getID()).append("\" ")
-              .append(xCoordinate).append("=\"").append(shape.getX()).append("\" ")
-              .append(yCoordinate).append("=\"").append(shape.getY()).append("\" ")
-              .append(widthAttribute).append("=\"").append(shape.getWidth()).append("\" ")
-              .append(heightAttribute).append("=\"").append(shape.getHeight()).append("\" ")
-              .append("fill=\"rgb(").append(shape.getColor().getRed()).append(",")
-              .append(shape.getColor().getGreen()).append(",").append(shape.getColor().getBlue())
-              .append(")\" ").append("visibility=\"visible\" >\n");
+          .append("<").append(shapeName).append(" id=\"").append(shape.getID()).append("\" ")
+          .append(xCoordinate).append("=\"").append(shape.getX()).append("\" ")
+          .append(yCoordinate).append("=\"").append(shape.getY()).append("\" ")
+          .append(widthAttribute).append("=\"").append(shape.getWidth()).append("\" ")
+          .append(heightAttribute).append("=\"").append(shape.getHeight()).append("\" ")
+          .append("fill=\"rgb(").append(shape.getColor().getRed()).append(",")
+          .append(shape.getColor().getGreen()).append(",").append(shape.getColor().getBlue())
+          .append(")\" ").append("visibility=\"visible\" >\n");
 
       this.attemptAppend(shapeHeading.toString(), ap);
 
       // Converts shape's motions into 'animate' elements
       this.printShapeMotionsSVG(shape, xCoordinate, yCoordinate, widthAttribute, heightAttribute,
-              tickRate, ap);
+          tickRate, ap);
       this.attemptAppend("</" + shapeName + ">\n\n", ap);
     }
 
@@ -106,7 +106,7 @@ public class SVGView extends ATextualView {
    * @param ap          is the Appendable to output to
    */
   private void printShapeMotionsSVG(IReadOnlyShape shape, String xCoordinate, String yCoordinate,
-                                    String width, String height, int tickRate, Appendable ap) {
+      String width, String height, int tickRate, Appendable ap) {
 
     List<IKeyframe> keyframesList = shape.getKeyframes();
 
@@ -114,20 +114,20 @@ public class SVGView extends ATextualView {
       IKeyframe keyframe = keyframesList.get(0);
       String startTime = Integer.toString(this.tickToMS(keyframe.getTick(), tickRate));
       this.svgAnimationText(xCoordinate, startTime, "0", Double.toString(keyframe.getX()),
-              Double.toString(keyframe.getX()), ap);
+          Double.toString(keyframe.getX()), ap);
       this.svgAnimationText(yCoordinate, startTime, "0", Double.toString(keyframe.getY()),
-              Double.toString(keyframe.getY()), ap);
+          Double.toString(keyframe.getY()), ap);
       this.svgAnimationText(width, startTime, "0", Double.toString(keyframe.getWidth()),
-              Double.toString(keyframe.getWidth()), ap);
+          Double.toString(keyframe.getWidth()), ap);
       this.svgAnimationText(height, startTime, "0", Double.toString(keyframe.getHeight()),
-              Double.toString(keyframe.getHeight()), ap);
+          Double.toString(keyframe.getHeight()), ap);
 
       StringBuilder color = new StringBuilder();
       color.append("rgb(").append(keyframe.getColor().getRed()).append(
-              ",").append(keyframe.getColor().getGreen()).append(
-              ",").append(keyframe.getColor().getBlue()).append(")");
+          ",").append(keyframe.getColor().getGreen()).append(
+          ",").append(keyframe.getColor().getBlue()).append(")");
       this.svgAnimationText("fill", startTime,
-              "0", color.toString(), color.toString(), ap);
+          "0", color.toString(), color.toString(), ap);
       this.attemptAppend("\n", ap);
     }
 
@@ -139,34 +139,34 @@ public class SVGView extends ATextualView {
 
       String startTime = Integer.toString(this.tickToMS(startKeyframe.getTick(), tickRate));
       String duration =
-              Integer.toString(this.tickToMS(endKeyframe.getTick() - startKeyframe.getTick(),
-                      tickRate));
+          Integer.toString(this.tickToMS(endKeyframe.getTick() - startKeyframe.getTick(),
+              tickRate));
       // Adds the 'animate' element for each attribute of the shape
       this.svgAnimationText(xCoordinate, startTime,
-              duration, Double.toString(startKeyframe.getX()),
-              Double.toString(endKeyframe.getX()), ap);
+          duration, Double.toString(startKeyframe.getX()),
+          Double.toString(endKeyframe.getX()), ap);
       this.svgAnimationText(yCoordinate, startTime,
-              duration, Double.toString(startKeyframe.getY()),
-              Double.toString(endKeyframe.getY()), ap);
+          duration, Double.toString(startKeyframe.getY()),
+          Double.toString(endKeyframe.getY()), ap);
       this.svgAnimationText(width, startTime,
-              duration, Double.toString(startKeyframe.getWidth()),
-              Double.toString(endKeyframe.getWidth()), ap);
+          duration, Double.toString(startKeyframe.getWidth()),
+          Double.toString(endKeyframe.getWidth()), ap);
       this.svgAnimationText(height, startTime,
-              duration, Double.toString(startKeyframe.getHeight()),
-              Double.toString(endKeyframe.getHeight()), ap);
+          duration, Double.toString(startKeyframe.getHeight()),
+          Double.toString(endKeyframe.getHeight()), ap);
 
       StringBuilder colorStart = new StringBuilder();
       colorStart.append("rgb(").append(startKeyframe.getColor().getRed()).append(
-              ",").append(startKeyframe.getColor().getGreen()).append(
-              ",").append(startKeyframe.getColor().getBlue()).append(")");
+          ",").append(startKeyframe.getColor().getGreen()).append(
+          ",").append(startKeyframe.getColor().getBlue()).append(")");
 
       StringBuilder colorEnd = new StringBuilder();
       colorEnd.append("rgb(").append(endKeyframe.getColor().getRed()).append(
-              ",").append(endKeyframe.getColor().getGreen()).append(
-              ",").append(endKeyframe.getColor().getBlue()).append(")");
+          ",").append(endKeyframe.getColor().getGreen()).append(
+          ",").append(endKeyframe.getColor().getBlue()).append(")");
 
       this.svgAnimationText("fill", startTime,
-              duration, colorStart.toString(), colorEnd.toString(), ap);
+          duration, colorStart.toString(), colorEnd.toString(), ap);
       this.attemptAppend("\n", ap);
 
 
@@ -189,14 +189,14 @@ public class SVGView extends ATextualView {
    * @param ap            is the Appendable to output to
    */
   private void svgAnimationText(String attributeName, String startTime, String duration,
-                                String fromVal, String toVal, Appendable ap) {
+      String fromVal, String toVal, Appendable ap) {
     StringBuilder animationText = new StringBuilder();
     animationText.append("<animate attributeType=\"xml\" begin=\"").append(startTime)
-            .append("ms\" ")
-            .append("dur=\"").append(duration).append("ms\" ")
-            .append("attributeName=\"").append(attributeName).append("\" from=\"")
-            .append(fromVal).append("\" ").append("to=\"").append(toVal).append("\" fill=\"freeze" +
-            "\" />\n");
+        .append("ms\" ")
+        .append("dur=\"").append(duration).append("ms\" ")
+        .append("attributeName=\"").append(attributeName).append("\" from=\"")
+        .append(fromVal).append("\" ").append("to=\"").append(toVal).append("\" fill=\"freeze" +
+        "\" />\n");
     this.attemptAppend(animationText.toString(), ap);
   }
 
